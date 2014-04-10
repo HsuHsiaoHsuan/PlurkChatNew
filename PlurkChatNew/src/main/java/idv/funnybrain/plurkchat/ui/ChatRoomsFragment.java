@@ -116,6 +116,7 @@ public class ChatRoomsFragment extends SherlockFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if(D) { Log.d(TAG, "onActivityCreated"); }
         plurkOAuth = ((FunnyActivity) getActivity()).getPlurkOAuth();
 
         HashMap<String, String> params = new HashMap<String, String>();
