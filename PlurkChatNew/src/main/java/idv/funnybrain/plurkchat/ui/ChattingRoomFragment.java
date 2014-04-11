@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import idv.funnybrain.plurkchat.FunnyActivity;
 import idv.funnybrain.plurkchat.PlurkOAuth;
@@ -146,6 +147,7 @@ public class ChattingRoomFragment extends SherlockFragment {
     @Override
     public void onPause() {
         super.onPause();
+        if(D) { Log.d(TAG, "onPause"); }
         mImageFetcher.setPauseWork(false);
         mImageFetcher.setExitTasksEarly(true);
         mImageFetcher.flushCache();
@@ -154,7 +156,9 @@ public class ChattingRoomFragment extends SherlockFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(D) { Log.d(TAG, "onDestroy"); }
         mImageFetcher.closeCache();
+        getSherlockActivity().getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
     }
 
     private class Mod_Response_get_AsyncTask extends AsyncTask<HashMap<String, String>, Void, JSONObject> {
@@ -212,7 +216,7 @@ public class ChattingRoomFragment extends SherlockFragment {
     }
 
     private void setListAdapter() {
-        mAdapter = new ChattingRoomListAdapter(getSherlockActivity(), friends, responses, mImageFetcher, me.getId());
+        mAdapter = new ChattingRoomListAdapter(getSherlockActivity().getLayoutInflater(), friends, responses, mImageFetcher, me.getId());
         list.setAdapter(mAdapter);
     }
 }

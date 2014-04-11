@@ -102,7 +102,7 @@ public class FriendsFragment extends SherlockFragment {
         me = ((FunnyActivity) getActivity()).getMe();
         //new PlurkTmpAsyncTask().execute("");
         if(friends.size()>0) {
-            mAdapter = new FriendsListAdapter(getSherlockActivity(), friends, mImageFetcher);
+            mAdapter = new FriendsListAdapter(getSherlockActivity().getLayoutInflater(), friends, mImageFetcher);
             list.setAdapter(mAdapter);
         } else {
             new Mod_FriendsFans_getFriendsByOffset_AsyncTask().execute(me.getId());
@@ -181,7 +181,7 @@ public class FriendsFragment extends SherlockFragment {
         protected void onPostExecute(List<Friend> friends) {
             super.onPostExecute(friends);
             FriendsFragment.this.friends = friends;
-            mAdapter = new FriendsListAdapter(getSherlockActivity(), friends, mImageFetcher);
+            mAdapter = new FriendsListAdapter(getSherlockActivity().getLayoutInflater(), friends, mImageFetcher);
             // FIXME 在整個 layout 還沒出來的時候按下 back 會產生此錯誤。
             /*
             04-11 16:07:29.175: E/AndroidRuntime(31695): 	at idv.funnybrain.plurkchat.ui.FriendsFragment$Mod_FriendsFans_getFriendsByOffset_AsyncTask.onPostExecute(FriendsFragment.java:184)

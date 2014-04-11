@@ -1,6 +1,5 @@
 package idv.funnybrain.plurkchat.ui;
 
-import android.app.Activity;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +32,8 @@ public class ChattingRoomListAdapter extends BaseAdapter {
     private String my_Id;
     // ---- local variable END ----
 
-    public ChattingRoomListAdapter(Activity activity, HashMap<String, Friend> fri, List<Responses> res, ImageFetcher imageFetcher, String my_id) {
-        this.inflater = activity.getLayoutInflater();
+    public ChattingRoomListAdapter(LayoutInflater inflater, HashMap<String, Friend> fri, List<Responses> res, ImageFetcher imageFetcher, String my_id) {
+        this.inflater = inflater;
         this.friends = fri;
         this.responses = res;
         this.mImageFetcher = imageFetcher;

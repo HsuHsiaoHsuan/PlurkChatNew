@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.data.Friend;
 import idv.funnybrain.plurkchat.utils.ImageFetcher;
@@ -28,8 +27,8 @@ public class FriendsListAdapter extends BaseAdapter {
     private ImageFetcher mImageFetcher;
     // ---- local variable END ----
 
-    public FriendsListAdapter(SherlockFragmentActivity activity, List<Friend> friends, ImageFetcher imageFetcher) {
-        this.inflater = activity.getLayoutInflater();
+    public FriendsListAdapter(LayoutInflater inflater, List<Friend> friends, ImageFetcher imageFetcher) {
+        this.inflater = inflater;
         this.friends = friends;
         mImageFetcher = imageFetcher;
     }

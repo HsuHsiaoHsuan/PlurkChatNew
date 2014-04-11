@@ -11,7 +11,7 @@
 
     <!-- FriendsFragment START -->
     <string name="tab_friends">Friends</string>
-    <string name="tab_chatrooms">Chat Rooms</string>
+    <string name="tab_chatrooms">Chatting</string>
     <!-- FriendsFragment END -->
 
     <!-- ChatRoomFragment START -->
