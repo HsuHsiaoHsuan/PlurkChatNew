@@ -13,29 +13,29 @@ import java.util.*;
  */
 public class Plurks {
     private int responses_seen = 0;
-    private Qualifier qualifier = null;
-    private List<String> replurkers = null;
-    private String plurk_id = null;
+    private Qualifier qualifier = Qualifier.NULL;
+    private List<String> replurkers = new ArrayList<String>();
+    private String plurk_id = "";
     private int response_count = 0;
     private int replurkers_count = 0;
     private boolean replurkable = false;
-    private String limited_to = null; // will be seperated by |, ex |uid|uid|uid|uid|uid|
+    private String limited_to = ""; // will be seperated by |, ex |uid|uid|uid|uid|uid|
     private boolean my_anonymous = false; // Qualifier: whispers
     private int no_comments = 0; // 2: only friends, 1: close response
     private int favorite_count = 0;
     private int is_unread = 0; // 1: true, 0: false
-    private Language lang = null;
-    private List<String> favorers = null;
-    private String content_raw = null;
-    private String user_id = null;
+    private Language lang = Language.EN;
+    private List<String> favorers = new ArrayList<String>();
+    private String content_raw = "";
+    private String user_id = "";
     private int plurk_type = 0; // 0: public, 1: specific some body
     private String qualifier_translated = ""; // sometimes it will missing // FIXME
     private boolean replurked = false;
     private boolean favorite = false;
-    private String content = null;
-    private String replurker_id = null;
-    private String posted = null;
-    private String owner_id = null;
+    private String content = "";
+    private String replurker_id = "";
+    private String posted = "";
+    private String owner_id = "";
 
     public Plurks(JSONObject object) throws JSONException {
         if(!object.isNull("responses_seen"))       { responses_seen = object.getInt("responses_seen"); }
@@ -58,7 +58,7 @@ public class Plurks {
         if(!object.isNull("lang"))                 { lang = Language.getLang(object.getString("lang")); }
         if(!object.isNull("favorers")) {
             JSONArray tmp_favorers = object.getJSONArray("favorers");
-            favorers = new ArrayList<String>();
+//            favorers = new ArrayList<String>();
             for (int x = 0; x < tmp_favorers.length(); x++) {
                 favorers.add(tmp_favorers.getString(x));
             }

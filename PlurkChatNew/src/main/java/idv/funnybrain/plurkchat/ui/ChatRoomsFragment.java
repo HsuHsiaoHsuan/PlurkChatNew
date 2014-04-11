@@ -44,6 +44,13 @@ public class ChatRoomsFragment extends SherlockFragment {
 
     protected boolean mPause = false;
     private final Object mPauseLock = new Object();
+
+    private final String OFFSET = "offset";
+    private final String LIMIT = "limit";
+    private final String FILTER = "filter";
+    private final String FAVORERS_DETAIL = "favorers_detail";
+    private final String LIMITED_DETAIL = "limited_detail";
+    private final String REPLURKERS_DETAIL = "replurkers_detail";
     // ---- constant variable END ----
 
     // ---- local variable START ----
@@ -108,7 +115,7 @@ public class ChatRoomsFragment extends SherlockFragment {
             @Override
             public void onClick(View v) {
                 HashMap<String, String> params = new HashMap<String, String>();
-                params.put("offset", oldest_posted);
+                params.put(OFFSET, oldest_posted);
                 new Mod_Timeline_getPlurks_AsyncTask().execute(params);
                 bt_more.setEnabled(false);
             }
@@ -124,7 +131,8 @@ public class ChatRoomsFragment extends SherlockFragment {
                 System.out.println(id);
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.fragment_content, new FriendsFragment()).addToBackStack("tag").commit();
+                ChattingRoomFragment chatting = ChattingRoomFragment.newInstance(String.valueOf(id));
+                ft.replace(R.id.fragment_content, chatting).addToBackStack("tag").commit();
 //                FriendsFragment ff = new FriendsFragment();
 //                ft.add(R.id.fragment_content, ff);
 //                ft.commit();
@@ -173,8 +181,6 @@ public class ChatRoomsFragment extends SherlockFragment {
         mImageFetcher.closeCache();
     }
 
-
-
     private class Mod_Timeline_getPlurks_AsyncTask extends AsyncTask<HashMap<String, String>, Void, JSONObject> {
         @Override
         protected JSONObject doInBackground(HashMap<String, String>... params) {
@@ -188,22 +194,26 @@ public class ChatRoomsFragment extends SherlockFragment {
             boolean replurkers_detail = false;
 
             HashMap<String, String> param = params[0];
-            if(param.containsKey("offset")) { offset = param.get("offset"); }
-            if(param.containsKey("limit")) {
-                String tmp = param.get("offset");
+            if(param.containsKey(OFFSET)) {
+                offset = param.get(OFFSET);
+            }
+            if(param.containsKey(LIMIT)) {
+                String tmp = param.get(LIMIT);
                 limit = Integer.valueOf(tmp);
             }
-            if(param.containsKey("filter")) { filter = param.get("filter"); }
-            if(param.containsKey("favorers_detail")) {
-                String tmp = param.get("favorers_detail");
+            if(param.containsKey(FILTER)) {
+                filter = param.get(FILTER);
+            }
+            if(param.containsKey(FAVORERS_DETAIL)) {
+                String tmp = param.get(FAVORERS_DETAIL);
                 if(tmp.equals("true")) { favorers_detail = true; }
             }
-            if(param.containsKey("limited_detail")) {
-                String tmp = param.get("limited_detail");
+            if(param.containsKey(LIMITED_DETAIL)) {
+                String tmp = param.get(LIMITED_DETAIL);
                 if(tmp.equals("true")) { limited_detail = true; }
             }
-            if(param.containsKey("replurkers_detail")) {
-                String tmp = param.get("replurkers_detail");
+            if(param.containsKey(REPLURKERS_DETAIL)) {
+                String tmp = param.get(REPLURKERS_DETAIL);
                 if(tmp.equals("true")) { replurkers_detail = true; }
             }
 
