@@ -4,6 +4,7 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
     >
+
     <Button
         android:id="@+id/bt_getAuth"
         android:layout_width="wrap_content"

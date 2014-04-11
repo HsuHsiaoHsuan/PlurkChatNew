@@ -71,8 +71,8 @@ public class FriendsListAdapter extends BaseAdapter {
         Friend f = this.friends.get(position);
 
         holder.tv_id.setText(f.getId());
-        String showTitle = f.getDisplay_name().equals("") ? f.getFull_name() : f.getDisplay_name();
-        holder.tv_title.setText(showTitle);
+        //String showTitle = f.getDisplay_name().equals("") ? f.getFull_name() : f.getDisplay_name();
+        holder.tv_title.setText(f.getShowName());
 
         String imgURL = f.getIconAddress();
 

@@ -15,13 +15,13 @@ public class Plurk_Users {
     private Language default_lang = null;
     private String display_name = ""; // FIXME sometimes it will missing
     private int dateformat = 0;
-    private String nick_name = null;
+    private String nick_name = "";
     private int has_profile_image = 0;
     private String location = null;
     private int bday_privacy = 0; // 0: hide birthday, 1: show birth date but not birth year, 2: show all
     private String date_of_birth = null;
     private double karma = 0;
-    private String full_name = null;
+    private String full_name = "null";
     private int gender = 2; // 1 is male, 0 is female, 2 is not stating/other.
     private String name_color = null;
     private String timezone = null;
@@ -86,5 +86,15 @@ public class Plurk_Users {
 
     public String getFull_name() {
         return full_name;
+    }
+
+    public String getShowName() {
+        if(!display_name.equals("") && !display_name.equals("null")) {
+            return display_name;
+        } else if(!full_name.equals("") && !full_name.equals("null")) {
+            return full_name;
+        } else {
+            return nick_name;
+        }
     }
 }

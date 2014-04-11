@@ -55,7 +55,7 @@ public class FunnyActivity extends SherlockFragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.funny);
+        setContentView(R.layout.activity_funny);
 
         final EditText et_auth = (EditText) findViewById(R.id.et_auth);
         final Button bt_submit_auth = (Button) findViewById(R.id.bt_submit_auth);
@@ -106,7 +106,7 @@ public class FunnyActivity extends SherlockFragmentActivity {
                         if(D) { Log.d(TAG, "HANDLER_GET_SELF_OK: " + me.getDisplay_name()); }
                         ActionBar actionBar = getSupportActionBar();
                         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-                        actionBar.setDisplayShowTitleEnabled(false);
+                        actionBar.setDisplayShowTitleEnabled(true);
 
                         ActionBar.Tab tab = actionBar.newTab()
                                 .setText("Friends")
@@ -134,16 +134,13 @@ public class FunnyActivity extends SherlockFragmentActivity {
             accessToken = new Token(key, secret);
             plurkOAuth = new PlurkOAuth(accessToken);
 
-//            // should get user self
-//            new Mod_Users_me_AsyncTask().execute("");
-
             Message msg = new Message();
             msg.what = HANDLER_GET_ACCESS_TOKEN_OK;
             handler.sendMessage(msg);
 
-//            if(savedInstanceState != null) {
-//                getActionBar().setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
-//            }
+            if(savedInstanceState != null) {
+                getSupportActionBar().setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
+            }
         }
     }
 

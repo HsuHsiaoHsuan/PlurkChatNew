@@ -44,6 +44,7 @@ public class FriendsFragment extends SherlockFragment {
     private PlurkOAuth plurkOAuth;
     private Me me;
     private ListView list;
+    private List<Friend> friends;
     private FriendsListAdapter mAdapter;
 
     private ImageFetcher mImageFetcher;
@@ -65,6 +66,8 @@ public class FriendsFragment extends SherlockFragment {
         mImageFetcher = new ImageFetcher(getSherlockActivity(), Integer.MAX_VALUE);
         mImageFetcher.setLoadingImage(R.drawable.default_plurk_avatar);
         mImageFetcher.addImageCache(getFragmentManager(), cacheParams);
+
+        friends = new ArrayList<Friend>();
     }
 
     @Override
@@ -98,7 +101,12 @@ public class FriendsFragment extends SherlockFragment {
         plurkOAuth = ((FunnyActivity) getActivity()).getPlurkOAuth();
         me = ((FunnyActivity) getActivity()).getMe();
         //new PlurkTmpAsyncTask().execute("");
-        new Mod_FriendsFans_getFriendsByOffset_AsyncTask().execute(me.getId());
+        if(friends.size()>0) {
+            mAdapter = new FriendsListAdapter(getSherlockActivity(), friends, mImageFetcher);
+            list.setAdapter(mAdapter);
+        } else {
+            new Mod_FriendsFans_getFriendsByOffset_AsyncTask().execute(me.getId());
+        }
     }
 
     @Override
@@ -135,7 +143,7 @@ public class FriendsFragment extends SherlockFragment {
             try {
                 do {
                     if(D) { Log.d(TAG, "Mod_FriendsFans_getFriendsByOffset_AsyncTask, while: " + round); }
-                    result = plurkOAuth.getModule(Mod_FriendsFans.class).getFriendsByOffset("4373060", 0 + 100 * round, 100);
+                    result = plurkOAuth.getModule(Mod_FriendsFans.class).getFriendsByOffset(me.getId(), 0 + 100 * round, 100);
                     // CWT   7014485
                     // kero  4373060
                     // 6880391
@@ -172,6 +180,7 @@ public class FriendsFragment extends SherlockFragment {
         @Override
         protected void onPostExecute(List<Friend> friends) {
             super.onPostExecute(friends);
+            FriendsFragment.this.friends = friends;
             mAdapter = new FriendsListAdapter(getSherlockActivity(), friends, mImageFetcher);
             list.setAdapter(mAdapter);
         }

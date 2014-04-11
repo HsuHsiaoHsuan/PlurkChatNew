@@ -28,7 +28,8 @@ public class Mod_Timeline extends AbstractModule {
      * @param favorers_detail If true, detailed users information about all favorers of all plurks will be included into "plurk_users"
      * @param limited_detail If true, detailed users information about all private plurks' recepients will be included into "plurk_users"
      * @param replurkers_detail If true, detailed users information about all replurkers of all plurks will be included into "plurk_users"
-     * @return JSON data
+     * @return Successful return:
+     *         Returns a JSON object of plurks and their users, e.g. {"plurks": [{"plurk_id": 3, "content": "Test", "qualifier_translated": "says", "qualifier": "says", "lang": "en" ...}, ...], "plurk_users": {"3": {"id": 3, "nick_name": "alvin", ...}}
      */
     public JSONObject getPlurks(String offset, int limit, String filter, boolean favorers_detail, boolean limited_detail, boolean replurkers_detail) throws RequestException {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -74,7 +75,15 @@ public class Mod_Timeline extends AbstractModule {
      * @param no_comments If set to 1, then responses are disabled for this plurk.
      *                    If set to 2, then only friends can respond to this plurk.
      * @param lang The plurk's language.
-     * @return JSONObject
+     * @return Successful return:
+     *         Returns a JSON object of the new plurk, e.g. {"plurk_id": 3, "content": "Test", "qualifier_translated": "says", "qualifier": "says", "lang": "en" ...}
+     *         Error returns:
+     *             HTTP 400 BAD REQUEST with {"error_text": "Invalid data"} as body
+     *             HTTP 400 BAD REQUEST with {"error_text": "Must be friends"} as body
+     *             HTTP 400 BAD REQUEST with {"error_text": "Content is empty"} as body
+     *             HTTP 400 BAD REQUEST with {"error_text": "anti-flood-same-content"} as body
+     *             HTTP 400 BAD REQUEST with {"error_text": "anti-flood-spam-domain"} as body
+     *             HTTP 400 BAD REQUEST with {"error_text": "anti-flood-too-many-new"} as body
      */
     public JSONObject plurkAdd(String content, Qualifier qualifier, String[] limited_to, int no_comments, Language lang) throws RequestException {
         List<NameValuePair> params = new ArrayList<NameValuePair>();

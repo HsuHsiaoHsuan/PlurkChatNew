@@ -40,22 +40,22 @@ public class Friend {
     private boolean settings = false; // FIXME
     private int following_im = 0;
     private int recruited = 0;
-    private String date_of_birth = null;
-    private String avatar = null;
-    private String nick_name = null;
-    private String relationship = null;
+    private String date_of_birth = "null";
+    private String avatar = "null";
+    private String nick_name = "";
+    private String relationship = "";
     private String id = null;
     private double karma = 0;
-    private String display_name = null;
-    private String name_color = null; // FIXME
+    private String display_name = "";
+    private String name_color = "null"; // FIXME
     private boolean following = false;
-    private String timezone = null;
-    private String dateformat = null;
+    private String timezone = "null";
+    private int dateformat = 0;
     private int bday_privacy = 0;
     private int gender = 2; // 1 is male, 0 is female, 2 is not stating/other.
     private int has_profile_image = 0;
-    private String default_lang = null;
-    private String full_name = null;
+    private String default_lang = "";
+    private String full_name = "null";
 
     public Friend(JSONObject friend) throws JSONException {
         if(!friend.isNull("email_confirmed"))   { email_confirmed = friend.getBoolean("email_confirmed"); }
@@ -76,7 +76,7 @@ public class Friend {
         if(!friend.isNull("name_color"))        { name_color = friend.getString("name_color"); }
         if(!friend.isNull("following"))         { following = friend.getBoolean("following"); }
         if(!friend.isNull("timezone"))          { timezone = friend.getString("timezone"); }
-        if(!friend.isNull("dateformat"))        { dateformat = friend.getString("dateformat"); }
+        if(!friend.isNull("dateformat"))        { dateformat = friend.getInt("dateformat"); }
         if(!friend.isNull("bday_privacy"))      { bday_privacy = friend.getInt("bday_privacy"); }
         if(!friend.isNull("gender"))            { gender = friend.getInt("gender"); }
         if(!friend.isNull("has_profile_image")) { has_profile_image = friend.getInt("has_profile_image"); }
@@ -108,5 +108,15 @@ public class Friend {
             }
         }
         return imgURL;
+    }
+
+    public String getShowName() {
+        if(!display_name.equals("") && !display_name.equals("null")) {
+            return display_name;
+        } else if(!full_name.equals("") && !full_name.equals("null")) {
+            return full_name;
+        } else {
+            return nick_name;
+        }
     }
 }

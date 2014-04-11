@@ -54,6 +54,7 @@ public class ChatRoomsFragment extends SherlockFragment {
 
     HashMap<String, Plurk_Users> plurk_users;
     HashMap<String, List<Plurks>> plurks;
+    String oldest_posted_readable = "";
     String oldest_posted = "null";
     // ---- local variable END ----
 
@@ -109,6 +110,18 @@ public class ChatRoomsFragment extends SherlockFragment {
                 bt_more.setEnabled(false);
             }
         });
+        list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+//                ActionBar.Tab tab= getSherlockActivity().getSupportActionBar().newTab().setText(String.valueOf(id))
+//                        .setTabListener(new TabListener<FriendsFragment>(
+//                                getSherlockActivity(), "test"+id, FriendsFragment.class
+//                        ));
+//                getSherlockActivity().getSupportActionBar().addTab(tab);
+                System.out.println(id);
+                return true;
+            }
+        });
 
         return v;
     }
@@ -119,8 +132,12 @@ public class ChatRoomsFragment extends SherlockFragment {
         if(D) { Log.d(TAG, "onActivityCreated"); }
         plurkOAuth = ((FunnyActivity) getActivity()).getPlurkOAuth();
 
-        HashMap<String, String> params = new HashMap<String, String>();
-        new Mod_Timeline_getPlurks_AsyncTask().execute(params);
+        if(this.plurks.size() == 0) {
+            HashMap<String, String> params = new HashMap<String, String>();
+            new Mod_Timeline_getPlurks_AsyncTask().execute(params);
+        } else {
+            setExpandableListAdapter();
+        }
     }
 
     @Override
@@ -191,19 +208,13 @@ public class ChatRoomsFragment extends SherlockFragment {
         @Override
         protected void onPostExecute(JSONObject object) {
             super.onPostExecute(object);
-
-            //private HashMap<String, Plurk_Users> plurk_users = new HashMap<String, Plurk_Users>();
             List<Plurks> plurks = new ArrayList<Plurks>();
-
-//            List<Plurk_Users> group_plurk_users = new ArrayList<Plurk_Users>();
-//            List<List<Plurks>> child_plurks = new ArrayList<List<Plurks>>();
 
             try {
                 JSONObject obj_plurk_users = object.getJSONObject("plurk_users");
                 Iterator<String> iterator = obj_plurk_users.keys();
                 while (iterator.hasNext()) {
                     String idx = iterator.next();
-//                    group_plurk_users.add(new Plurk_Users(obj_plurk_users.getJSONObject(idx)));
                     ChatRoomsFragment.this.plurk_users.put(idx, new Plurk_Users(obj_plurk_users.getJSONObject(idx)));
                     Log.d(TAG, "length: " + ChatRoomsFragment.this.plurk_users.keySet());
                 }
@@ -214,9 +225,12 @@ public class ChatRoomsFragment extends SherlockFragment {
                     String own_id = post.getOwner_id(); // get the owner of the post
 
                     if(ChatRoomsFragment.this.plurks.containsKey(own_id)) {
-                        ChatRoomsFragment.this.plurks.get(own_id).add(post);
+                        List<Plurks> test = ChatRoomsFragment.this.plurks.get(own_id);
+                        if(!test.contains(post)) {
+                            ChatRoomsFragment.this.plurks.get(own_id).add(post);
+                        }
                     } else {
-                        ArrayList<Plurks> plurk_list = new ArrayList<Plurks>();
+                        List<Plurks> plurk_list = new ArrayList<Plurks>();
                         plurk_list.add(post);
                         ChatRoomsFragment.this.plurks.put(own_id, plurk_list);
                     }
@@ -224,66 +238,45 @@ public class ChatRoomsFragment extends SherlockFragment {
                 }
 
                 Plurks oldest_plurk = new Plurks(obj_plurks.getJSONObject(obj_plurks.length()-1));
-                String posted_readable = oldest_plurk.getReadablePostedDate();
-
-//                String posted = plurks.get(plurks.size()-1).getReadablePostedDate(); // plurks.size()-1
-                bt_more.setVisibility(View.VISIBLE);
-                bt_more.setText("最舊貼文:\n" + posted_readable);
+                oldest_posted_readable = oldest_plurk.getReadablePostedDate();
                 oldest_posted = oldest_plurk.getQueryFormatedPostedDate();
-                bt_more.setEnabled(true);
 
-//                for (int x = 0; x < group_plurk_users.size(); x++) {
-//                    ArrayList<Plurks> childList = new ArrayList<Plurks>();
-//                    String group_id = group_plurk_users.get(x).getId();
-//                    for(int y=0; y<plurks.size(); y++) {
-//                        if (plurks.get(y).getOwner_id().equals(group_id)) {
-//                            childList.add(plurks.get(y));
-//                        }
-//                    }
-//                    child_plurks.add(childList);
-//
-//                }
-
-
-                Log.d(TAG, "plurks: " + obj_plurks.length());
+                if(D) { Log.d(TAG, "plurks: " + obj_plurks.length()); }
             } catch(JSONException jsone) {
                 Log.e(TAG, jsone.getMessage());
             }
-
-            List<Plurk_Users> group_list = new ArrayList<Plurk_Users>(ChatRoomsFragment.this.plurk_users.values());
-            List<List<Plurks>> child_list = new ArrayList<List<Plurks>>();
-            for(int x=0; x<group_list.size(); x++) {
-                String userId = group_list.get(x).getId();
-                if(ChatRoomsFragment.this.plurks.containsKey(userId)) {
-                    child_list.add(ChatRoomsFragment.this.plurks.get(userId));
-                } else
-                    child_list.add(new ArrayList<Plurks>());
-            }
-
-//            if(false) {
-//                Log.d(TAG, "Group Size: " + group_plurk_users.size());
-//                Log.d(TAG, "Chiid Size: " + child_plurks.size());
-//
-//                for(int x=0; x<group_plurk_users.size(); x++) {
-//                    Log.d(TAG, "Group " + x + ": " + group_plurk_users.get(x).getFull_name());
-//                }
-//
-//                for(int x=0; x<child_plurks.size(); x++) {
-//                    for(int y=0; y<child_plurks.get(x).size(); y++) {
-//                        Log.d(TAG, x + " Child " + y + ": " + child_plurks.get(x).get(y).getContent());
-//                    }
-//                }
-//            }
-
-
-
-
-            mAdapter = new ChatRoomExpandableListAdapter(
-                    getSherlockActivity(),
-                    group_list,
-                    child_list,
-                    mImageFetcher);
-            list.setAdapter(mAdapter);
+            setExpandableListAdapter();
         }
     }
+
+    private void setExpandableListAdapter() {
+        List<Plurk_Users> group_list = new ArrayList<Plurk_Users>(ChatRoomsFragment.this.plurk_users.values());
+        List<List<Plurks>> child_list = new ArrayList<List<Plurks>>();
+        for(int x=0; x<group_list.size(); x++) {
+            String userId = group_list.get(x).getId();
+            if(ChatRoomsFragment.this.plurks.containsKey(userId)) {
+                child_list.add(ChatRoomsFragment.this.plurks.get(userId));
+            } else
+                child_list.add(new ArrayList<Plurks>());
+        }
+
+        for(int x=0; x<child_list.size(); x++) {
+            if (child_list.get(x).size() == 0) {
+                group_list.remove(x);
+                child_list.remove(x);
+            }
+        }
+
+        mAdapter = new ChatRoomExpandableListAdapter(
+                getSherlockActivity(),
+                group_list,
+                child_list,
+                mImageFetcher);
+        list.setAdapter(mAdapter);
+
+        bt_more.setVisibility(View.VISIBLE);
+        bt_more.setText("最舊貼文:\n" + oldest_posted_readable);
+        bt_more.setEnabled(true);
+    }
+
 }

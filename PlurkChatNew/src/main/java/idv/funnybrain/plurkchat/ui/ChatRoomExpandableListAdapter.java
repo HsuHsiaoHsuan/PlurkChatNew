@@ -66,12 +66,12 @@ public class ChatRoomExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getGroupId(int groupPosition) {
-        return groupPosition;
+        return Long.valueOf(plurk_users.get(groupPosition).getId());
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return childPosition;
+        return Long.valueOf(plurks.get(groupPosition).get(childPosition).getPlurk_id());
     }
 
     @Override
@@ -102,8 +102,8 @@ public class ChatRoomExpandableListAdapter extends BaseExpandableListAdapter {
         holder.tv_id.setText(user.getId());
 
 
-        String showTitle = (user.getDisplay_name().equals("")) ? user.getFull_name() : user.getDisplay_name();
-        holder.tv_title.setText(showTitle);
+        //String showTitle = (user.getDisplay_name().equals("")) ? user.getFull_name() : user.getDisplay_name();
+        holder.tv_title.setText(user.getShowName());
 
         String imgURL = user.getIconAddress();
 
