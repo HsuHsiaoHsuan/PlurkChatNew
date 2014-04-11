@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Plurk Chat</string>
+
+    <!-- Image Cache START -->
+    <string name="clear_cache_menu">清除快取</string>
+    <string name="clear_cache_complete_toast">快取已清除</string>
+    <string name="imageview_description">縮圖</string>
+    <string name="no_network_connection_toast">沒有網路連線</string>
+    <!-- Image Cache END -->
+
+    <!-- FriendsFragment START -->
+    <string name="tab_friends">朋友</string>
+    <string name="tab_chatrooms">聊天室</string>
+    <!-- FriendsFragment END -->
+
+    <!-- ChatRoomFragment START -->
+    <string name="oldest_post">最舊貼文</string>
+    <!-- ChatRoomFragment END -->
+</resources>

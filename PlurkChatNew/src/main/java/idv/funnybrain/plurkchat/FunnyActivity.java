@@ -33,7 +33,7 @@ import org.scribe.oauth.OAuthService;
 
 public class FunnyActivity extends SherlockFragmentActivity {
     // ---- constant START ----
-    private static final boolean D = true;
+    private static final boolean D = false;
     private static final String TAG = "FunnyActivity";
 
     private final static int HANDLER_SHOW_AUTH_URL = 0;
@@ -95,7 +95,8 @@ public class FunnyActivity extends SherlockFragmentActivity {
                         break;
                     case HANDLER_GET_ACCESS_TOKEN_OK:
                         if(D) { Log.d(TAG, "HANDLER_GET_ACCESS_TOKEN"); }
-                        setContentView(R.layout.empty);
+                        //setContentView(R.layout.empty);
+                        findViewById(R.id.fragment_content).setVisibility(View.VISIBLE);
                         //new PlurkTmpAsyncTask().execute("");
                         // should get user self
                         new Mod_Users_me_AsyncTask().execute("");
@@ -109,7 +110,7 @@ public class FunnyActivity extends SherlockFragmentActivity {
                         actionBar.setDisplayShowTitleEnabled(true);
 
                         ActionBar.Tab tab = actionBar.newTab()
-                                .setText("Friends")
+                                .setText(R.string.tab_friends)
                                 .setTabListener(new TabListener<FriendsFragment>(
                                         FunnyActivity.this, "friends", FriendsFragment.class
                                 ));
@@ -117,7 +118,7 @@ public class FunnyActivity extends SherlockFragmentActivity {
 
                         actionBar.addTab(
                                 actionBar.newTab()
-                                        .setText("Chat Roooms")
+                                        .setText(R.string.tab_chatrooms)
                                         .setTabListener(new TabListener<ChatRoomsFragment>(
                                                 FunnyActivity.this, "rooms", ChatRoomsFragment.class
                                         ))
@@ -269,7 +270,8 @@ public class FunnyActivity extends SherlockFragmentActivity {
         public void onTabSelected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
             if(fragment == null) {
                 fragment = SherlockFragment.instantiate(activity, clz.getName(), args);
-                ft.add(android.R.id.content, fragment, tag);
+                //ft.add(android.R.id.content, fragment, tag);
+                ft.add(R.id.fragment_content, fragment, tag);
             } else {
                 ft.attach(fragment);
             }

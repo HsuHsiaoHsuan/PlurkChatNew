@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/chatting_funcation_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/chatting_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="send"
+            android:layout_alignParentRight="true"/>
+        <EditText
+            android:id="@+id/chatting_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hello World!"
+            android:layout_toLeftOf="@id/chatting_send"
+            android:layout_alignParentLeft="true"
+            android:layout_alignBaseline="@id/chatting_send"/>
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/chatting_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/chatting_funcation_area"/>
+</RelativeLayout>

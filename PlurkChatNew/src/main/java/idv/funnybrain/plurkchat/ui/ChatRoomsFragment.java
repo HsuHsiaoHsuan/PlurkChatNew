@@ -2,6 +2,8 @@ package idv.funnybrain.plurkchat.ui;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import idv.funnybrain.plurkchat.FunnyActivity;
 import idv.funnybrain.plurkchat.PlurkOAuth;
@@ -119,6 +122,13 @@ public class ChatRoomsFragment extends SherlockFragment {
 //                        ));
 //                getSherlockActivity().getSupportActionBar().addTab(tab);
                 System.out.println(id);
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.fragment_content, new FriendsFragment()).addToBackStack("tag").commit();
+//                FriendsFragment ff = new FriendsFragment();
+//                ft.add(R.id.fragment_content, ff);
+//                ft.commit();
+                getSherlockActivity().getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
                 return true;
             }
         });
@@ -162,6 +172,8 @@ public class ChatRoomsFragment extends SherlockFragment {
         super.onDestroy();
         mImageFetcher.closeCache();
     }
+
+
 
     private class Mod_Timeline_getPlurks_AsyncTask extends AsyncTask<HashMap<String, String>, Void, JSONObject> {
         @Override
@@ -275,7 +287,7 @@ public class ChatRoomsFragment extends SherlockFragment {
         list.setAdapter(mAdapter);
 
         bt_more.setVisibility(View.VISIBLE);
-        bt_more.setText("最舊貼文:\n" + oldest_posted_readable);
+        bt_more.setText(getResources().getText(R.string.oldest_post) + ":\n" + oldest_posted_readable);
         bt_more.setEnabled(true);
     }
 

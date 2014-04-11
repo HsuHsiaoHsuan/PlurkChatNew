@@ -8,4 +8,13 @@
     <string name="imageview_description">Image Thumbnail</string>
     <string name="no_network_connection_toast">No network connection found</string>
     <!-- Image Cache END -->
+
+    <!-- FriendsFragment START -->
+    <string name="tab_friends">Friends</string>
+    <string name="tab_chatrooms">Chat Rooms</string>
+    <!-- FriendsFragment END -->
+
+    <!-- ChatRoomFragment START -->
+    <string name="oldest_post">Oldest Post</string>
+    <!-- ChatRoomFragment END -->
 </resources>
