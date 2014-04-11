@@ -48,6 +48,6 @@ public class Mod_Responses extends AbstractModule {
 
     @Override
     protected String getModulePath() {
-        return "/APP/Response";
+        return "/APP/Responses";
     }
 }
