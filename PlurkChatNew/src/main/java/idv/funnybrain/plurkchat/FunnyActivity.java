@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.webkit.WebViewClient;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -51,25 +53,12 @@ public class FunnyActivity extends SherlockFragmentActivity {
 
     private Me me;
     // ---- local variable END ----
+    //
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_funny);
-
-        final EditText et_auth = (EditText) findViewById(R.id.et_auth);
-        final Button bt_submit_auth = (Button) findViewById(R.id.bt_submit_auth);
-        bt_submit_auth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(et_auth.getWindowToken(), 0);
-
-                String verification_code = et_auth.getText().toString();
-                if(D) { Log.d(TAG, "the verification code is: " + verification_code); }
-                new PlurkGetAccessTokenAsyncTask().execute(verification_code);
-            }
-        });
 
         Button bt_getAuth = (Button) findViewById(R.id.bt_getAuth);
         bt_getAuth.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +69,9 @@ public class FunnyActivity extends SherlockFragmentActivity {
         });
 
         final WebView webView = (WebView) findViewById(R.id.wv_auth_url);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new PlurkAuthWebViewClient());
+
 
         handler = new Handler(){
             @Override
@@ -90,8 +82,6 @@ public class FunnyActivity extends SherlockFragmentActivity {
                         if(D) { Log.d(TAG, "HANDLER_SHOW_AUTH_URL"); }
                         String AuthURL = msg.getData().getString("URL");
                         webView.loadUrl(AuthURL);
-                        et_auth.setVisibility(View.VISIBLE);
-                        bt_submit_auth.setVisibility(View.VISIBLE);
                         break;
                     case HANDLER_GET_ACCESS_TOKEN_OK:
                         if(D) { Log.d(TAG, "HANDLER_GET_ACCESS_TOKEN"); }
@@ -170,11 +160,31 @@ public class FunnyActivity extends SherlockFragmentActivity {
     public Me getMe() { return me; }
 
     // ---- inner class START ----
+
+    //
+    private class PlurkAuthWebViewClient extends WebViewClient {
+      @Override
+      public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+        if (D) { Log.d(TAG, "====> WebViewClient.shouldOverrideURL.url=" + url); }
+
+        if (url.startsWith("http://localhost/auth")) {
+          Uri uri = Uri.parse(url);
+          String code = uri.getQueryParameter("oauth_verifier");
+          new PlurkGetAccessTokenAsyncTask().execute(code);
+          return true;
+        }
+
+        return false;
+      }
+    }
+
+
     private class PlurkLoginAsyncTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
 
-            plurkOAuth = new PlurkOAuth();
+            plurkOAuth = new PlurkOAuth("http://localhost/auth");
             plurkOAuth.getAuthURL();
 
             Message msg = new Message();

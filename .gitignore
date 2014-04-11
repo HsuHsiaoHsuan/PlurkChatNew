@@ -1,4 +1,8 @@
 .gradle
 /local.properties
 /.idea/workspace.xml
+*.swp
+*.swo
 .DS_Store
+target/
+!PlurkChatNew/project/plugins.sbt

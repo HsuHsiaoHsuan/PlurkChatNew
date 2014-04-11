@@ -39,6 +39,16 @@ public class PlurkOAuth {
         requestToken = service.getRequestToken();
     }
 
+    public PlurkOAuth(String callbackURL) {
+        service = new ServiceBuilder().provider(PlurkApi.Mobile.class)
+                                      .apiKey(API_KEY)
+                                      .apiSecret(API_SECRET)
+                                      .callback(callbackURL)
+                                      .build();
+
+        requestToken = service.getRequestToken();
+    }
+
     public PlurkOAuth(Token accessToken) {
         if(D) {
             Log.d(TAG, "acc_key: " + accessToken.getToken());
