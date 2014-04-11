@@ -238,7 +238,7 @@ public class ChatRoomsFragment extends SherlockFragment {
                 while (iterator.hasNext()) {
                     String idx = iterator.next();
                     ChatRoomsFragment.this.plurk_users.put(idx, new Plurk_Users(obj_plurk_users.getJSONObject(idx)));
-                    Log.d(TAG, "length: " + ChatRoomsFragment.this.plurk_users.keySet());
+                    if(D) { Log.d(TAG, "length: " + ChatRoomsFragment.this.plurk_users.keySet()); }
                 }
 
                 JSONArray obj_plurks = object.getJSONArray("plurks");

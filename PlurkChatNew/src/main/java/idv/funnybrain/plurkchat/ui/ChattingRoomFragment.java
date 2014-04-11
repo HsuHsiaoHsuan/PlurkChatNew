@@ -16,13 +16,17 @@ import idv.funnybrain.plurkchat.RequestException;
 import idv.funnybrain.plurkchat.data.Friend;
 import idv.funnybrain.plurkchat.data.Me;
 import idv.funnybrain.plurkchat.data.Plurks;
+import idv.funnybrain.plurkchat.data.Responses;
 import idv.funnybrain.plurkchat.modules.Mod_Responses;
 import idv.funnybrain.plurkchat.utils.ImageCache;
 import idv.funnybrain.plurkchat.utils.ImageFetcher;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -51,8 +55,8 @@ public class ChattingRoomFragment extends SherlockFragment {
 
     private ImageFetcher mImageFetcher;
 
-    private List<Friend> friends;
-    private List<Plurks> responses;
+    private HashMap<String, Friend> friends;
+    private List<Responses> responses;
 
     // ---- local variable END ----
 
@@ -87,8 +91,8 @@ public class ChattingRoomFragment extends SherlockFragment {
         mImageFetcher.setLoadingImage(R.drawable.default_plurk_avatar);
         mImageFetcher.addImageCache(getFragmentManager(), cacheParams);
 
-        friends = new ArrayList<Friend>();
-        responses = new ArrayList<Plurks>();
+        friends = new HashMap<String, Friend>();
+        responses = new ArrayList<Responses>();
     }
 
     @Override
@@ -119,13 +123,14 @@ public class ChattingRoomFragment extends SherlockFragment {
         super.onActivityCreated(savedInstanceState);
         if(D) { Log.d(TAG, "onActivityCreated"); }
         plurkOAuth = ((FunnyActivity) getActivity()).getPlurkOAuth();
+        me = ((FunnyActivity) getActivity()).getMe();
 
         if(this.responses.size() == 0) {
             HashMap<String, String> params = new HashMap<String, String>();
             params.put(PLURK_ID, chatting_plurk_id);
             new Mod_Response_get_AsyncTask().execute(params);
         } else {
-            //setListAdapter();
+            setListAdapter();
         }
     }
 
@@ -183,7 +188,31 @@ public class ChattingRoomFragment extends SherlockFragment {
         protected void onPostExecute(JSONObject object) {
             super.onPostExecute(object);
 
+            try {
+                JSONObject obj_friends = object.getJSONObject("friends");
+                Iterator<String> iterator = obj_friends.keys();
+                while(iterator.hasNext()) {
+                    String idx = iterator.next();
+                    ChattingRoomFragment.this.friends.put(idx, new Friend(obj_friends.getJSONObject(idx)));
+                    if(D) { Log.d(TAG, "length: " + ChattingRoomFragment.this.friends.size()); }
+                }
+
+                JSONArray array_responses = object.getJSONArray("responses");
+                for(int x=0; x<array_responses.length(); x++) {
+                    Responses response = new Responses(array_responses.getJSONObject(x));
+                    ChattingRoomFragment.this.responses.add(response);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            setListAdapter();
             System.out.println(object);
         }
+    }
+
+    private void setListAdapter() {
+        mAdapter = new ChattingRoomListAdapter(getSherlockActivity(), friends, responses, mImageFetcher, me.getId());
+        list.setAdapter(mAdapter);
     }
 }

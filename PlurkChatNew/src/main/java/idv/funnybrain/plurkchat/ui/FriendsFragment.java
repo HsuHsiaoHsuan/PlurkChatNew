@@ -182,6 +182,23 @@ public class FriendsFragment extends SherlockFragment {
             super.onPostExecute(friends);
             FriendsFragment.this.friends = friends;
             mAdapter = new FriendsListAdapter(getSherlockActivity(), friends, mImageFetcher);
+            // FIXME 在整個 layout 還沒出來的時候按下 back 會產生此錯誤。
+            /*
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at idv.funnybrain.plurkchat.ui.FriendsFragment$Mod_FriendsFans_getFriendsByOffset_AsyncTask.onPostExecute(FriendsFragment.java:184)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at idv.funnybrain.plurkchat.ui.FriendsFragment$Mod_FriendsFans_getFriendsByOffset_AsyncTask.onPostExecute(FriendsFragment.java:135)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.os.AsyncTask.finish(AsyncTask.java:631)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.os.AsyncTask.access$600(AsyncTask.java:177)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.os.AsyncTask$InternalHandler.handleMessage(AsyncTask.java:644)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.os.Handler.dispatchMessage(Handler.java:99)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.os.Looper.loop(Looper.java:137)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.app.ActivityThread.main(ActivityThread.java:4898)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at java.lang.reflect.Method.invokeNative(Native Method)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at java.lang.reflect.Method.invoke(Method.java:511)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:1006)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:773)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at dalvik.system.NativeStart.main(Native Method)
+            */
+
             list.setAdapter(mAdapter);
         }
     }
