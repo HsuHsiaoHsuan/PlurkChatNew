@@ -86,9 +86,11 @@ public class FunnyActivity extends SherlockFragmentActivity {
                     case HANDLER_GET_ACCESS_TOKEN_OK:
                         if(D) { Log.d(TAG, "HANDLER_GET_ACCESS_TOKEN"); }
                         //setContentView(R.layout.empty);
-                        findViewById(R.id.fragment_content).setVisibility(View.VISIBLE);
+
                         //new PlurkTmpAsyncTask().execute("");
                         // should get user self
+
+
                         new Mod_Users_me_AsyncTask().execute("");
 
                         //doTest();
@@ -98,6 +100,8 @@ public class FunnyActivity extends SherlockFragmentActivity {
                         ActionBar actionBar = getSupportActionBar();
                         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
                         actionBar.setDisplayShowTitleEnabled(true);
+                        findViewById(R.id.fragment_content).setVisibility(View.VISIBLE);
+                        findViewById(R.id.login_control).setVisibility(View.GONE);
 
                         ActionBar.Tab tab = actionBar.newTab()
                                 .setText(R.string.tab_friends)
@@ -132,6 +136,8 @@ public class FunnyActivity extends SherlockFragmentActivity {
             if(savedInstanceState != null) {
                 getSupportActionBar().setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
             }
+        } else {
+            findViewById(R.id.login_control).setVisibility(View.VISIBLE);
         }
     }
 
