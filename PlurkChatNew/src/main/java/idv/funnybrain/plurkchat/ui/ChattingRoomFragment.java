@@ -216,7 +216,7 @@ public class ChattingRoomFragment extends SherlockFragment {
     }
 
     private void setListAdapter() {
-        mAdapter = new ChattingRoomListAdapter(getSherlockActivity().getLayoutInflater(), friends, responses, mImageFetcher, me.getId());
+        mAdapter = new ChattingRoomListAdapter(getSherlockActivity().getLayoutInflater(), friends, responses, mImageFetcher, me.getHumanId());
         list.setAdapter(mAdapter);
     }
 }

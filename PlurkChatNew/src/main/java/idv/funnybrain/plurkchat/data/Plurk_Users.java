@@ -7,7 +7,7 @@ import org.json.JSONObject;
 /**
  * Created by Freeman on 2014/4/8.
  */
-public class Plurk_Users {
+public class Plurk_Users implements IHuman{
     private static final boolean D = false;
     private static final String TAG = "Plurk_Users";
 
@@ -63,7 +63,59 @@ public class Plurk_Users {
         if(D) { Log.d(TAG, "avatar: " + avatar); }
     }
 
-    public String getIconAddress() {
+//    public String getIconAddress() {
+//        String imgURL = "http://www.plurk.com/static/default_big.gif";
+//        if(has_profile_image>0) {
+//            if(avatar.equals("null")) {
+//                imgURL = "http://avatars.plurk.com/" + id + "-big.jpg";
+//            } else {
+//                if(avatar.equals("0")) { avatar = ""; }
+//                imgURL = "http://avatars.plurk.com/" + id + "-big" + avatar + ".jpg";
+//            }
+//        }
+//        return imgURL;
+//    }
+
+//    public String getId() {
+//        return id;
+//    }
+
+    public String getDisplay_name() {
+        return display_name;
+    }
+
+    public String getFull_name() {
+        return full_name;
+    }
+
+//    public String getShowName() {
+//        if(!display_name.equals("") && !display_name.equals("null")) {
+//            return display_name;
+//        } else if(!full_name.equals("") && !full_name.equals("null")) {
+//            return full_name;
+//        } else {
+//            return nick_name;
+//        }
+//    }
+
+    @Override
+    public String getHumanId() {
+        return id;
+    }
+
+    @Override
+    public String getHumanName() {
+        if(!display_name.equals("") && !display_name.equals("null")) {
+            return display_name;
+        } else if(!full_name.equals("") && !full_name.equals("null")) {
+            return full_name;
+        } else {
+            return nick_name;
+        }
+    }
+
+    @Override
+    public String getHumanImage() {
         String imgURL = "http://www.plurk.com/static/default_big.gif";
         if(has_profile_image>0) {
             if(avatar.equals("null")) {
@@ -74,27 +126,5 @@ public class Plurk_Users {
             }
         }
         return imgURL;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getDisplay_name() {
-        return display_name;
-    }
-
-    public String getFull_name() {
-        return full_name;
-    }
-
-    public String getShowName() {
-        if(!display_name.equals("") && !display_name.equals("null")) {
-            return display_name;
-        } else if(!full_name.equals("") && !full_name.equals("null")) {
-            return full_name;
-        } else {
-            return nick_name;
-        }
     }
 }

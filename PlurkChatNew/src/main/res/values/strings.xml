@@ -9,10 +9,17 @@
     <string name="no_network_connection_toast">No network connection found</string>
     <!-- Image Cache END -->
 
-    <!-- FriendsFragment START -->
+    <!-- FunnyActivity START -->
     <string name="tab_friends">Friends</string>
     <string name="tab_chatrooms">Chatting</string>
-    <!-- FriendsFragment END -->
+    <!-- FunnyActivity END -->
+
+    <!-- MeFriendsFollowingFragment START -->
+    <string name="me">Me</string>
+    <string name="friend">Friends</string>
+    <string name="following">Following</string>
+    <string name="fans">Fans</string>
+    <!-- MeFriendsFollowingFragment END -->
 
     <!-- ChatRoomFragment START -->
     <string name="oldest_post">Oldest Post</string>

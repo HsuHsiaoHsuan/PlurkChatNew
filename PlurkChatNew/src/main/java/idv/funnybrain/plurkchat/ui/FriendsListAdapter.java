@@ -45,7 +45,7 @@ public class FriendsListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return Long.valueOf(friends.get(position).getId());
+        return Long.valueOf(friends.get(position).getHumanId());
     }
 
     static class ViewHolder {
@@ -69,11 +69,11 @@ public class FriendsListAdapter extends BaseAdapter {
         final ViewHolder holder = (ViewHolder) rowView.getTag();
         Friend f = this.friends.get(position);
 
-        holder.tv_id.setText(f.getId());
+        holder.tv_id.setText(f.getHumanId());
         //String showTitle = f.getDisplay_name().equals("") ? f.getFull_name() : f.getDisplay_name();
-        holder.tv_title.setText(f.getShowName());
+        holder.tv_title.setText(f.getHumanName());
 
-        String imgURL = f.getIconAddress();
+        String imgURL = f.getHumanImage();
 
         mImageFetcher.loadImage(imgURL, holder.iv_image);
 

@@ -7,34 +7,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 import com.actionbarsherlock.app.SherlockFragment;
 import idv.funnybrain.plurkchat.FunnyActivity;
 import idv.funnybrain.plurkchat.PlurkOAuth;
 import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.RequestException;
 import idv.funnybrain.plurkchat.data.Friend;
-import idv.funnybrain.plurkchat.data.Language;
+import idv.funnybrain.plurkchat.data.IHuman;
 import idv.funnybrain.plurkchat.data.Me;
-import idv.funnybrain.plurkchat.data.Qualifier;
 import idv.funnybrain.plurkchat.modules.Mod_FriendsFans;
-import idv.funnybrain.plurkchat.modules.Mod_Timeline;
 import idv.funnybrain.plurkchat.utils.ImageCache;
 import idv.funnybrain.plurkchat.utils.ImageFetcher;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Freeman on 2014/4/2.
+ * Created by Freeman on 2014/4/12.
  */
-public class FriendsFragment extends SherlockFragment {
+public class MeFriendsFollowingFragment extends SherlockFragment {
     // ---- constant variable START ----
     private static final boolean D = true;
-    private static final String TAG = "FriendsFragment";
+    private static final String TAG = "MeFriendsFollowingFragment";
     private static final String IMAGE_CACHE_DIR = "thumbnails";
     protected boolean mPause = false;
     private final Object mPauseLock = new Object();
@@ -43,17 +40,20 @@ public class FriendsFragment extends SherlockFragment {
     // ---- local variable START ----
     private PlurkOAuth plurkOAuth;
     private Me me;
-    private ListView list;
-    private List<Friend> friends;
-    private FriendsListAdapter mAdapter;
+    private ExpandableListView list;
+//    private List<Friend> friends;
+//    private FriendsListAdapter mAdapter;
+    private List<String> group_list;
+    private List<List<IHuman>> child_list;
+    private MeFriendsFollowingExpandableListAdapter mAdapter;
 
     private ImageFetcher mImageFetcher;
     // ---- local variable END ----
 
-    FriendsFragment newInstance() {
+    MeFriendsFollowingFragment newInstance() {
         if(D) { Log.d(TAG, "newInstance"); }
-        FriendsFragment friendsFragment = new FriendsFragment();
-        return friendsFragment;
+        MeFriendsFollowingFragment f = new MeFriendsFollowingFragment();
+        return f;
     }
 
     @Override
@@ -67,13 +67,19 @@ public class FriendsFragment extends SherlockFragment {
         mImageFetcher.setLoadingImage(R.drawable.default_plurk_avatar);
         mImageFetcher.addImageCache(getFragmentManager(), cacheParams);
 
-        friends = new ArrayList<Friend>();
+        group_list = new ArrayList<String>();
+        group_list.add(0, getString(R.string.me));
+        group_list.add(1, getString(R.string.friend));
+        group_list.add(2, getString(R.string.following));
+        group_list.add(3, getString(R.string.fans));
+        child_list = new ArrayList<List<IHuman>>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_friends, container, false);
-        list = (ListView) v.findViewById(R.id.list);
+        View v = inflater.inflate(R.layout.fragment_me_friend_following, container, false);
+        list = (ExpandableListView) v.findViewById(R.id.elv_list);
+
         list.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -97,14 +103,20 @@ public class FriendsFragment extends SherlockFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //((FunnyActivity) getActivity()).doTest();
         plurkOAuth = ((FunnyActivity) getActivity()).getPlurkOAuth();
         me = ((FunnyActivity) getActivity()).getMe();
-        //new PlurkTmpAsyncTask().execute("");
-        if(friends.size()>0) {
-            mAdapter = new FriendsListAdapter(getSherlockActivity().getLayoutInflater(), friends, mImageFetcher);
-            list.setAdapter(mAdapter);
+
+        if(group_list.size()>0 && child_list.size()>0) {
+//            mAdapter = new MeFriendsFollowingExpandableListAdapter(getSherlockActivity().getLayoutInflater(), group_list, child_list, mImageFetcher);
+//            mAdapter = new FriendsListAdapter(getSherlockActivity().getLayoutInflater(), friends, mImageFetcher);
+//            list.setAdapter(mAdapter);
+            setExpandableListAdapter();
+            new Mod_FriendsFans_getFriendsByOffset_AsyncTask().execute(me.getHumanId());
         } else {
+            ArrayList<IHuman> me_list = new ArrayList<IHuman>();
+            me_list.add(me);
+            child_list.add(0, me_list);
+            setExpandableListAdapter();
             new Mod_FriendsFans_getFriendsByOffset_AsyncTask().execute(me.getHumanId());
         }
     }
@@ -132,12 +144,12 @@ public class FriendsFragment extends SherlockFragment {
         mImageFetcher.closeCache();
     }
 
-    private class Mod_FriendsFans_getFriendsByOffset_AsyncTask extends AsyncTask<String, Void, List<Friend>> {
+    private class Mod_FriendsFans_getFriendsByOffset_AsyncTask extends AsyncTask<String, Void, List<IHuman>> {
         @Override
-        protected List<Friend> doInBackground(String... params) {
+        protected List<IHuman> doInBackground(String... params) {
             if(D) { Log.d(TAG, "Mod_FriendsFans_getFriendsByOffset_AsyncTask, doInBackground"); }
             JSONArray result = null;
-            List<Friend> friends = new ArrayList<Friend>();
+            List<IHuman> friends = new ArrayList<IHuman>();
             int round = 0;
 
             try {
@@ -163,14 +175,14 @@ public class FriendsFragment extends SherlockFragment {
 
             if(D) {
                 for (int x = 0; x < friends.size(); x++) {
-                    String tmp = friends.get(x).getDisplay_name();
+                    String tmp = friends.get(x).getHumanName();
                     if (tmp.equals("")) {
                         tmp = "!!!!!!!!!!!!";
                     }
                     System.out.println(x + " " + tmp + " " +
                             friends.get(x).getHumanId() + " " +
-                            friends.get(x).getNick_name() + " " +
-                            friends.get(x).getFull_name());
+                            ((Friend) friends.get(x)).getNick_name() + " " +
+                            ((Friend) friends.get(x)).getFull_name());
                 }
             }
 
@@ -178,41 +190,17 @@ public class FriendsFragment extends SherlockFragment {
         }
 
         @Override
-        protected void onPostExecute(List<Friend> friends) {
+        protected void onPostExecute(List<IHuman> friends) {
             super.onPostExecute(friends);
-            FriendsFragment.this.friends = friends;
-            mAdapter = new FriendsListAdapter(getSherlockActivity().getLayoutInflater(), friends, mImageFetcher);
-            // FIXME 在整個 layout 還沒出來的時候按下 back 會產生此錯誤。
-            /*
-            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at idv.funnybrain.plurkchat.ui.FriendsFragment$Mod_FriendsFans_getFriendsByOffset_AsyncTask.onPostExecute(FriendsFragment.java:184)
-            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at idv.funnybrain.plurkchat.ui.FriendsFragment$Mod_FriendsFans_getFriendsByOffset_AsyncTask.onPostExecute(FriendsFragment.java:135)
-            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.os.AsyncTask.finish(AsyncTask.java:631)
-            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.os.AsyncTask.access$600(AsyncTask.java:177)
-            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.os.AsyncTask$InternalHandler.handleMessage(AsyncTask.java:644)
-            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.os.Handler.dispatchMessage(Handler.java:99)
-            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.os.Looper.loop(Looper.java:137)
-            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.app.ActivityThread.main(ActivityThread.java:4898)
-            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at java.lang.reflect.Method.invokeNative(Native Method)
-            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at java.lang.reflect.Method.invoke(Method.java:511)
-            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:1006)
-            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:773)
-            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at dalvik.system.NativeStart.main(Native Method)
-            */
-
-            list.setAdapter(mAdapter);
+            if(child_list.size()==2) { child_list.remove(1); }
+            child_list.add(1, friends);
+            setExpandableListAdapter();
         }
     }
 
-    private class PlurkTmpAsyncTask extends AsyncTask<String, Void, JSONObject> {
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            JSONObject result = null;
-            try {
-                result = plurkOAuth.getModule(Mod_Timeline.class).plurkAdd("(wave)(wave)(wave)"+ Math.random(), Qualifier.SAYS, null, 0, Language.TR_CH);
-            } catch (RequestException e) {
-                e.printStackTrace();
-            }
-            return result;
-        }
+    private void setExpandableListAdapter() {
+        mAdapter = new MeFriendsFollowingExpandableListAdapter(getSherlockActivity().getLayoutInflater(), group_list, child_list, mImageFetcher);
+        mAdapter.notifyDataSetChanged();
+        list.setAdapter(mAdapter);
     }
 }

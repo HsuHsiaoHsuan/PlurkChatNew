@@ -275,7 +275,7 @@ public class ChatRoomsFragment extends SherlockFragment {
         List<Plurk_Users> group_list = new ArrayList<Plurk_Users>(ChatRoomsFragment.this.plurk_users.values());
         List<List<Plurks>> child_list = new ArrayList<List<Plurks>>();
         for(int x=0; x<group_list.size(); x++) {
-            String userId = group_list.get(x).getId();
+            String userId = group_list.get(x).getHumanId();
             if(ChatRoomsFragment.this.plurks.containsKey(userId)) {
                 child_list.add(ChatRoomsFragment.this.plurks.get(userId));
             } else
@@ -290,7 +290,7 @@ public class ChatRoomsFragment extends SherlockFragment {
         }
 
         mAdapter = new ChatRoomExpandableListAdapter(
-                getSherlockActivity(),
+                getSherlockActivity().getLayoutInflater(),
                 group_list,
                 child_list,
                 mImageFetcher);

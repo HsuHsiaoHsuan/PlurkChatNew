@@ -90,7 +90,7 @@ public class ChattingRoomListAdapter extends BaseAdapter {
 
         if(friends.containsKey(resp.getUser_id())) {
             Friend fri = friends.get(resp.getUser_id());
-            mImageFetcher.loadImage(fri.getIconAddress(), (ImageView)view.findViewById(R.id.icon));
+            mImageFetcher.loadImage(fri.getHumanImage(), (ImageView)view.findViewById(R.id.icon));
         }
 
         return view;

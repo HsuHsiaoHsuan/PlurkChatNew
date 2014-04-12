@@ -27,6 +27,7 @@ import idv.funnybrain.plurkchat.modules.Mod_Timeline;
 import idv.funnybrain.plurkchat.modules.Mod_Users;
 import idv.funnybrain.plurkchat.ui.ChatRoomsFragment;
 import idv.funnybrain.plurkchat.ui.FriendsFragment;
+import idv.funnybrain.plurkchat.ui.MeFriendsFollowingFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.scribe.model.Token;
@@ -59,6 +60,9 @@ public class FunnyActivity extends SherlockFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_funny);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Button bt_getAuth = (Button) findViewById(R.id.bt_getAuth);
         bt_getAuth.setOnClickListener(new View.OnClickListener() {
@@ -103,20 +107,31 @@ public class FunnyActivity extends SherlockFragmentActivity {
                         findViewById(R.id.fragment_content).setVisibility(View.VISIBLE);
                         findViewById(R.id.login_control).setVisibility(View.GONE);
 
-                        ActionBar.Tab tab = actionBar.newTab()
-                                .setText(R.string.tab_friends)
-                                .setTabListener(new TabListener<FriendsFragment>(
-                                        FunnyActivity.this, "friends", FriendsFragment.class
-                                ));
-                        actionBar.addTab(tab);
+//                        ActionBar.Tab tab = actionBar.newTab()
+//                                .setText(R.string.tab_friends)
+//                                .setTabListener(new TabListener<FriendsFragment>(
+//                                        FunnyActivity.this, "friends", FriendsFragment.class
+//                                ));
+//                        actionBar.addTab(tab);
 
                         actionBar.addTab(
                                 actionBar.newTab()
-                                        .setText(R.string.tab_chatrooms)
+//                                        .setText(R.string.tab_friends)
+                                        .setTabListener(new TabListener<MeFriendsFollowingFragment>(
+                                                FunnyActivity.this, "me_friend_following", MeFriendsFollowingFragment.class
+                                        ))
+                                        .setIcon(R.drawable.ic_launcher_v1)
+                        );
+
+                        actionBar.addTab(
+                                actionBar.newTab()
+//                                        .setText(R.string.tab_chatrooms)
                                         .setTabListener(new TabListener<ChatRoomsFragment>(
                                                 FunnyActivity.this, "rooms", ChatRoomsFragment.class
                                         ))
+                                        .setIcon(R.drawable.ic_launcher_v1)
                         );
+
                         break;
                 }
             }
@@ -291,12 +306,14 @@ public class FunnyActivity extends SherlockFragmentActivity {
             } else {
                 ft.attach(fragment);
             }
+            tab.setIcon(R.drawable.ic_launcher);
         }
 
         @Override
         public void onTabUnselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
             if(fragment != null) {
                 ft.detach(fragment);
+                tab.setIcon(R.drawable.ic_launcher_v1);
             }
         }
 

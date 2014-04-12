@@ -9,10 +9,17 @@
     <string name="no_network_connection_toast">沒有網路連線</string>
     <!-- Image Cache END -->
 
-    <!-- FriendsFragment START -->
+    <!-- FunnyActivity START -->
     <string name="tab_friends">朋友</string>
     <string name="tab_chatrooms">聊天</string>
-    <!-- FriendsFragment END -->
+    <!-- FunnyActivity END -->
+
+    <!-- MeFriendsFollowingFragment START -->
+    <string name="me">我</string>
+    <string name="friend">朋友</string>
+    <string name="following">關注</string>
+    <string name="fans">粉絲</string>
+    <!-- MeFriendsFollowingFragment END -->
 
     <!-- ChatRoomFragment START -->
     <string name="oldest_post">最舊貼文</string>
