@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Plurk Chat</string>
+    <string name="app_name">噗浪魚</string>
 
     <!-- Image Cache START -->
     <string name="clear_cache_menu">清除快取</string>
