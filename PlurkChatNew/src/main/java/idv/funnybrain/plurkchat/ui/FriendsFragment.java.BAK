@@ -50,7 +50,7 @@ public class FriendsFragment extends SherlockFragment {
     private ImageFetcher mImageFetcher;
     // ---- local variable END ----
 
-    FriendsFragment newInstance() {
+    public static FriendsFragment newInstance() {
         if(D) { Log.d(TAG, "newInstance"); }
         FriendsFragment friendsFragment = new FriendsFragment();
         return friendsFragment;

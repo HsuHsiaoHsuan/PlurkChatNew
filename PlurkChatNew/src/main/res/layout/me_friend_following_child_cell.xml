@@ -15,6 +15,19 @@
             android:scaleType="fitXY"
             android:layout_margin="1dp"
             android:layout_alignParentLeft="true"/>
+    <!--<com.makeramen.RoundedImageView-->
+            <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/image_v2"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_margin="1dp"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--app:corner_radius="30dp"-->
+            <!--app:border_width="2dp"-->
+            <!--app:border_color="#0099CC"-->
+            <!--app:round_background="true"-->
+            <!--app:is_oval="false" />-->
     <TextView
             android:id="@+id/title"
             android:textAppearance="?android:textAppearanceMedium"

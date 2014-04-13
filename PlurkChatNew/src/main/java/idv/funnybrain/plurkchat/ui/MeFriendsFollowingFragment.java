@@ -38,19 +38,21 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
     // ---- constant variable END ----
 
     // ---- local variable START ----
-    private PlurkOAuth plurkOAuth;
+    private static PlurkOAuth plurkOAuth;
     private Me me;
     private ExpandableListView list;
 //    private List<Friend> friends;
 //    private FriendsListAdapter mAdapter;
-    private List<String> group_list;
-    private List<List<IHuman>> child_list;
-    private MeFriendsFollowingExpandableListAdapter mAdapter;
-
-    private ImageFetcher mImageFetcher;
     // ---- local variable END ----
 
-    MeFriendsFollowingFragment newInstance() {
+    // ---- static variable START ----
+    static List<String> group_list;
+    static List<List<IHuman>> child_list;
+    static MeFriendsFollowingExpandableListAdapter mAdapter;
+    static ImageFetcher mImageFetcher;
+    // ---- static variable END ----
+
+    public static MeFriendsFollowingFragment newInstance() {
         if(D) { Log.d(TAG, "newInstance"); }
         MeFriendsFollowingFragment f = new MeFriendsFollowingFragment();
         return f;
@@ -110,13 +112,19 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
 //            mAdapter = new MeFriendsFollowingExpandableListAdapter(getSherlockActivity().getLayoutInflater(), group_list, child_list, mImageFetcher);
 //            mAdapter = new FriendsListAdapter(getSherlockActivity().getLayoutInflater(), friends, mImageFetcher);
 //            list.setAdapter(mAdapter);
-            setExpandableListAdapter();
+//            setExpandableListAdapter();
+            mAdapter = new MeFriendsFollowingExpandableListAdapter(getSherlockActivity().getLayoutInflater(), group_list, child_list, mImageFetcher);
+            mAdapter.notifyDataSetChanged();
+            list.setAdapter(mAdapter);
             new Mod_FriendsFans_getFriendsByOffset_AsyncTask().execute(me.getHumanId());
         } else {
             ArrayList<IHuman> me_list = new ArrayList<IHuman>();
             me_list.add(me);
             child_list.add(0, me_list);
-            setExpandableListAdapter();
+//            setExpandableListAdapter();
+            mAdapter = new MeFriendsFollowingExpandableListAdapter(getSherlockActivity().getLayoutInflater(), group_list, child_list, mImageFetcher);
+            mAdapter.notifyDataSetChanged();
+            list.setAdapter(mAdapter);
             new Mod_FriendsFans_getFriendsByOffset_AsyncTask().execute(me.getHumanId());
         }
     }
@@ -149,21 +157,23 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
         protected List<IHuman> doInBackground(String... params) {
             if(D) { Log.d(TAG, "Mod_FriendsFans_getFriendsByOffset_AsyncTask, doInBackground"); }
             JSONArray result = null;
+            int result_size = 0;
             List<IHuman> friends = new ArrayList<IHuman>();
             int round = 0;
 
             try {
                 do {
                     if(D) { Log.d(TAG, "Mod_FriendsFans_getFriendsByOffset_AsyncTask, while: " + round); }
-                    result = plurkOAuth.getModule(Mod_FriendsFans.class).getFriendsByOffset(me.getHumanId(), 0 + 100 * round, 100);
+                    result = plurkOAuth.getModule(Mod_FriendsFans.class).getFriendsByOffset("4373060", 0 + 100 * round, 100);
                     // CWT   7014485
                     // kero  4373060
                     // 6880391
-                    for (int x = 0; x < result.length(); x++) {
+                    result_size = result.length();
+                    for (int x = 0; x < result_size; x++) {
                         friends.add(new Friend(result.getJSONObject(x)));
                     }
                     round++;
-                } while (result.length() > 0);
+                } while (result_size > 0);
                 if (D) {
                     Log.d(TAG, result.toString());
                 }
@@ -194,13 +204,16 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
             super.onPostExecute(friends);
             if(child_list.size()==2) { child_list.remove(1); }
             child_list.add(1, friends);
-            setExpandableListAdapter();
+//            setExpandableListAdapter();
+            mAdapter = new MeFriendsFollowingExpandableListAdapter(getSherlockActivity().getLayoutInflater(), group_list, child_list, mImageFetcher);
+            mAdapter.notifyDataSetChanged();
+            list.setAdapter(mAdapter);
         }
     }
 
-    private void setExpandableListAdapter() {
-        mAdapter = new MeFriendsFollowingExpandableListAdapter(getSherlockActivity().getLayoutInflater(), group_list, child_list, mImageFetcher);
-        mAdapter.notifyDataSetChanged();
-        list.setAdapter(mAdapter);
-    }
+//    private void setExpandableListAdapter() {
+//        mAdapter = new MeFriendsFollowingExpandableListAdapter(getSherlockActivity().getLayoutInflater(), group_list, child_list, mImageFetcher);
+//        mAdapter.notifyDataSetChanged();
+//        list.setAdapter(mAdapter);
+//    }
 }

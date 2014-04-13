@@ -3,20 +3,18 @@ package idv.funnybrain.plurkchat;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -26,33 +24,30 @@ import idv.funnybrain.plurkchat.data.Qualifier;
 import idv.funnybrain.plurkchat.modules.Mod_Timeline;
 import idv.funnybrain.plurkchat.modules.Mod_Users;
 import idv.funnybrain.plurkchat.ui.ChatRoomsFragment;
-import idv.funnybrain.plurkchat.ui.FriendsFragment;
 import idv.funnybrain.plurkchat.ui.MeFriendsFollowingFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.scribe.model.Token;
-import org.scribe.model.Verifier;
-import org.scribe.oauth.OAuthService;
 
 public class FunnyActivity extends SherlockFragmentActivity {
     // ---- constant START ----
-    private static final boolean D = false;
-    private static final String TAG = "FunnyActivity";
+    static final boolean D = false;
+    static final String TAG = "FunnyActivity";
 
-    private final static int HANDLER_SHOW_AUTH_URL = 0;
-    private final static int HANDLER_GET_ACCESS_TOKEN_OK = HANDLER_SHOW_AUTH_URL + 1;
-    private final static int HANDLER_GET_SELF_OK = HANDLER_GET_ACCESS_TOKEN_OK +1;
+    final static int HANDLER_SHOW_AUTH_URL = 0;
+    final static int HANDLER_GET_ACCESS_TOKEN_OK = HANDLER_SHOW_AUTH_URL + 1;
+    final static int HANDLER_GET_SELF_OK = HANDLER_GET_ACCESS_TOKEN_OK +1;
     // ---- constant END ----
 
     // ---- local variable START ----
-    private static PlurkOAuth plurkOAuth;
-    private OAuthService service;
-    private Token requestToken;
+    static PlurkOAuth plurkOAuth;
+//    private OAuthService service;
+//    private Token requestToken;
     private Token accessToken;
     private Handler handler;
-    private Verifier verifier;
+//    private Verifier verifier;
 
-    private Me me;
+    static Me me;
     // ---- local variable END ----
     //
 

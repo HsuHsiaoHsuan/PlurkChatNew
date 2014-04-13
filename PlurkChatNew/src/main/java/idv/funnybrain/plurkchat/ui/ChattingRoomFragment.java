@@ -16,7 +16,6 @@ import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.RequestException;
 import idv.funnybrain.plurkchat.data.Friend;
 import idv.funnybrain.plurkchat.data.Me;
-import idv.funnybrain.plurkchat.data.Plurks;
 import idv.funnybrain.plurkchat.data.Responses;
 import idv.funnybrain.plurkchat.modules.Mod_Responses;
 import idv.funnybrain.plurkchat.utils.ImageCache;
@@ -202,7 +201,8 @@ public class ChattingRoomFragment extends SherlockFragment {
                 }
 
                 JSONArray array_responses = object.getJSONArray("responses");
-                for(int x=0; x<array_responses.length(); x++) {
+                int size = array_responses.length();
+                for(int x=0; x<size; x++) {
                     Responses response = new Responses(array_responses.getJSONObject(x));
                     ChattingRoomFragment.this.responses.add(response);
                 }
@@ -211,7 +211,7 @@ public class ChattingRoomFragment extends SherlockFragment {
             }
 
             setListAdapter();
-            System.out.println(object);
+            //System.out.println(object);
         }
     }
 

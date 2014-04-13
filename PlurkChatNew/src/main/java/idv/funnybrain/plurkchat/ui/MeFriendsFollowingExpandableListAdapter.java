@@ -1,7 +1,5 @@
 package idv.funnybrain.plurkchat.ui;
 
-import android.app.Activity;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +10,7 @@ import android.widget.TextView;
 import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.data.IHuman;
 import idv.funnybrain.plurkchat.data.Me;
-import idv.funnybrain.plurkchat.data.Plurk_Users;
-import idv.funnybrain.plurkchat.data.Plurks;
 import idv.funnybrain.plurkchat.utils.ImageFetcher;
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -109,6 +104,7 @@ public class MeFriendsFollowingExpandableListAdapter extends BaseExpandableListA
     static class ViewHolderChild {
         public TextView tv_id;
         public ImageView iv_image;
+//        public RoundedImageView riv_image;
         public TextView tv_title;
         public TextView tv_about;
     }
@@ -120,6 +116,7 @@ public class MeFriendsFollowingExpandableListAdapter extends BaseExpandableListA
             ViewHolderChild holder = new ViewHolderChild();
             holder.tv_id = (TextView) rowView.findViewById(R.id.uid);
             holder.iv_image = (ImageView) rowView.findViewById(R.id.image);
+//            holder.riv_image = (RoundedImageView) rowView.findViewById(R.id.image_v2);
             holder.tv_title = (TextView) rowView.findViewById(R.id.title);
             holder.tv_about = (TextView) rowView.findViewById(R.id.about);
             rowView.setTag(holder);
@@ -129,10 +126,14 @@ public class MeFriendsFollowingExpandableListAdapter extends BaseExpandableListA
         IHuman data = child.get(groupPosition).get(childPosition);
         holder.tv_id.setText(data.getHumanId());
         mImageFetcher.loadImage(data.getHumanImage(), holder.iv_image);
+//        mImageFetcher.loadImage(data.getHumanImage(), holder.riv_image);
+
         holder.tv_title.setText(data.getHumanName());
         if((groupPosition == 0) && (data instanceof Me) ){
             holder.tv_about.setText(((Me) data).getAbout());
             holder.tv_about.setVisibility(View.VISIBLE);
+        } else {
+            holder.tv_about.setVisibility(View.GONE);
         }
         return rowView;
     }

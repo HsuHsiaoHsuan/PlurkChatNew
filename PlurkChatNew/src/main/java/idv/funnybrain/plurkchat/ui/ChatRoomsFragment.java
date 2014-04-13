@@ -45,16 +45,16 @@ public class ChatRoomsFragment extends SherlockFragment {
     protected boolean mPause = false;
     private final Object mPauseLock = new Object();
 
-    private final String OFFSET = "offset";
-    private final String LIMIT = "limit";
-    private final String FILTER = "filter";
-    private final String FAVORERS_DETAIL = "favorers_detail";
-    private final String LIMITED_DETAIL = "limited_detail";
-    private final String REPLURKERS_DETAIL = "replurkers_detail";
+    private static final String OFFSET = "offset";
+    private static final String LIMIT = "limit";
+    private static final String FILTER = "filter";
+    private static final String FAVORERS_DETAIL = "favorers_detail";
+    private static final String LIMITED_DETAIL = "limited_detail";
+    private static final String REPLURKERS_DETAIL = "replurkers_detail";
     // ---- constant variable END ----
 
     // ---- local variable START ----
-    private PlurkOAuth plurkOAuth;
+    private static PlurkOAuth plurkOAuth;
     private Me me;
     private ExpandableListView list;
     private Button bt_more;
@@ -68,7 +68,7 @@ public class ChatRoomsFragment extends SherlockFragment {
     String oldest_posted = "null";
     // ---- local variable END ----
 
-    ChatRoomsFragment newInstance() {
+    public static ChatRoomsFragment newInstance() {
         if(D) { Log.d(TAG, "newInstance"); }
         ChatRoomsFragment chatRoomsFragment = new ChatRoomsFragment();
         return chatRoomsFragment;
@@ -242,7 +242,8 @@ public class ChatRoomsFragment extends SherlockFragment {
                 }
 
                 JSONArray obj_plurks = object.getJSONArray("plurks");
-                for (int x = 0; x < obj_plurks.length(); x++) {
+                int obj_plurks_size = obj_plurks.length();
+                for (int x = 0; x < obj_plurks_size; x++) {
                     Plurks post = new Plurks(obj_plurks.getJSONObject(x)); // get the post
                     String own_id = post.getOwner_id(); // get the owner of the post
 
@@ -259,11 +260,11 @@ public class ChatRoomsFragment extends SherlockFragment {
                     //plurks.add(new Plurks(obj_plurks.getJSONObject(x)));
                 }
 
-                Plurks oldest_plurk = new Plurks(obj_plurks.getJSONObject(obj_plurks.length()-1));
+                Plurks oldest_plurk = new Plurks(obj_plurks.getJSONObject(obj_plurks_size-1));
                 oldest_posted_readable = oldest_plurk.getReadablePostedDate();
                 oldest_posted = oldest_plurk.getQueryFormatedPostedDate();
 
-                if(D) { Log.d(TAG, "plurks: " + obj_plurks.length()); }
+                if(D) { Log.d(TAG, "plurks: " + obj_plurks_size); }
             } catch(JSONException jsone) {
                 Log.e(TAG, jsone.getMessage());
             }
@@ -273,16 +274,25 @@ public class ChatRoomsFragment extends SherlockFragment {
 
     private void setExpandableListAdapter() {
         List<Plurk_Users> group_list = new ArrayList<Plurk_Users>(ChatRoomsFragment.this.plurk_users.values());
+        int group_size = group_list.size();
         List<List<Plurks>> child_list = new ArrayList<List<Plurks>>();
-        for(int x=0; x<group_list.size(); x++) {
-            String userId = group_list.get(x).getHumanId();
-            if(ChatRoomsFragment.this.plurks.containsKey(userId)) {
-                child_list.add(ChatRoomsFragment.this.plurks.get(userId));
-            } else
+        int child_size = child_list.size();
+//        for(int x=0; x<group_size; x++) {
+//            String userId = group_list.get(x).getHumanId();
+//            if(ChatRoomsFragment.this.plurks.containsKey(userId)) {
+//                child_list.add(ChatRoomsFragment.this.plurks.get(userId));
+//            } else
+//                child_list.add(new ArrayList<Plurks>());
+//        }
+        for(Plurk_Users user : group_list) {
+            if(ChatRoomsFragment.this.plurks.containsKey(user.getHumanId())) {
+                child_list.add(ChatRoomsFragment.this.plurks.get(user.getHumanId()));
+            } else {
                 child_list.add(new ArrayList<Plurks>());
+            }
         }
 
-        for(int x=0; x<child_list.size(); x++) {
+        for(int x=0; x<child_size; x++) {
             if (child_list.get(x).size() == 0) {
                 group_list.remove(x);
                 child_list.remove(x);
