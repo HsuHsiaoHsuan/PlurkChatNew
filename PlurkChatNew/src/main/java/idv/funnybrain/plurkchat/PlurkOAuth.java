@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by Freeman on 2014/4/2.
  */
 public class PlurkOAuth {
-    private static final boolean D = true;
+    private static final boolean D = false;
     private static final String TAG = "PlurkOAuth";
 
     private final static String API_KEY = "iwMUO0N5amJt";
@@ -147,6 +147,6 @@ public class PlurkOAuth {
         service.signRequest(accessToken, req);
         Response resp = req.send();
         String result = resp.getBody();
-        System.out.println("final result: " + result);
+//        System.out.println("final result: " + result);
     }
 }

@@ -38,7 +38,7 @@ import java.util.List;
 public class ChatRoomsFragment extends SherlockFragment {
     // ---- constant variable START ----
     private static final boolean D = true;
-    private static final String TAG = "FriendsFragment";
+    private static final String TAG = "ChatRoomsFragment";
 
     private static final String IMAGE_CACHE_DIR = "thumbnails";
 
@@ -55,7 +55,7 @@ public class ChatRoomsFragment extends SherlockFragment {
 
     // ---- local variable START ----
     private static PlurkOAuth plurkOAuth;
-    private Me me;
+//    private Me me;
     private ExpandableListView list;
     private Button bt_more;
     private ChatRoomExpandableListAdapter mAdapter;
@@ -128,7 +128,7 @@ public class ChatRoomsFragment extends SherlockFragment {
 //                                getSherlockActivity(), "test"+id, FriendsFragment.class
 //                        ));
 //                getSherlockActivity().getSupportActionBar().addTab(tab);
-                System.out.println(id);
+//                System.out.println(id);
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 ChattingRoomFragment chatting = ChattingRoomFragment.newInstance(String.valueOf(id));
@@ -246,16 +246,18 @@ public class ChatRoomsFragment extends SherlockFragment {
                 for (int x = 0; x < obj_plurks_size; x++) {
                     Plurks post = new Plurks(obj_plurks.getJSONObject(x)); // get the post
                     String own_id = post.getOwner_id(); // get the owner of the post
+                    String replurker_id = post.getReplurker_id();
 
-                    if(ChatRoomsFragment.this.plurks.containsKey(own_id)) {
-                        List<Plurks> test = ChatRoomsFragment.this.plurks.get(own_id);
+                    String post_or_repost_id = post.getReplurker_id().equals("null") ? post.getOwner_id() : post.getReplurker_id();
+                    if(ChatRoomsFragment.this.plurks.containsKey(post_or_repost_id)) {
+                        List<Plurks> test = ChatRoomsFragment.this.plurks.get(post_or_repost_id);
                         if(!test.contains(post)) {
-                            ChatRoomsFragment.this.plurks.get(own_id).add(post);
+                            ChatRoomsFragment.this.plurks.get(post_or_repost_id).add(post);
                         }
                     } else {
                         List<Plurks> plurk_list = new ArrayList<Plurks>();
                         plurk_list.add(post);
-                        ChatRoomsFragment.this.plurks.put(own_id, plurk_list);
+                        ChatRoomsFragment.this.plurks.put(post_or_repost_id, plurk_list);
                     }
                     //plurks.add(new Plurks(obj_plurks.getJSONObject(x)));
                 }
@@ -268,6 +270,14 @@ public class ChatRoomsFragment extends SherlockFragment {
             } catch(JSONException jsone) {
                 Log.e(TAG, jsone.getMessage());
             }
+
+            Iterator<String> iter = ChatRoomsFragment.this.plurks.keySet().iterator();
+            while (iter.hasNext()) {
+                String key = iter.next();
+                List list = ChatRoomsFragment.this.plurks.get(key);
+                Log.d(TAG, "who?" + key + " has list size: " + list.size());
+            }
+
             setExpandableListAdapter();
         }
     }
@@ -293,9 +303,9 @@ public class ChatRoomsFragment extends SherlockFragment {
         }
 
         for(int x=0; x<child_size; x++) {
-            if (child_list.get(x).size() == 0) {
+            if (!ChatRoomsFragment.this.plurks.containsKey(group_list.get(x).getHumanId())) {
                 group_list.remove(x);
-                child_list.remove(x);
+//                child_list.remove(x);
             }
         }
 

@@ -33,7 +33,7 @@ public class Plurks {
     private boolean replurked = false;
     private boolean favorite = false;
     private String content = "";
-    private String replurker_id = "";
+    private String replurker_id = "null";
     private String posted = "";
     private String owner_id = "";
 
@@ -127,5 +127,9 @@ public class Plurks {
             e.printStackTrace();
             return posted;
         }
+    }
+
+    public String getReplurker_id() {
+        return replurker_id;
     }
 }
