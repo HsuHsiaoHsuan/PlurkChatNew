@@ -34,8 +34,13 @@ public class Mod_FriendsFans extends AbstractModule {
     }
 
     // Returns users that the current logged in user follows as fan - in chucks of 10 fans at a time.
-    public void getFollowingByOffset() {
+    public JSONArray getFollowingByOffset(int offset, int limit) throws RequestException {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("offset", String.valueOf(offset)));
+        params.add(new BasicNameValuePair("limit", String.valueOf(limit)));
+        JSONArray result = requestAPI("getFollowingByOffset").args(params).getJSONArrayResult();
 
+        return result;
     }
 
     // Create a friend request to friend_id. User with friend_id has to accept a friendship.

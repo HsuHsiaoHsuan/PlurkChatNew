@@ -17,7 +17,6 @@ import idv.funnybrain.plurkchat.FunnyActivity;
 import idv.funnybrain.plurkchat.PlurkOAuth;
 import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.RequestException;
-import idv.funnybrain.plurkchat.data.Me;
 import idv.funnybrain.plurkchat.data.Plurk_Users;
 import idv.funnybrain.plurkchat.data.Plurks;
 import idv.funnybrain.plurkchat.modules.Mod_Timeline;
@@ -314,6 +313,7 @@ public class ChatRoomsFragment extends SherlockFragment {
                 group_list,
                 child_list,
                 mImageFetcher);
+
         list.setAdapter(mAdapter);
 
         bt_more.setVisibility(View.VISIBLE);
