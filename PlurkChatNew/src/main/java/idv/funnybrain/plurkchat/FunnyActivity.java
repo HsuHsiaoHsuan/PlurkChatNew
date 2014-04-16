@@ -23,7 +23,7 @@ import idv.funnybrain.plurkchat.data.Me;
 import idv.funnybrain.plurkchat.data.Qualifier;
 import idv.funnybrain.plurkchat.modules.Mod_Timeline;
 import idv.funnybrain.plurkchat.modules.Mod_Users;
-import idv.funnybrain.plurkchat.ui.ChatRoomsFragment;
+import idv.funnybrain.plurkchat.ui.ChatRoomsFragment_v2;
 import idv.funnybrain.plurkchat.ui.MeFriendsFollowingFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -121,8 +121,8 @@ public class FunnyActivity extends SherlockFragmentActivity {
                         actionBar.addTab(
                                 actionBar.newTab()
 //                                        .setText(R.string.tab_chatrooms)
-                                        .setTabListener(new TabListener<ChatRoomsFragment>(
-                                                FunnyActivity.this, "rooms", ChatRoomsFragment.class
+                                        .setTabListener(new TabListener<ChatRoomsFragment_v2>(
+                                                FunnyActivity.this, "rooms", ChatRoomsFragment_v2.class
                                         ))
                                         .setIcon(R.drawable.ic_launcher_v1)
                         );
