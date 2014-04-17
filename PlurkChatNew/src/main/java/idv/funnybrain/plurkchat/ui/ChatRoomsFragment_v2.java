@@ -29,10 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Freeman on 2014/4/16.
@@ -67,6 +64,7 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     private ImageFetcher mImageFetcher;
 
     private HashMap<String, Plurk_Users> plurk_users;
+
     private HashMap<String, List<Plurks>> plurks;
     private String oldest_posted_readable = "";
     private String oldest_posted = "null";
@@ -78,10 +76,8 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
             if(args.getBoolean(HAS_PARAMS)) {
                 if(args.containsKey(OFFSET)) {
                     params.put(OFFSET, args.getString(OFFSET));
-                    System.out.println("OFFSET, " + args.getString(OFFSET) + "-------------------------------------------");
                 }
             } else {
-                System.out.println("NO DATA!!"+ "-------------------------------------------");
             }
             return new Mod_Timeline_getPlurks_AsyncTaskLoader(getSherlockActivity(), params);
         }
@@ -125,7 +121,6 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
                 Plurks oldest_plurk = new Plurks(obj_plurks.getJSONObject(obj_plurks_size-1));
                 oldest_posted_readable = oldest_plurk.getReadablePostedDate();
                 oldest_posted = oldest_plurk.getQueryFormatedPostedDate();
-                System.out.println(oldest_posted_readable + "_________________________________" + oldest_posted);
 
                 if(D) { Log.d(TAG, "plurks: " + obj_plurks_size); }
             } catch(JSONException jsone) {
@@ -144,7 +139,8 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
                 mAdapter = new ChatRoomExpandableListAdapter_v2(getSherlockActivity().getLayoutInflater(), plurk_users, plurks, mImageFetcher);
                 list.setAdapter(mAdapter);
             } else {
-                mAdapter.addNewData(plurk_users, plurks);
+                //mAdapter.addNewData(plurk_users, plurks);
+                mAdapter.addNewData();
             }
             bt_more.setVisibility(View.VISIBLE);
             bt_more.setEnabled(true);
@@ -214,7 +210,6 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
                     Bundle bundle = new Bundle();
                     bundle.putBoolean(HAS_PARAMS, true);
                     bundle.putString(OFFSET, oldest_posted);
-                    System.out.println(oldest_posted);
                     manager.restartLoader(LOADER_ID_GET_PLURKS, bundle, getPlurks_Callback).forceLoad();
                 }
                 bt_more.setEnabled(false);
@@ -223,14 +218,21 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
         list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                String idx = String.valueOf(mAdapter.getGroupId(groupPosition));
+
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ChattingRoomFragment chatting = ChattingRoomFragment.newInstance(String.valueOf(id));
-                ft.replace(R.id.fragment_content, chatting).addToBackStack("tag").commit();
+//                ChattingRoomFragment chatting = ChattingRoomFragment.newInstance(String.valueOf(id));
+                ChattingRoomFragment chatting = ChattingRoomFragment.newInstance(plurks.get(idx).get(childPosition), plurk_users.get(idx));
+                ft.replace(R.id.fragment_content, chatting).addToBackStack("tag").commitAllowingStateLoss();
                 getSherlockActivity().getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
                 return true;
             }
         });
+
+        if(mAdapter != null) {
+            list.setAdapter(mAdapter);
+        }
 
         return v;
     }
@@ -249,7 +251,7 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
         if(D) { Log.d(TAG, "onResume"); }
         mImageFetcher.setExitTasksEarly(false);
         if(mAdapter != null) {
-            list.setAdapter(mAdapter);
+//            list.setAdapter(mAdapter);
         } else {
 //            getPlurks();
             getPlurks(null);
@@ -312,7 +314,6 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
 
             if(params.containsKey(OFFSET)) {
                 offset = params.get(OFFSET);
-                System.out.print("OFFSET!!------------------------------------------------------------");
             }
             if(params.containsKey(LIMIT)) {
                 String tmp = params.get(LIMIT);

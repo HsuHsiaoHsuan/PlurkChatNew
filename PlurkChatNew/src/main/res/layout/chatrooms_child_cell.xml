@@ -20,10 +20,11 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_alignParentTop="true"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/image"
-            android:textAlignment="viewStart"/>
+            android:gravity="start"
+            />
 
     <TextView
             android:id="@+id/posted"
@@ -33,5 +34,5 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="@android:color/holo_blue_light"/>
+            android:textColor="#ff33b5e5"/>
 </RelativeLayout>

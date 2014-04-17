@@ -144,16 +144,16 @@ public class MeFriendsFollowingExpandableListAdapter extends BaseExpandableListA
     }
 
     public void addNewData(String groupName, List<IHuman> child_data) {
-        if(group.contains(groupName)) {
-            int idx = group.indexOf(groupName);
-            group.remove(idx);
-            group.add(idx, groupName);
-            child.remove(idx);
-            child.add(idx, child_data);
-        } else {
-            group.add(groupName);
-            child.add(child_data);
-        }
+//        if(group.contains(groupName)) {
+//            int idx = group.indexOf(groupName);
+//            group.remove(idx);
+//            group.add(idx, groupName);
+//            child.remove(idx);
+//            child.add(idx, child_data);
+//        } else {
+//            group.add(groupName);
+//            child.add(child_data);
+//        }
         notifyDataSetChanged();
     }
 }

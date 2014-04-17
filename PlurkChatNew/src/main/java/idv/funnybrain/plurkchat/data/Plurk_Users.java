@@ -1,5 +1,7 @@
 package idv.funnybrain.plurkchat.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,7 +9,7 @@ import org.json.JSONObject;
 /**
  * Created by Freeman on 2014/4/8.
  */
-public class Plurk_Users implements IHuman{
+public class Plurk_Users implements IHuman,Parcelable {
     private static final boolean D = false;
     private static final String TAG = "Plurk_Users";
 
@@ -17,15 +19,15 @@ public class Plurk_Users implements IHuman{
     private int dateformat = 0;
     private String nick_name = "";
     private int has_profile_image = 0;
-    private String location = null;
+    private String location = "";
     private int bday_privacy = 0; // 0: hide birthday, 1: show birth date but not birth year, 2: show all
-    private String date_of_birth = null;
+    private String date_of_birth = "";
     private double karma = 0;
     private String full_name = "null";
     private int gender = 2; // 1 is male, 0 is female, 2 is not stating/other.
-    private String name_color = null;
-    private String timezone = null;
-    private String id = null;
+    private String name_color = "";
+    private String timezone = "";
+    private String id = "";
     private String avatar = "NaN";
 
     public Plurk_Users(JSONObject object) throws JSONException {
@@ -126,5 +128,58 @@ public class Plurk_Users implements IHuman{
             }
         }
         return imgURL;
+    }
+
+    public static final Parcelable.Creator<Plurk_Users> CREATOR = new Parcelable.Creator<Plurk_Users>() {
+        public Plurk_Users createFromParcel(Parcel in) {
+            return new Plurk_Users(in);
+        }
+
+        @Override
+        public Plurk_Users[] newArray(int size) {
+            return new Plurk_Users[size];
+        }
+    };
+
+    private Plurk_Users(Parcel in) {
+        verified_account = in.readByte() != 0;
+        default_lang = Language.valueOf(in.readString());
+        display_name = in.readString();
+        nick_name = in.readString();
+        has_profile_image = in.readInt();
+        location = in.readString();
+        bday_privacy = in.readInt();
+        date_of_birth = in.readString();
+        karma = in.readDouble();
+        full_name = in.readString();
+        gender = in.readInt();
+        name_color = in.readString();
+        timezone = in.readString();
+        id = in.readString();
+        avatar = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte)(verified_account ? 1 : 0));
+        dest.writeString(default_lang.toString());
+        dest.writeString(display_name);
+        dest.writeString(nick_name);
+        dest.writeInt(has_profile_image);
+        dest.writeString(location);
+        dest.writeInt(bday_privacy);
+        dest.writeString(date_of_birth);
+        dest.writeDouble(karma);
+        dest.writeString(full_name);
+        dest.writeInt(gender);
+        dest.writeString(name_color);
+        dest.writeString(timezone);
+        dest.writeString(id);
+        dest.writeString(avatar);
     }
 }

@@ -66,9 +66,9 @@ public class ChattingRoomListAdapter extends BaseAdapter {
 //        View rowView = convertView;
 //        if (rowView == null) {
 //            if (responses.get(position).getUser_id().equals(my_Id)) {
-//                rowView = this.inflater.inflate(R.layout.chatting_cell_my, null);
-//            } else {
 //                rowView = this.inflater.inflate(R.layout.chatting_cell_others, null);
+//            } else {
+//                rowView = this.inflater.inflate(R.layout.chatting_cell_me, null);
 //            }
 //            ViewHolder holder = new ViewHolder();
 //            holder.tv_id = (TextView) rowView.findViewById(R.id._id);
@@ -80,9 +80,9 @@ public class ChattingRoomListAdapter extends BaseAdapter {
         View view;
         Responses resp = this.responses.get(position);
         if (resp.getUser_id().equals(my_Id)) {
-                view = this.inflater.inflate(R.layout.chatting_cell_my, null);
-        } else {
                 view = this.inflater.inflate(R.layout.chatting_cell_others, null);
+        } else {
+                view = this.inflater.inflate(R.layout.chatting_cell_me, null);
         }
         ((TextView)view.findViewById(R.id._id)).setText(resp.getId());
 
@@ -94,5 +94,9 @@ public class ChattingRoomListAdapter extends BaseAdapter {
         }
 
         return view;
+    }
+
+    public void addNewData() {
+        notifyDataSetChanged();
     }
 }

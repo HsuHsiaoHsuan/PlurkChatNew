@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
     <TextView
             android:id="@+id/_id"
             android:layout_width="wrap_content"
@@ -14,13 +13,14 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:scaleType="fitXY"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
             android:layout_margin="5dp"/>
     <TextView
             android:id="@+id/message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/icon"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@id/icon"
             android:minHeight="50dp"/>
 </RelativeLayout>

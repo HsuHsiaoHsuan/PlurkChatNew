@@ -12,10 +12,7 @@ import idv.funnybrain.plurkchat.data.Plurk_Users;
 import idv.funnybrain.plurkchat.data.Plurks;
 import idv.funnybrain.plurkchat.utils.ImageFetcher;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Freeman on 2014/4/16.
@@ -44,6 +41,12 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
             String id = plurks_iter.next();
             group.add(users.get(id));
         }
+        Collections.sort(group, new Comparator<Plurk_Users>() {
+            @Override
+            public int compare(Plurk_Users lhs, Plurk_Users rhs) {
+                return (Integer.valueOf(lhs.getHumanId()) - Integer.valueOf(rhs.getHumanId()));
+            }
+        });
     }
 
     @Override
@@ -143,22 +146,23 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
         return true;
     }
 
-    public void addNewData(HashMap<String, Plurk_Users> users, HashMap<String, List<Plurks>> plurks) {
-        List<String> tmp_idx = new ArrayList<String>();
-        for(Plurk_Users pu: group) {
-            tmp_idx.add(pu.getHumanId());
-        }
-
-        Iterator<String> iterator = plurks.keySet().iterator();
-        while(iterator.hasNext()) {
-            String idx = iterator.next();
-            if(tmp_idx.contains(idx)) {
-                plurks.get(idx).addAll(plurks.get(idx));
-            } else {
-                group.add(users.get(idx));
-                plurks.put(idx, plurks.get(idx));
-            }
-        }
+//    public void addNewData(HashMap<String, Plurk_Users> users, HashMap<String, List<Plurks>> plurks) {
+    public void addNewData() {
+//        List<String> tmp_idx = new ArrayList<String>();
+//        for(Plurk_Users pu: group) {
+//            tmp_idx.add(pu.getHumanId());
+//        }
+//
+//        Iterator<String> iterator = plurks.keySet().iterator();
+//        while(iterator.hasNext()) {
+//            String idx = iterator.next();
+//            if(tmp_idx.contains(idx)) {
+//                plurks.get(idx).addAll(plurks.get(idx));
+//            } else {
+//                group.add(users.get(idx));
+//                plurks.put(idx, plurks.get(idx));
+//            }
+//        }
         notifyDataSetChanged();
     }
 }

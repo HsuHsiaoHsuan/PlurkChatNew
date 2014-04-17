@@ -141,6 +141,7 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
     @Override
     public void onPause() {
         super.onPause();
+        if(D) { Log.d(TAG, "onPause"); }
         mImageFetcher.setPauseWork(false);
         mImageFetcher.setExitTasksEarly(true);
         mImageFetcher.flushCache();
@@ -148,6 +149,7 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
 
     @Override
     public void onDestroy() {
+        if(D) { Log.d(TAG, "onDestroy"); }
         super.onDestroy();
         mImageFetcher.closeCache();
     }
@@ -161,17 +163,21 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
 
             @Override
             public void onLoadFinished(Loader<List<IHuman>> loader, List<IHuman> data) {
-                if(mAdapter == null) {
+                String tag = getString(R.string.friend);
+                if (group_list.contains(tag)) {
+                    int idx = group_list.indexOf(tag);
+                    child_list.remove(idx);
+                    child_list.add(idx, data);
+                } else {
                     group_list.add(getString(R.string.friend));
                     child_list.add(data);
+                }
+
+                if (mAdapter == null) {
                     mAdapter = new MeFriendsFollowingExpandableListAdapter(getSherlockActivity().getLayoutInflater(), group_list, child_list, mImageFetcher);
-                    mAdapter.notifyDataSetChanged();
                     list.setAdapter(mAdapter);
                 } else {
-//                    mAdapter.addGroup(1, getString(R.string.friend));
-//                    mAdapter.addChild(1, data);
                     mAdapter.addNewData(getString(R.string.friend), data);
-                    mAdapter.notifyDataSetChanged();
                 }
                 getFollowing();
             }
@@ -192,17 +198,21 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
 
             @Override
             public void onLoadFinished(Loader<List<IHuman>> loader, List<IHuman> data) {
-                if(mAdapter == null) {
+                String tag = getString(R.string.following);
+                if (group_list.contains(tag)) {
+                    int idx = group_list.indexOf(tag);
+                    child_list.remove(idx);
+                    child_list.add(idx, data);
+                } else {
                     group_list.add(getString(R.string.following));
                     child_list.add(data);
+                }
+
+                if(mAdapter == null) {
                     mAdapter = new MeFriendsFollowingExpandableListAdapter(getSherlockActivity().getLayoutInflater(), group_list, child_list, mImageFetcher);
-                    mAdapter.notifyDataSetChanged();
                     list.setAdapter(mAdapter);
                 } else {
-//                    mAdapter.addGroup(2, getString(R.string.following));
-//                    mAdapter.addChild(2, data);
                     mAdapter.addNewData(getString(R.string.following), data);
-                    mAdapter.notifyDataSetChanged();
                 }
             }
 

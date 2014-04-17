@@ -144,7 +144,7 @@ public class FunnyActivity extends SherlockFragmentActivity {
             handler.sendMessage(msg);
 
             if(savedInstanceState != null) {
-//                getSupportActionBar().setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
+                getSupportActionBar().setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
                 // FIXME
                 // rotation, setRetainInstance?
             }
