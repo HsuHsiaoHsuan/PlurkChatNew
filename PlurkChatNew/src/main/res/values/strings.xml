@@ -23,5 +23,6 @@
 
     <!-- ChatRoomFragment START -->
     <string name="oldest_post">Oldest Post</string>
+    <string name="response">Responses:</string>
     <!-- ChatRoomFragment END -->
 </resources>

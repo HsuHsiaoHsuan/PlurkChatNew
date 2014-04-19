@@ -23,5 +23,6 @@
 
     <!-- ChatRoomFragment START -->
     <string name="oldest_post">最舊貼文</string>
+    <string name="response">回覆：</string>
     <!-- ChatRoomFragment END -->
 </resources>

@@ -28,6 +28,15 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
     private List<Plurk_Users> group;
     private HashMap<String, List<Plurks>> plurks;
     private ImageFetcher mImageFetcher;
+
+//    final Html.ImageGetter imageGetter = new Html.ImageGetter() {
+//
+//        @Override
+//        public Drawable getDrawable(String source) {
+//
+//            return drawable;
+//        }
+//    };
     // --- local variable END ----
 
     public ChatRoomExpandableListAdapter_v2(LayoutInflater inflater, HashMap<String, Plurk_Users> users, HashMap<String, List<Plurks>> plurks, ImageFetcher imageFetcher) {
@@ -88,6 +97,7 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
         public TextView tv_id;
         public ImageView iv_image;
         public TextView tv_title;
+        public TextView tv_count;
     }
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
@@ -98,6 +108,7 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
             holder.tv_id = (TextView) rowView.findViewById(R.id.uid);
             holder.iv_image = (ImageView) rowView.findViewById(R.id.image);
             holder.tv_title = (TextView) rowView.findViewById(R.id.title);
+            holder.tv_count = (TextView) rowView.findViewById(R.id.msg_count);
             rowView.setTag(holder);
         }
 
@@ -105,6 +116,7 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
         Plurk_Users user = group.get(groupPosition);
         holder.tv_id.setText(user.getHumanId());
         holder.tv_title.setText(user.getHumanName());
+        holder.tv_count.setText("(" + plurks.get(user.getHumanId()).size() + ")");
 
         String imgURL = user.getHumanImage();
 
@@ -118,6 +130,7 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
         public ImageView iv_image;
         public TextView tv_title;
         public TextView tv_posted;
+        public TextView tv_count;
     }
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
@@ -128,7 +141,9 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
             holder.tv_id = (TextView) rowView.findViewById(R.id.uid);
             holder.iv_image = (ImageView) rowView.findViewById(R.id.image);
             holder.tv_title = (TextView) rowView.findViewById(R.id.title);
+//            holder.tv_title.setMovementMethod(LinkMovementMethod.getInstance());
             holder.tv_posted = (TextView) rowView.findViewById(R.id.posted);
+            holder.tv_count = (TextView) rowView.findViewById(R.id.count);
             rowView.setTag(holder);
         }
 
@@ -137,7 +152,7 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
         holder.tv_id.setText(plurk.getPlurk_id());
         holder.tv_title.setText(Html.fromHtml(plurk.getContent()));
         holder.tv_posted.setText(plurk.getReadablePostedDate());
-
+        holder.tv_count.setText(inflater.getContext().getString(R.string.response) + plurk.getResponse_count());
         return rowView;
     }
 

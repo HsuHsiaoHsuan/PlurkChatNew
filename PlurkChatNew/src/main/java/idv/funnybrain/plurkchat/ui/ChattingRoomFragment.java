@@ -7,6 +7,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -131,6 +132,7 @@ public class ChattingRoomFragment extends SherlockFragment {
 
         mImageFetcher.loadImage(original_poster.getHumanImage(), iv_original_poseter);
         tv_original_content.setText(Html.fromHtml(original_post.getContent()));
+        tv_original_content.setMovementMethod(LinkMovementMethod.getInstance());
 
         list = (ListView) v.findViewById(R.id.chatting_list);
         list.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -224,7 +226,8 @@ public class ChattingRoomFragment extends SherlockFragment {
                 }
 
                 if (mAdapter == null) {
-                    mAdapter = new ChattingRoomListAdapter(getSherlockActivity().getLayoutInflater(), friends, responses, mImageFetcher, me.getHumanId());
+                    mAdapter = new ChattingRoomListAdapter(getSherlockActivity().getLayoutInflater(), friends, responses, mImageFetcher);
+                    list.setAdapter(mAdapter);
                 } else {
                     // mAdapter.addNewData();
                 }
@@ -337,7 +340,7 @@ public class ChattingRoomFragment extends SherlockFragment {
     }
 
     private void setListAdapter() {
-        mAdapter = new ChattingRoomListAdapter(getSherlockActivity().getLayoutInflater(), friends, responses, mImageFetcher, me.getHumanId());
+        mAdapter = new ChattingRoomListAdapter(getSherlockActivity().getLayoutInflater(), friends, responses, mImageFetcher);
         list.setAdapter(mAdapter);
     }
 }

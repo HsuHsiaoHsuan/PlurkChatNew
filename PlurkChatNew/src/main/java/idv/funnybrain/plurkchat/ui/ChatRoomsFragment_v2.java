@@ -218,6 +218,7 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
         list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                if(D) { Log.d(TAG, "--->onChildClick"); }
                 String idx = String.valueOf(mAdapter.getGroupId(groupPosition));
 
                 FragmentManager fm = getFragmentManager();

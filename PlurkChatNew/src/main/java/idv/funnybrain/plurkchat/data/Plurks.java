@@ -98,7 +98,7 @@ public class Plurks implements Parcelable {
     }
 
     public String getReadablePostedDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("E,dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
         try {
             Date last_posted_date = sdf.parse(posted);
             Calendar calendar = Calendar.getInstance();
@@ -133,6 +133,10 @@ public class Plurks implements Parcelable {
 
     public String getReplurker_id() {
         return replurker_id;
+    }
+
+    public int getResponse_count() {
+        return response_count;
     }
 
     public static final Parcelable.Creator<Plurks> CREATOR = new Parcelable.Creator<Plurks>() {
@@ -206,3 +210,31 @@ public class Plurks implements Parcelable {
         dest.writeString(owner_id);
     }
 }
+
+/*
+{
+            "replurkers_count": 0,
+            "replurkable": true,
+            "favorite_count": 0,
+            "is_unread": 0,
+            "content": "【文】《瓶據》。（盜筆‧瓶邪）",
+            "user_id": 5225678,
+            "plurk_type": 0,
+            "qualifier_translated": "說",
+            "replurked": false,
+            "favorers": [],
+            "replurker_id": null,
+            "owner_id": 4373060,
+            "responses_seen": 0,
+            "qualifier": "says",
+            "plurk_id": 1205214599,
+            "response_count": 10,
+            "limited_to": null,
+            "no_comments": 0,
+            "posted": "Wed, 16 Apr 2014 13:49:33 GMT",
+            "lang": "tr_ch",
+            "content_raw": "【文】《瓶據》。（盜筆‧瓶邪）",
+            "replurkers": [],
+            "favorite": false
+        }
+ */
