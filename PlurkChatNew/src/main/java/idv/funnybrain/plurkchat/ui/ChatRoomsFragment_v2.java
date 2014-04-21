@@ -12,10 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.diegocarloslima.fgelv.lib.FloatingGroupExpandableListView;
+import com.diegocarloslima.fgelv.lib.WrapperExpandableListAdapter;
 import idv.funnybrain.plurkchat.FunnyActivity;
 import idv.funnybrain.plurkchat.PlurkOAuth;
 import idv.funnybrain.plurkchat.R;
@@ -57,9 +60,11 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
 
     // ---- local variable START ----
     private static PlurkOAuth plurkOAuth;
-    private ExpandableListView list;
+    //private ExpandableListView list;
+    private FloatingGroupExpandableListView list;
     private Button bt_more;
-    private ChatRoomExpandableListAdapter_v2 mAdapter;
+    //private ChatRoomExpandableListAdapter_v2 mAdapter;
+    private BaseExpandableListAdapter mAdapter;
 
     private ImageFetcher mImageFetcher;
 
@@ -137,10 +142,12 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
             }
             if(mAdapter == null) {
                 mAdapter = new ChatRoomExpandableListAdapter_v2(getSherlockActivity().getLayoutInflater(), plurk_users, plurks, mImageFetcher);
-                list.setAdapter(mAdapter);
+                WrapperExpandableListAdapter wrapperAdapter = new WrapperExpandableListAdapter(mAdapter);
+                list.setAdapter(wrapperAdapter);
+                //list.setAdapter(mAdapter);
             } else {
                 //mAdapter.addNewData(plurk_users, plurks);
-                mAdapter.addNewData();
+                ((ChatRoomExpandableListAdapter_v2) mAdapter).addNewData();
             }
             bt_more.setVisibility(View.VISIBLE);
             bt_more.setEnabled(true);
@@ -180,7 +187,9 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if(D) { Log.d(TAG, "onCreateView"); }
         View v = inflater.inflate(R.layout.fragment_chatrooms, container, false);
-        list = (ExpandableListView) v.findViewById(R.id.elv_list);
+        //list = (ExpandableListView) v.findViewById(R.id.elv_list);
+        list = (FloatingGroupExpandableListView) v.findViewById(R.id.elv_list);
+        //fixme
         list.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -232,7 +241,9 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
         });
 
         if(mAdapter != null) {
-            list.setAdapter(mAdapter);
+            WrapperExpandableListAdapter wrapper = new WrapperExpandableListAdapter(mAdapter);
+            list.setAdapter(wrapper);
+            //list.setAdapter(mAdapter);
         }
 
         return v;

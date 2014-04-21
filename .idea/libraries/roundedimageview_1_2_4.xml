@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="roundedimageview-1.2.4">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/PlurkChatNew/build/exploded-bundles/ComMakeramenRoundedimageview124.aar/res" />
       <root url="jar://$PROJECT_DIR$/PlurkChatNew/build/exploded-bundles/ComMakeramenRoundedimageview124.aar/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/PlurkChatNew/build/exploded-bundles/ComMakeramenRoundedimageview124.aar/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
