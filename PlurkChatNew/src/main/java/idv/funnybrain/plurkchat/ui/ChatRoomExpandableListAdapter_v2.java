@@ -1,5 +1,6 @@
 package idv.funnybrain.plurkchat.ui;
 
+import android.graphics.Color;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -121,6 +122,16 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
         String imgURL = user.getHumanImage();
 
         mImageFetcher.loadImage(imgURL, holder.iv_image);
+
+        if(isExpanded) {
+            rowView.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.blue_light));
+            holder.tv_title.setTextColor(Color.WHITE);
+            holder.tv_count.setTextColor(Color.WHITE);
+        } else {
+            rowView.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.abs__background_holo_light));
+            holder.tv_title.setTextColor(Color.BLACK);
+            holder.tv_count.setTextColor(Color.BLACK);
+        }
 
         return rowView;
     }

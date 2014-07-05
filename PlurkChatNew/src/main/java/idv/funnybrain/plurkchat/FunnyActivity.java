@@ -98,7 +98,7 @@ public class FunnyActivity extends SherlockFragmentActivity {
                         if(D) { Log.d(TAG, "HANDLER_GET_SELF_OK: " + me.getDisplay_name()); }
                         ActionBar actionBar = getSupportActionBar();
                         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-                        actionBar.setDisplayShowTitleEnabled(true);
+                        //actionBar.setDisplayShowTitleEnabled(true);
                         findViewById(R.id.fragment_content).setVisibility(View.VISIBLE);
                         findViewById(R.id.login_control).setVisibility(View.GONE);
 
