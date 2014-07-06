@@ -3,6 +3,7 @@ package idv.funnybrain.plurkchat.ui;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,8 @@ public class ChattingRoomListAdapter extends BaseAdapter {
         this.responses = res;
         this.mImageFetcher = imageFetcher;
 //        this.my_Id = my_id;
-        this.me = (new FunnyActivity()).getMe();
+        //this.me = (new FunnyActivity()).getMe();
+        this.me = FunnyActivity.me;
 
         if(D) {
             Iterator<Friend> tmp_friend = friends.values().iterator();
@@ -79,6 +81,7 @@ public class ChattingRoomListAdapter extends BaseAdapter {
     static class ViewHolder {
         public TextView tv_id;
         public ImageView iv_leftImage;
+        public TextView tv_poster_name;
         public ImageView iv_rightImage;
         public TextView tv_msg;
         public TextView tv_msg_date;
@@ -89,11 +92,12 @@ public class ChattingRoomListAdapter extends BaseAdapter {
         if(rowView == null) {
             rowView = inflater.inflate(R.layout.chatting_cell, null);
             if(rowView == null) {
-                Log.d(TAG, "why??");
+                Log.e(TAG, "why??");
             }
             ViewHolder holder = new ViewHolder();
             holder.tv_id = (TextView) rowView.findViewById(R.id.tv_id);
             holder.iv_leftImage = (ImageView) rowView.findViewById(R.id.iv_leftImage);
+            holder.tv_poster_name = (TextView) rowView.findViewById(R.id.tv_poster_name);
             holder.iv_rightImage = (ImageView) rowView.findViewById(R.id.iv_rightImage);
             holder.tv_msg = (TextView) rowView.findViewById(R.id.tv_msg);
             holder.tv_msg.setMovementMethod(LinkMovementMethod.getInstance());
@@ -107,13 +111,20 @@ public class ChattingRoomListAdapter extends BaseAdapter {
         holder.tv_id.setText(resp.getId());
         String msg_user_id = resp.getUser_id();
         if(msg_user_id.equals(me.getHumanId())) {
+            // if the poster is myself
             mImageFetcher.loadImage(me.getHumanImage(), holder.iv_rightImage);
             holder.iv_rightImage.setVisibility(View.VISIBLE);
             holder.iv_leftImage.setVisibility(View.GONE);
+            holder.tv_poster_name.setText(me.getDisplay_name());
+            holder.tv_poster_name.setGravity(Gravity.RIGHT);
         } else {
-            mImageFetcher.loadImage(friends.get(msg_user_id).getHumanImage(), holder.iv_leftImage);
-            holder.iv_leftImage.setVisibility(View.GONE);
+            // if the poster is others
+            Friend f = friends.get(msg_user_id);
+            mImageFetcher.loadImage(f.getHumanImage(), holder.iv_leftImage);
+            holder.iv_leftImage.setVisibility(View.VISIBLE);
             holder.iv_rightImage.setVisibility(View.GONE);
+            holder.tv_poster_name.setText(f.getDisplay_name());
+            holder.tv_poster_name.setGravity(Gravity.LEFT);
         }
 
         holder.tv_msg.setText(Html.fromHtml(resp.getContent()));

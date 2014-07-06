@@ -23,6 +23,8 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@id/iv_original_poseter"
+            android:padding="@dimen/tv_msg_padding"
+            android:textAppearance="?android:textAppearanceMedium"
             android:gravity="start"/>
     </RelativeLayout>
 

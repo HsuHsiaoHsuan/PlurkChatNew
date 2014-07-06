@@ -47,7 +47,7 @@ public class FunnyActivity extends SherlockFragmentActivity {
     private Handler handler;
 //    private Verifier verifier;
 
-    static Me me;
+    public static Me me;
     // ---- local variable END ----
     //
 
