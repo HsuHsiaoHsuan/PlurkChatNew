@@ -31,9 +31,9 @@ import org.json.JSONObject;
  "full_name":"BrianHsu"
  *
  */
-public class Friend {
+public class Friend implements IHuman {
     private boolean email_confirmed = false;
-    private String uid = null;
+    private String uid = "";
     private int following_tl = 0;
     private String location = null;
     private boolean verified_account = false;
@@ -44,7 +44,7 @@ public class Friend {
     private String avatar = "null";
     private String nick_name = "";
     private String relationship = "";
-    private String id = null;
+    private String id = "";
     private double karma = 0;
     private String display_name = "";
     private String name_color = "null"; // FIXME
@@ -84,7 +84,7 @@ public class Friend {
         if(!friend.isNull("full_name"))         { full_name = friend.getString("full_name"); }
     }
 
-    public String getId() { return id; }
+//    public String getId() { return id; }
 
     public String getDisplay_name() { return display_name; }
 
@@ -96,21 +96,37 @@ public class Friend {
 
     public String getAvatar() { return avatar; }
 
-    public String getIconAddress() {
-        String imgURL = "http://www.plurk.com/static/default_big.gif";
-        if(getHas_profile_image()>0) {
-            String avatar = getAvatar();
-            if(avatar.equals("null")) {
-                imgURL = "http://avatars.plurk.com/" + getId() + "-big.jpg";
-            } else {
-                if(avatar.equals("0")) { avatar = ""; }
-                imgURL = "http://avatars.plurk.com/" + getId() + "-big" + avatar + ".jpg";
-            }
-        }
-        return imgURL;
+//    public String getIconAddress() {
+//        String imgURL = "http://www.plurk.com/static/default_big.gif";
+//        if(getHas_profile_image()>0) {
+//            String avatar = getAvatar();
+//            if(avatar.equals("null")) {
+//                imgURL = "http://avatars.plurk.com/" + getId() + "-big.jpg";
+//            } else {
+//                if(avatar.equals("0")) { avatar = ""; }
+//                imgURL = "http://avatars.plurk.com/" + getId() + "-big" + avatar + ".jpg";
+//            }
+//        }
+//        return imgURL;
+//    }
+
+//    public String getShowName() {
+//        if(!display_name.equals("") && !display_name.equals("null")) {
+//            return display_name;
+//        } else if(!full_name.equals("") && !full_name.equals("null")) {
+//            return full_name;
+//        } else {
+//            return nick_name;
+//        }
+//    }
+
+    @Override
+    public String getHumanId() {
+        return id;
     }
 
-    public String getShowName() {
+    @Override
+    public String getHumanName() {
         if(!display_name.equals("") && !display_name.equals("null")) {
             return display_name;
         } else if(!full_name.equals("") && !full_name.equals("null")) {
@@ -118,5 +134,19 @@ public class Friend {
         } else {
             return nick_name;
         }
+    }
+
+    @Override
+    public String getHumanImage() {
+        String imgURL = "http://www.plurk.com/static/default_big.gif";
+        if(has_profile_image>0) {
+            if(avatar.equals("null")) {
+                imgURL = "http://avatars.plurk.com/" + id + "-big.jpg";
+            } else {
+                if(avatar.equals("0")) { avatar = ""; }
+                imgURL = "http://avatars.plurk.com/" + id + "-big" + avatar + ".jpg";
+            }
+        }
+        return imgURL;
     }
 }

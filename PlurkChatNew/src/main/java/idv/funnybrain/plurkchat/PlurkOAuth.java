@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by Freeman on 2014/4/2.
  */
 public class PlurkOAuth {
-    private static final boolean D = true;
+    private static final boolean D = false;
     private static final String TAG = "PlurkOAuth";
 
     private final static String API_KEY = "iwMUO0N5amJt";
@@ -91,9 +91,13 @@ public class PlurkOAuth {
     public String sendRequest(String url, List<NameValuePair> args) throws RequestException {
         if(D) { Log.d(TAG, "sendRequest url: " + url); }
         OAuthRequest request = new OAuthRequest(Verb.POST, url);
+//        int size = args.size();
         if(args.size() > 0) {
-            for(int x=0; x< args.size(); x++) {
-                request.addQuerystringParameter(args.get(x).getName(), args.get(x).getValue());
+//            for(int x=0; x< size; x++) {
+//                request.addQuerystringParameter(args.get(x).getName(), args.get(x).getValue());
+//            }
+            for(NameValuePair pair : args) {
+                request.addQuerystringParameter(pair.getName(), pair.getValue());
             }
         }
         service.signRequest(accessToken, request);
@@ -106,7 +110,7 @@ public class PlurkOAuth {
 
     public String sendRequest(String url) throws RequestException {
         if(D) { Log.d(TAG, "sendRequest url: " + url); }
-        System.out.println(url);
+//        System.out.println(url);
         OAuthRequest request = new OAuthRequest(Verb.POST, url);
         service.signRequest(accessToken, request);
         Response response = request.send();
@@ -143,6 +147,6 @@ public class PlurkOAuth {
         service.signRequest(accessToken, req);
         Response resp = req.send();
         String result = resp.getBody();
-        System.out.println("final result: " + result);
+//        System.out.println("final result: " + result);
     }
 }

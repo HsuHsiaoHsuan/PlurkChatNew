@@ -5,6 +5,31 @@
                 android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/chatting_original"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <ImageView
+            android:id="@+id/iv_original_poseter"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="fitXY"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"/>
+        <TextView
+            android:id="@+id/tv_original_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/iv_original_poseter"
+            android:padding="@dimen/tv_msg_padding"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:gravity="start"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
         android:id="@+id/chatting_funcation_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,6 +54,6 @@
         android:id="@+id/chatting_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/chatting_funcation_area"/>
+        android:layout_above="@id/chatting_funcation_area"
+        android:layout_below="@id/chatting_original"/>
 </RelativeLayout>

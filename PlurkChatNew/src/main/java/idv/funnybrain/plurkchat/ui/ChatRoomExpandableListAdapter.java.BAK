@@ -2,6 +2,7 @@ package idv.funnybrain.plurkchat.ui;
 
 import android.app.Activity;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -25,21 +26,17 @@ public class ChatRoomExpandableListAdapter extends BaseExpandableListAdapter {
     // ---- constants END ----
 
     // --- local variable START ----
-    private Activity activity;
+    private LayoutInflater inflater;
     private List<Plurk_Users> plurk_users;
     private List<List<Plurks>> plurks;
     private ImageFetcher mImageFetcher;
     // --- local variable END ----
 
-    public ChatRoomExpandableListAdapter(Activity activity, List<Plurk_Users> users, List<List<Plurks>> plurks, ImageFetcher imageFetcher) {
-        this.activity = activity;
+    public ChatRoomExpandableListAdapter(LayoutInflater inflater, List<Plurk_Users> users, List<List<Plurks>> plurks, ImageFetcher imageFetcher) {
+        this.inflater = inflater;
         this.plurk_users = users;
         this.plurks = plurks;
         this.mImageFetcher = imageFetcher;
-    }
-
-    public void addMore() {
-        if(D) { Log.d(TAG, "add More"); }
     }
 
     @Override
@@ -66,7 +63,7 @@ public class ChatRoomExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getGroupId(int groupPosition) {
-        return Long.valueOf(plurk_users.get(groupPosition).getId());
+        return Long.valueOf(plurk_users.get(groupPosition).getHumanId());
     }
 
     @Override
@@ -89,7 +86,7 @@ public class ChatRoomExpandableListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         View rowView = convertView;
         if(rowView == null) {
-            rowView = activity.getLayoutInflater().inflate(R.layout.chatrooms_group_cell, null);
+            rowView = this.inflater.inflate(R.layout.chatrooms_group_cell, null);
             ViewHolderGroup holder = new ViewHolderGroup();
             holder.tv_id = (TextView) rowView.findViewById(R.id.uid);
             holder.iv_image = (ImageView) rowView.findViewById(R.id.image);
@@ -99,13 +96,13 @@ public class ChatRoomExpandableListAdapter extends BaseExpandableListAdapter {
 
         final ViewHolderGroup holder = (ViewHolderGroup) rowView.getTag();
         Plurk_Users user = plurk_users.get(groupPosition);
-        holder.tv_id.setText(user.getId());
+        holder.tv_id.setText(user.getHumanId());
 
 
         //String showTitle = (user.getDisplay_name().equals("")) ? user.getFull_name() : user.getDisplay_name();
-        holder.tv_title.setText(user.getShowName());
+        holder.tv_title.setText(user.getHumanName());
 
-        String imgURL = user.getIconAddress();
+        String imgURL = user.getHumanImage();
 
         mImageFetcher.loadImage(imgURL, holder.iv_image);
 
@@ -122,7 +119,7 @@ public class ChatRoomExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         View rowView = convertView;
         if(rowView == null) {
-            rowView = activity.getLayoutInflater().inflate(R.layout.chatrooms_child_cell, null);
+            rowView = this.inflater.inflate(R.layout.chatrooms_child_cell, null);
             ViewHolderChild holder = new ViewHolderChild();
             holder.tv_id = (TextView) rowView.findViewById(R.id.uid);
             holder.iv_image = (ImageView) rowView.findViewById(R.id.image);

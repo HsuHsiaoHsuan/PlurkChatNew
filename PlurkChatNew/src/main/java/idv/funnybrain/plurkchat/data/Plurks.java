@@ -1,5 +1,7 @@
 package idv.funnybrain.plurkchat.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +13,7 @@ import java.util.*;
 /**
  * Created by Freeman on 2014/4/8.
  */
-public class Plurks {
+public class Plurks implements Parcelable {
     private int responses_seen = 0;
     private Qualifier qualifier = Qualifier.NULL;
     private List<String> replurkers = new ArrayList<String>();
@@ -33,7 +35,7 @@ public class Plurks {
     private boolean replurked = false;
     private boolean favorite = false;
     private String content = "";
-    private String replurker_id = "";
+    private String replurker_id = "null";
     private String posted = "";
     private String owner_id = "";
 
@@ -96,7 +98,7 @@ public class Plurks {
     }
 
     public String getReadablePostedDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("E,dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
         try {
             Date last_posted_date = sdf.parse(posted);
             Calendar calendar = Calendar.getInstance();
@@ -128,4 +130,111 @@ public class Plurks {
             return posted;
         }
     }
+
+    public String getReplurker_id() {
+        return replurker_id;
+    }
+
+    public int getResponse_count() {
+        return response_count;
+    }
+
+    public static final Parcelable.Creator<Plurks> CREATOR = new Parcelable.Creator<Plurks>() {
+        public Plurks createFromParcel(Parcel in) {
+            return new Plurks(in);
+        }
+
+        @Override
+        public Plurks[] newArray(int size) {
+            return new Plurks[size];
+        }
+    };
+
+    private Plurks(Parcel in) {
+        responses_seen = in.readInt();
+        qualifier = Qualifier.getQualifier(in.readString());
+        in.readStringList(replurkers);
+        plurk_id = in.readString();
+        response_count = in.readInt();
+        replurkers_count = in.readInt();
+        replurkable = in.readByte() != 0; // == true if byte != 0
+        limited_to = in.readString();
+        my_anonymous = in.readByte() != 0; // == true if byte != 0
+        no_comments = in.readInt();
+        favorite_count = in.readInt();
+        is_unread = in.readInt();
+        lang = Language.getLang(in.readString());
+        in.readStringList(favorers);
+        content_raw = in.readString();
+        user_id = in.readString();
+        plurk_type = in.readInt();
+        qualifier_translated = in.readString();
+        replurked = in.readByte() != 0; // == true if byte != 0
+        favorite = in.readByte() != 0; // == true if byte != 0
+        content = in.readString();
+        replurker_id = in.readString();
+        posted = in.readString();
+        owner_id = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(responses_seen);
+        dest.writeString(qualifier.toString());
+        dest.writeStringList(replurkers);
+        dest.writeString(plurk_id);
+        dest.writeInt(response_count);
+        dest.writeInt(replurkers_count);
+        dest.writeByte((byte)(replurkable ? 1: 0));
+        dest.writeString(limited_to);
+        dest.writeByte((byte)(my_anonymous ? 1 : 0));
+        dest.writeInt(no_comments);
+        dest.writeInt(favorite_count);
+        dest.writeInt(is_unread);
+        dest.writeString(lang.toString());
+        dest.writeStringList(favorers);
+        dest.writeString(content_raw);
+        dest.writeString(user_id);
+        dest.writeInt(plurk_type);
+        dest.writeString(qualifier_translated);
+        dest.writeByte((byte)(replurked ? 1 : 0));
+        dest.writeByte((byte)(favorite ? 1 : 0));
+        dest.writeString(content);
+        dest.writeString(replurker_id);
+        dest.writeString(posted);
+        dest.writeString(owner_id);
+    }
 }
+
+/*
+{
+            "replurkers_count": 0,
+            "replurkable": true,
+            "favorite_count": 0,
+            "is_unread": 0,
+            "content": "【文】《瓶據》。（盜筆‧瓶邪）",
+            "user_id": 5225678,
+            "plurk_type": 0,
+            "qualifier_translated": "說",
+            "replurked": false,
+            "favorers": [],
+            "replurker_id": null,
+            "owner_id": 4373060,
+            "responses_seen": 0,
+            "qualifier": "says",
+            "plurk_id": 1205214599,
+            "response_count": 10,
+            "limited_to": null,
+            "no_comments": 0,
+            "posted": "Wed, 16 Apr 2014 13:49:33 GMT",
+            "lang": "tr_ch",
+            "content_raw": "【文】《瓶據》。（盜筆‧瓶邪）",
+            "replurkers": [],
+            "favorite": false
+        }
+ */

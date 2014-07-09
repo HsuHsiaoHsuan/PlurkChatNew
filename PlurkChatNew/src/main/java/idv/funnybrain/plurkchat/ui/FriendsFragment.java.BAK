@@ -50,7 +50,7 @@ public class FriendsFragment extends SherlockFragment {
     private ImageFetcher mImageFetcher;
     // ---- local variable END ----
 
-    FriendsFragment newInstance() {
+    public static FriendsFragment newInstance() {
         if(D) { Log.d(TAG, "newInstance"); }
         FriendsFragment friendsFragment = new FriendsFragment();
         return friendsFragment;
@@ -102,10 +102,10 @@ public class FriendsFragment extends SherlockFragment {
         me = ((FunnyActivity) getActivity()).getMe();
         //new PlurkTmpAsyncTask().execute("");
         if(friends.size()>0) {
-            mAdapter = new FriendsListAdapter(getSherlockActivity(), friends, mImageFetcher);
+            mAdapter = new FriendsListAdapter(getSherlockActivity().getLayoutInflater(), friends, mImageFetcher);
             list.setAdapter(mAdapter);
         } else {
-            new Mod_FriendsFans_getFriendsByOffset_AsyncTask().execute(me.getId());
+            new Mod_FriendsFans_getFriendsByOffset_AsyncTask().execute(me.getHumanId());
         }
     }
 
@@ -143,7 +143,7 @@ public class FriendsFragment extends SherlockFragment {
             try {
                 do {
                     if(D) { Log.d(TAG, "Mod_FriendsFans_getFriendsByOffset_AsyncTask, while: " + round); }
-                    result = plurkOAuth.getModule(Mod_FriendsFans.class).getFriendsByOffset(me.getId(), 0 + 100 * round, 100);
+                    result = plurkOAuth.getModule(Mod_FriendsFans.class).getFriendsByOffset(me.getHumanId(), 0 + 100 * round, 100);
                     // CWT   7014485
                     // kero  4373060
                     // 6880391
@@ -168,7 +168,7 @@ public class FriendsFragment extends SherlockFragment {
                         tmp = "!!!!!!!!!!!!";
                     }
                     System.out.println(x + " " + tmp + " " +
-                            friends.get(x).getId() + " " +
+                            friends.get(x).getHumanId() + " " +
                             friends.get(x).getNick_name() + " " +
                             friends.get(x).getFull_name());
                 }
@@ -181,7 +181,24 @@ public class FriendsFragment extends SherlockFragment {
         protected void onPostExecute(List<Friend> friends) {
             super.onPostExecute(friends);
             FriendsFragment.this.friends = friends;
-            mAdapter = new FriendsListAdapter(getSherlockActivity(), friends, mImageFetcher);
+            mAdapter = new FriendsListAdapter(getSherlockActivity().getLayoutInflater(), friends, mImageFetcher);
+            // FIXME 在整個 layout 還沒出來的時候按下 back 會產生此錯誤。
+            /*
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at idv.funnybrain.plurkchat.ui.FriendsFragment$Mod_FriendsFans_getFriendsByOffset_AsyncTask.onPostExecute(FriendsFragment.java:184)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at idv.funnybrain.plurkchat.ui.FriendsFragment$Mod_FriendsFans_getFriendsByOffset_AsyncTask.onPostExecute(FriendsFragment.java:135)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.os.AsyncTask.finish(AsyncTask.java:631)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.os.AsyncTask.access$600(AsyncTask.java:177)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.os.AsyncTask$InternalHandler.handleMessage(AsyncTask.java:644)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.os.Handler.dispatchMessage(Handler.java:99)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.os.Looper.loop(Looper.java:137)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at android.app.ActivityThread.main(ActivityThread.java:4898)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at java.lang.reflect.Method.invokeNative(Native Method)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at java.lang.reflect.Method.invoke(Method.java:511)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:1006)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:773)
+            04-11 16:07:29.175: E/AndroidRuntime(31695): 	at dalvik.system.NativeStart.main(Native Method)
+            */
+
             list.setAdapter(mAdapter);
         }
     }

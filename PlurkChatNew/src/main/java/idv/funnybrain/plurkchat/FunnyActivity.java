@@ -3,20 +3,18 @@ package idv.funnybrain.plurkchat;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -25,33 +23,31 @@ import idv.funnybrain.plurkchat.data.Me;
 import idv.funnybrain.plurkchat.data.Qualifier;
 import idv.funnybrain.plurkchat.modules.Mod_Timeline;
 import idv.funnybrain.plurkchat.modules.Mod_Users;
-import idv.funnybrain.plurkchat.ui.ChatRoomsFragment;
-import idv.funnybrain.plurkchat.ui.FriendsFragment;
+import idv.funnybrain.plurkchat.ui.ChatRoomsFragment_v2;
+import idv.funnybrain.plurkchat.ui.MeFriendsFollowingFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.scribe.model.Token;
-import org.scribe.model.Verifier;
-import org.scribe.oauth.OAuthService;
 
 public class FunnyActivity extends SherlockFragmentActivity {
     // ---- constant START ----
-    private static final boolean D = false;
-    private static final String TAG = "FunnyActivity";
+    static final boolean D = false;
+    static final String TAG = "FunnyActivity";
 
-    private final static int HANDLER_SHOW_AUTH_URL = 0;
-    private final static int HANDLER_GET_ACCESS_TOKEN_OK = HANDLER_SHOW_AUTH_URL + 1;
-    private final static int HANDLER_GET_SELF_OK = HANDLER_GET_ACCESS_TOKEN_OK +1;
+    final static int HANDLER_SHOW_AUTH_URL = 0;
+    final static int HANDLER_GET_ACCESS_TOKEN_OK = HANDLER_SHOW_AUTH_URL + 1;
+    final static int HANDLER_GET_SELF_OK = HANDLER_GET_ACCESS_TOKEN_OK +1;
     // ---- constant END ----
 
     // ---- local variable START ----
-    private static PlurkOAuth plurkOAuth;
-    private OAuthService service;
-    private Token requestToken;
+    static PlurkOAuth plurkOAuth;
+//    private OAuthService service;
+//    private Token requestToken;
     private Token accessToken;
     private Handler handler;
-    private Verifier verifier;
+//    private Verifier verifier;
 
-    private Me me;
+    public static Me me;
     // ---- local variable END ----
     //
 
@@ -59,6 +55,9 @@ public class FunnyActivity extends SherlockFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_funny);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Button bt_getAuth = (Button) findViewById(R.id.bt_getAuth);
         bt_getAuth.setOnClickListener(new View.OnClickListener() {
@@ -86,9 +85,11 @@ public class FunnyActivity extends SherlockFragmentActivity {
                     case HANDLER_GET_ACCESS_TOKEN_OK:
                         if(D) { Log.d(TAG, "HANDLER_GET_ACCESS_TOKEN"); }
                         //setContentView(R.layout.empty);
-                        findViewById(R.id.fragment_content).setVisibility(View.VISIBLE);
+
                         //new PlurkTmpAsyncTask().execute("");
                         // should get user self
+
+
                         new Mod_Users_me_AsyncTask().execute("");
 
                         //doTest();
@@ -97,22 +98,35 @@ public class FunnyActivity extends SherlockFragmentActivity {
                         if(D) { Log.d(TAG, "HANDLER_GET_SELF_OK: " + me.getDisplay_name()); }
                         ActionBar actionBar = getSupportActionBar();
                         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-                        actionBar.setDisplayShowTitleEnabled(true);
+                        //actionBar.setDisplayShowTitleEnabled(true);
+                        findViewById(R.id.fragment_content).setVisibility(View.VISIBLE);
+                        findViewById(R.id.login_control).setVisibility(View.GONE);
 
-                        ActionBar.Tab tab = actionBar.newTab()
-                                .setText(R.string.tab_friends)
-                                .setTabListener(new TabListener<FriendsFragment>(
-                                        FunnyActivity.this, "friends", FriendsFragment.class
-                                ));
-                        actionBar.addTab(tab);
+//                        ActionBar.Tab tab = actionBar.newTab()
+//                                .setText(R.string.tab_friends)
+//                                .setTabListener(new TabListener<FriendsFragment>(
+//                                        FunnyActivity.this, "friends", FriendsFragment.class
+//                                ));
+//                        actionBar.addTab(tab);
 
                         actionBar.addTab(
                                 actionBar.newTab()
-                                        .setText(R.string.tab_chatrooms)
-                                        .setTabListener(new TabListener<ChatRoomsFragment>(
-                                                FunnyActivity.this, "rooms", ChatRoomsFragment.class
+//                                        .setText(R.string.tab_friends)
+                                        .setTabListener(new TabListener<MeFriendsFollowingFragment>(
+                                                FunnyActivity.this, "me_friend_following", MeFriendsFollowingFragment.class
                                         ))
+                                        .setIcon(R.drawable.ic_launcher_v1)
                         );
+
+                        actionBar.addTab(
+                                actionBar.newTab()
+//                                        .setText(R.string.tab_chatrooms)
+                                        .setTabListener(new TabListener<ChatRoomsFragment_v2>(
+                                                FunnyActivity.this, "rooms", ChatRoomsFragment_v2.class
+                                        ))
+                                        .setIcon(R.drawable.ic_launcher_v1)
+                        );
+
                         break;
                 }
             }
@@ -131,7 +145,11 @@ public class FunnyActivity extends SherlockFragmentActivity {
 
             if(savedInstanceState != null) {
                 getSupportActionBar().setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
+                // FIXME
+                // rotation, setRetainInstance?
             }
+        } else {
+            findViewById(R.id.login_control).setVisibility(View.VISIBLE);
         }
     }
 
@@ -285,12 +303,14 @@ public class FunnyActivity extends SherlockFragmentActivity {
             } else {
                 ft.attach(fragment);
             }
+            tab.setIcon(R.drawable.ic_launcher);
         }
 
         @Override
         public void onTabUnselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
             if(fragment != null) {
                 ft.detach(fragment);
+                tab.setIcon(R.drawable.ic_launcher_v1);
             }
         }
 

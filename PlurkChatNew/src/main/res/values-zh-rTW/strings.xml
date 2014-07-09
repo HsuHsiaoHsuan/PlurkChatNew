@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Plurk Chat</string>
+    <string name="app_name">噗浪魚</string>
 
     <!-- Image Cache START -->
     <string name="clear_cache_menu">清除快取</string>
@@ -9,12 +9,20 @@
     <string name="no_network_connection_toast">沒有網路連線</string>
     <!-- Image Cache END -->
 
-    <!-- FriendsFragment START -->
+    <!-- FunnyActivity START -->
     <string name="tab_friends">朋友</string>
-    <string name="tab_chatrooms">聊天室</string>
-    <!-- FriendsFragment END -->
+    <string name="tab_chatrooms">聊天</string>
+    <!-- FunnyActivity END -->
+
+    <!-- MeFriendsFollowingFragment START -->
+    <string name="me">我</string>
+    <string name="friend">朋友</string>
+    <string name="following">關注</string>
+    <string name="fans">粉絲</string>
+    <!-- MeFriendsFollowingFragment END -->
 
     <!-- ChatRoomFragment START -->
     <string name="oldest_post">最舊貼文</string>
+    <string name="response">回覆：</string>
     <!-- ChatRoomFragment END -->
 </resources>

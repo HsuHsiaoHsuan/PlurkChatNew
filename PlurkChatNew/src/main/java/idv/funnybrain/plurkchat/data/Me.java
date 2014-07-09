@@ -6,7 +6,7 @@ import org.json.JSONObject;
 /**
  * Created by Freeman on 2014/4/3.
  */
-public class Me {
+public class Me implements IHuman{
     private String location = null;
     private boolean verified_account = false;
     private int recruited = 0;
@@ -82,11 +82,46 @@ public class Me {
         if(!me.isNull("page_title"))                { page_title = me.getString("page_title"); }
     }
 
-    public String getId() {
-        return id;
-    }
+//    public String getId() {
+//        return id;
+//    }
 
     public String getDisplay_name() {
         return display_name;
+    }
+
+    @Override
+    public String getHumanId() {
+        return id;
+    }
+
+    @Override
+    public String getHumanName() {
+        if(!display_name.equals("") && !display_name.equals("null")) {
+            return display_name;
+        } else if(!full_name.equals("") && !full_name.equals("null")) {
+            return full_name;
+        } else {
+            return nick_name;
+        }
+    }
+
+    @Override
+    public String getHumanImage() {
+        String imgURL = "http://www.plurk.com/static/default_big.gif";
+        if(has_profile_image>0) {
+
+            if(avatar.equals("null")) {
+                imgURL = "http://avatars.plurk.com/" + id + "-big.jpg";
+            } else {
+                if(avatar.equals("0")) { avatar = ""; }
+                imgURL = "http://avatars.plurk.com/" + id + "-big" + avatar + ".jpg";
+            }
+        }
+        return imgURL;
+    }
+
+    public String getAbout() {
+        return about;
     }
 }

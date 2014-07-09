@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Plurk Chat</string>
+    <string name="app_name">Plurk Fish</string>
 
     <!-- Image Cache START -->
     <string name="clear_cache_menu">Clear Caches</string>
@@ -9,12 +9,20 @@
     <string name="no_network_connection_toast">No network connection found</string>
     <!-- Image Cache END -->
 
-    <!-- FriendsFragment START -->
+    <!-- FunnyActivity START -->
     <string name="tab_friends">Friends</string>
-    <string name="tab_chatrooms">Chat Rooms</string>
-    <!-- FriendsFragment END -->
+    <string name="tab_chatrooms">Chatting</string>
+    <!-- FunnyActivity END -->
+
+    <!-- MeFriendsFollowingFragment START -->
+    <string name="me">Me</string>
+    <string name="friend">Friends</string>
+    <string name="following">Following</string>
+    <string name="fans">Fans</string>
+    <!-- MeFriendsFollowingFragment END -->
 
     <!-- ChatRoomFragment START -->
     <string name="oldest_post">Oldest Post</string>
+    <string name="response">Responses:</string>
     <!-- ChatRoomFragment END -->
 </resources>
