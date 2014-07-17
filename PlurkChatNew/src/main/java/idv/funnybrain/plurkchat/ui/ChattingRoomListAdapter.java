@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.FunnyActivity;
 import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.data.Friend;
@@ -35,8 +36,6 @@ public class ChattingRoomListAdapter extends BaseAdapter {
     private HashMap<String, Friend> friends;
     private List<Responses> responses;
     private ImageFetcher mImageFetcher;
-//    private String my_Id;
-    private Me me;
     // ---- local variable END ----
 
 //    public ChattingRoomListAdapter(LayoutInflater inflater, HashMap<String, Friend> fri, List<Responses> res, ImageFetcher imageFetcher, String my_id) {
@@ -45,9 +44,6 @@ public class ChattingRoomListAdapter extends BaseAdapter {
         this.friends = fri;
         this.responses = res;
         this.mImageFetcher = imageFetcher;
-//        this.my_Id = my_id;
-        //this.me = (new FunnyActivity()).getMe();
-        this.me = FunnyActivity.me;
 
         if(D) {
             Iterator<Friend> tmp_friend = friends.values().iterator();
@@ -110,12 +106,12 @@ public class ChattingRoomListAdapter extends BaseAdapter {
 
         holder.tv_id.setText(resp.getId());
         String msg_user_id = resp.getUser_id();
-        if(msg_user_id.equals(me.getHumanId())) {
+        if(msg_user_id.equals(DataCentral.getInstance().getMe().getHumanId())) {
             // if the poster is myself
-            mImageFetcher.loadImage(me.getHumanImage(), holder.iv_rightImage);
+            mImageFetcher.loadImage(DataCentral.getInstance().getMe().getHumanId(), holder.iv_rightImage);
             holder.iv_rightImage.setVisibility(View.VISIBLE);
             holder.iv_leftImage.setVisibility(View.GONE);
-            holder.tv_poster_name.setText(me.getDisplay_name());
+            holder.tv_poster_name.setText(DataCentral.getInstance().getMe().getDisplay_name());
             holder.tv_poster_name.setGravity(Gravity.RIGHT);
         } else {
             // if the poster is others

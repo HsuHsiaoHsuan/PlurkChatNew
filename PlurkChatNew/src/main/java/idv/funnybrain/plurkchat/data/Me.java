@@ -6,7 +6,7 @@ import org.json.JSONObject;
 /**
  * Created by Freeman on 2014/4/3.
  */
-public class Me implements IHuman{
+public class Me implements IHuman {
     private String location = null;
     private boolean verified_account = false;
     private int recruited = 0;

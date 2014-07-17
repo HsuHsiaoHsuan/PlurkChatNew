@@ -18,10 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
-import idv.funnybrain.plurkchat.FunnyActivity;
-import idv.funnybrain.plurkchat.PlurkOAuth;
-import idv.funnybrain.plurkchat.R;
-import idv.funnybrain.plurkchat.RequestException;
+import idv.funnybrain.plurkchat.*;
 import idv.funnybrain.plurkchat.data.*;
 import idv.funnybrain.plurkchat.modules.Mod_Responses;
 import idv.funnybrain.plurkchat.utils.ImageCache;
@@ -43,8 +40,6 @@ public class ChattingRoomFragment extends SherlockFragment {
     private static final boolean D = true;
     private static final String TAG = "ChattingRoomFragment";
 
-    private static final String IMAGE_CACHE_DIR = "thumbnails";
-
     protected boolean mPause = false;
     private final Object mPauseLock = new Object();
 
@@ -55,7 +50,7 @@ public class ChattingRoomFragment extends SherlockFragment {
     // ---- local variable START ----
     private static PlurkOAuth plurkOAuth;
     private String chatting_plurk_id;
-    private Me me;
+    // private Me me;
     private ListView list;
     private ChattingRoomListAdapter mAdapter;
     private Plurks original_post;
@@ -111,7 +106,7 @@ public class ChattingRoomFragment extends SherlockFragment {
         }
 
         ImageCache.ImageCacheParams cacheParams =
-                new ImageCache.ImageCacheParams(getSherlockActivity(), IMAGE_CACHE_DIR);
+                new ImageCache.ImageCacheParams(getSherlockActivity(), DataCentral.IMAGE_CACHE_DIR);
 
         mImageFetcher = new ImageFetcher(getSherlockActivity(), 100);
         mImageFetcher.setLoadingImage(R.drawable.default_plurk_avatar);
@@ -158,8 +153,9 @@ public class ChattingRoomFragment extends SherlockFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(D) { Log.d(TAG, "onActivityCreated"); }
-        plurkOAuth = ((FunnyActivity) getActivity()).getPlurkOAuth();
-        me = ((FunnyActivity) getActivity()).getMe();
+        // plurkOAuth = ((FunnyActivity) getActivity()).getPlurkOAuth();
+        plurkOAuth = DataCentral.getInstance().getPlurkOAuth();
+        // me = ((FunnyActivity) getActivity()).getMe();
 
         getResponses();
 //        if(this.responses.size() == 0) {

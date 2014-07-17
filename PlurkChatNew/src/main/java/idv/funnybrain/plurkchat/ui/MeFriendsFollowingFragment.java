@@ -12,13 +12,12 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ExpandableListView;
 import com.actionbarsherlock.app.SherlockFragment;
-import idv.funnybrain.plurkchat.FunnyActivity;
+import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.PlurkOAuth;
 import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.RequestException;
 import idv.funnybrain.plurkchat.data.Friend;
 import idv.funnybrain.plurkchat.data.IHuman;
-import idv.funnybrain.plurkchat.data.Me;
 import idv.funnybrain.plurkchat.modules.Mod_FriendsFans;
 import idv.funnybrain.plurkchat.utils.ImageCache;
 import idv.funnybrain.plurkchat.utils.ImageFetcher;
@@ -35,7 +34,6 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
     // ---- constant variable START ----
     private static final boolean D = true;
     private static final String TAG = "MeFriendsFollowingFragment";
-    private static final String IMAGE_CACHE_DIR = "thumbnails";
     protected boolean mPause = false;
     private final Object mPauseLock = new Object();
 
@@ -44,11 +42,7 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
     // ---- constant variable END ----
 
     // ---- local variable START ----
-    private static PlurkOAuth plurkOAuth;
-    static Me me;
     private ExpandableListView list;
-//    private List<Friend> friends;
-//    private FriendsListAdapter mAdapter;
     // ---- local variable END ----
 
     // ---- static variable START ----
@@ -70,7 +64,7 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
         if(D) { Log.d(TAG, "onCreate"); }
 
         ImageCache.ImageCacheParams cacheParams =
-                new ImageCache.ImageCacheParams(getSherlockActivity(), IMAGE_CACHE_DIR);
+                new ImageCache.ImageCacheParams(getSherlockActivity(), DataCentral.IMAGE_CACHE_DIR);
 
         mImageFetcher = new ImageFetcher(getSherlockActivity(), Integer.MAX_VALUE);
         mImageFetcher.setLoadingImage(R.drawable.default_plurk_avatar);
@@ -113,14 +107,12 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(D) { Log.d(TAG, "onCreateView"); }
-        plurkOAuth = ((FunnyActivity) getActivity()).getPlurkOAuth();
-        me = ((FunnyActivity) getActivity()).getMe();
 
         if(group_list.size()>0 && child_list.size()>0) {
         } else {
             group_list.add(0, getString(R.string.me));
             ArrayList<IHuman> me_list = new ArrayList<IHuman>();
-            me_list.add(me);
+            me_list.add(DataCentral.getInstance().getMe());
             child_list.add(0, me_list);
             mAdapter = new MeFriendsFollowingExpandableListAdapter(getSherlockActivity().getLayoutInflater(), group_list, child_list, mImageFetcher);
             list.setAdapter(mAdapter);
@@ -238,7 +230,8 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
             try {
                 do {
                     if(D) { Log.d(TAG, "Mod_FriendsFans_getFriendsByOffset_AsyncTask, while: " + round); }
-                    result = plurkOAuth.getModule(Mod_FriendsFans.class).getFriendsByOffset(me.getHumanId(), 0 + 100 * round, 100);
+                    // result = plurkOAuth.getModule(Mod_FriendsFans.class).getFriendsByOffset(me.getHumanId(), 0 + 100 * round, 100);
+                    result = DataCentral.getInstance().getPlurkOAuth().getModule(Mod_FriendsFans.class).getFriendsByOffset(DataCentral.getInstance().getMe().getHumanId(), 0 + 100 * round, 100);
                     // CWT   7014485
                     // kero  4373060
                     // 6880391
@@ -313,7 +306,7 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
             try {
                 do {
                     if(D) { Log.d(TAG, "Mod_FriendsFans_getFriendsByOffset_AsyncTask, while: " + round); }
-                    result = plurkOAuth.getModule(Mod_FriendsFans.class).getFollowingByOffset(0 + 100 * round, 100);
+                    result = DataCentral.getInstance().getPlurkOAuth().getModule(Mod_FriendsFans.class).getFollowingByOffset(0 + 100 * round, 100);
 
                     result_size = result.length();
                     for (int x = 0; x < result_size; x++) {

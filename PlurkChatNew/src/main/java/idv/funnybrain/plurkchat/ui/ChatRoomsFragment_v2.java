@@ -19,7 +19,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.diegocarloslima.fgelv.lib.FloatingGroupExpandableListView;
 import com.diegocarloslima.fgelv.lib.WrapperExpandableListAdapter;
-import idv.funnybrain.plurkchat.FunnyActivity;
+import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.PlurkOAuth;
 import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.RequestException;
@@ -32,7 +32,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by Freeman on 2014/4/16.
@@ -254,7 +257,8 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(D) { Log.d(TAG, "onActivityCreated"); }
-        plurkOAuth = ((FunnyActivity) getActivity()).getPlurkOAuth();
+        // plurkOAuth = ((FunnyActivity) getActivity()).getPlurkOAuth();
+        plurkOAuth = DataCentral.getInstance().getPlurkOAuth();
         getPlurks(null);
     }
 
