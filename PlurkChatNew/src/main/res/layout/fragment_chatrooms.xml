@@ -20,14 +20,14 @@
             android:visibility="gone"
             android:layout_alignParentBottom="true"/>
 
-    <com.diegocarloslima.fgelv.lib.FloatingGroupExpandableListView
-            android:id="@+id/elv_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:groupIndicator="@null"
-            android:layout_below="@id/et_search"
-            android:layout_above="@id/bt_more"/>
-    <!--
+    <!--<com.diegocarloslima.fgelv.lib.FloatingGroupExpandableListView-->
+            <!--android:id="@+id/elv_list"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:groupIndicator="@null"-->
+            <!--android:layout_below="@id/et_search"-->
+            <!--android:layout_above="@id/bt_more"/>-->
+
     <ExpandableListView
             android:id="@+id/elv_list"
             android:layout_width="match_parent"
@@ -35,6 +35,5 @@
             android:groupIndicator="@null"
             android:layout_below="@id/et_search"
             android:layout_above="@id/bt_more"/>
-    -->
 
 </RelativeLayout>
