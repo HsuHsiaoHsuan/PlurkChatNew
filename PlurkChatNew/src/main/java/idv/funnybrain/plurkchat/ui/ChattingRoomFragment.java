@@ -18,6 +18,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import idv.funnybrain.plurkchat.*;
 import idv.funnybrain.plurkchat.data.*;
 import idv.funnybrain.plurkchat.modules.Mod_Responses;
@@ -27,10 +34,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by Freeman on 2014/4/11.
@@ -154,7 +159,7 @@ public class ChattingRoomFragment extends SherlockFragment {
         super.onActivityCreated(savedInstanceState);
         if(D) { Log.d(TAG, "onActivityCreated"); }
         // plurkOAuth = ((FunnyActivity) getActivity()).getPlurkOAuth();
-        plurkOAuth = DataCentral.getInstance().getPlurkOAuth();
+        plurkOAuth = DataCentral.getInstance(getSherlockActivity()).getPlurkOAuth();
         // me = ((FunnyActivity) getActivity()).getMe();
 
         getResponses();
@@ -201,12 +206,22 @@ public class ChattingRoomFragment extends SherlockFragment {
 
             @Override
             public void onLoadFinished(Loader<JSONObject> loader, JSONObject data) {
+                JsonFactory factory = new JsonFactory();
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+                mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
                 try {
                     JSONObject obj_friends = data.getJSONObject("friends");
                     Iterator<String> iterator = obj_friends.keys();
                     while (iterator.hasNext()) {
                         String idx = iterator.next();
-                        friends.put(idx, new Friend(obj_friends.getJSONObject(idx)));
+                        // FIXME
+                        //friends.put(idx, new Friend( obj_friends.getJSONObject(idx)));
+                        JsonParser parser = factory.createParser(obj_friends.getJSONObject(idx).toString());
+                        Friend tmp = mapper.readValue(parser, Friend.class);
+                        friends.put(idx, tmp);
+
                         if (D) { Log.d(TAG, "friends length: " + friends.size()); }
                     }
 
@@ -218,6 +233,12 @@ public class ChattingRoomFragment extends SherlockFragment {
                         if(D) { Log.d(TAG, "responses: " + response.getContent()); }
                     }
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (JsonMappingException e) {
+                    e.printStackTrace();
+                } catch (JsonParseException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
@@ -310,13 +331,23 @@ public class ChattingRoomFragment extends SherlockFragment {
         @Override
         protected void onPostExecute(JSONObject object) {
             super.onPostExecute(object);
+            JsonFactory factory = new JsonFactory();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
             try {
                 JSONObject obj_friends = object.getJSONObject("friends");
                 Iterator<String> iterator = obj_friends.keys();
                 while(iterator.hasNext()) {
                     String idx = iterator.next();
-                    ChattingRoomFragment.this.friends.put(idx, new Friend(obj_friends.getJSONObject(idx)));
+                    // FIXME
+                    // ChattingRoomFragment.this.friends.put(idx, new Friend(obj_friends.getJSONObject(idx)));
+                    JsonParser parser = factory.createParser(obj_friends.getJSONObject(idx).toString());
+                    Friend tmp = mapper.readValue(parser, Friend.class);
+                    friends.put(idx, tmp);
+
+
                     if(D) { Log.d(TAG, "length: " + ChattingRoomFragment.this.friends.size()); }
                 }
 
@@ -327,6 +358,12 @@ public class ChattingRoomFragment extends SherlockFragment {
                     ChattingRoomFragment.this.responses.add(response);
                 }
             } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                e.printStackTrace();
+            } catch (JsonParseException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 

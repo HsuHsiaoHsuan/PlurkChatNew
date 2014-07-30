@@ -61,7 +61,7 @@ public class FunnyActivity extends SherlockFragmentActivity {
         bt_getAuth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Async_Login().execute("");
+                new Async_Login(FunnyActivity.this).execute("");
             }
         });
 
@@ -74,9 +74,9 @@ public class FunnyActivity extends SherlockFragmentActivity {
         String secret = pref.getString("secret", "nothing");
         if( (!key.equals("nothing")) && (!secret.equals("nothing")) ) {
             accessToken = new Token(key, secret);
-            DataCentral.getInstance().setPlurkOAuth(new PlurkOAuth(accessToken));
+            DataCentral.getInstance(this).setPlurkOAuth(new PlurkOAuth(accessToken));
 
-            new Async_Users_Me().execute("");
+            new Async_Users_Me(FunnyActivity.this).execute("");
 
             if(savedInstanceState != null) {
                 getSupportActionBar().setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
@@ -121,11 +121,11 @@ public class FunnyActivity extends SherlockFragmentActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new PlurkAuthWebViewClient());
         webView.loadUrl(event.getPlurkOAuth().getAuthURL());
-        DataCentral.getInstance().setPlurkOAuth(event.getPlurkOAuth());
+        DataCentral.getInstance(this).setPlurkOAuth(event.getPlurkOAuth());
     }
 
     public void onEventMainThread(Event_GetAccessToken event) {
-        new Async_Users_Me().execute("");
+        new Async_Users_Me(this).execute("");
     }
 
     public void onEventMainThread(Event_Users_Me event) {
@@ -185,7 +185,7 @@ public class FunnyActivity extends SherlockFragmentActivity {
         protected JSONObject doInBackground(String... params) {
             JSONObject result = null;
             try {
-                result = DataCentral.getInstance().getPlurkOAuth().getModule(Mod_Timeline.class)
+                result = DataCentral.getInstance(FunnyActivity.this).getPlurkOAuth().getModule(Mod_Timeline.class)
                         .plurkAdd("(wave)(wave)(wave)"+ Math.random(), Qualifier.SAYS, null, 0, Language.TR_CH);
             } catch (RequestException e) {
                 e.printStackTrace();

@@ -18,7 +18,7 @@ public class Async_GetAccessToken extends AsyncTask<String, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(String... params) {
-        return DataCentral.getInstance().getPlurkOAuth().setAccessToken(mContext, params[0]);
+        return DataCentral.getInstance(mContext).getPlurkOAuth().setAccessToken(mContext, params[0]);
     }
 
     @Override

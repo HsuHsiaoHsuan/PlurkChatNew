@@ -11,20 +11,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.HttpAuthHandler;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
-import com.diegocarloslima.fgelv.lib.FloatingGroupExpandableListView;
-import com.diegocarloslima.fgelv.lib.WrapperExpandableListAdapter;
+// import com.diegocarloslima.fgelv.lib.FloatingGroupExpandableListView;
+// import com.diegocarloslima.fgelv.lib.WrapperExpandableListAdapter;
+import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.PlurkOAuth;
 import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.RequestException;
+import idv.funnybrain.plurkchat.asynctask.Async_Timeline_GetPlurks;
 import idv.funnybrain.plurkchat.data.Plurk_Users;
 import idv.funnybrain.plurkchat.data.Plurks;
+import idv.funnybrain.plurkchat.eventbus.Event_GetPlurks;
 import idv.funnybrain.plurkchat.modules.Mod_Timeline;
 import idv.funnybrain.plurkchat.utils.ImageCache;
 import idv.funnybrain.plurkchat.utils.ImageFetcher;
@@ -32,10 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Freeman on 2014/4/16.
@@ -53,12 +54,12 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     private static final int LOADER_ID_GET_PLURKS = 0;
     private static final String HAS_PARAMS = "hasParams";
 
-    private static final String OFFSET = "offset";
-    private static final String LIMIT = "limit";
-    private static final String FILTER = "filter";
-    private static final String FAVORERS_DETAIL = "favorers_detail";
-    private static final String LIMITED_DETAIL = "limited_detail";
-    private static final String REPLURKERS_DETAIL = "replurkers_detail";
+    public static final String OFFSET = "offset";
+    public static final String LIMIT = "limit";
+    public static final String FILTER = "filter";
+    public static final String FAVORERS_DETAIL = "favorers_detail";
+    public static final String LIMITED_DETAIL = "limited_detail";
+    public static final String REPLURKERS_DETAIL = "replurkers_detail";
     // ---- constant variable END ----
 
     // ---- local variable START ----
@@ -77,92 +78,6 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     private HashMap<String, List<Plurks>> plurks;
     private String oldest_posted_readable = "";
     private String oldest_posted = "null";
-
-    private LoaderManager.LoaderCallbacks<JSONObject> getPlurks_Callback = new LoaderManager.LoaderCallbacks<JSONObject>() {
-        @Override
-        public Loader<JSONObject> onCreateLoader(int id, Bundle args) {
-            HashMap<String, String> params = new HashMap<String, String>();
-            if(args.getBoolean(HAS_PARAMS)) {
-                if(args.containsKey(OFFSET)) {
-                    params.put(OFFSET, args.getString(OFFSET));
-                }
-            } else {
-            }
-            return new Mod_Timeline_getPlurks_AsyncTaskLoader(getSherlockActivity(), params);
-        }
-
-        @Override
-        public void onLoadFinished(Loader<JSONObject> loader, JSONObject data) {
-
-            try {
-                JSONObject obj_plurk_users = data.getJSONObject("plurk_users");
-                Iterator<String> iterator = obj_plurk_users.keys();
-                while (iterator.hasNext()) {
-                    String idx = iterator.next();
-                    plurk_users.put(idx, new Plurk_Users(obj_plurk_users.getJSONObject(idx)));
-                    if(D) { Log.d(TAG, "plurk_users length: " + plurk_users.keySet()); }
-                }
-
-                JSONArray obj_plurks = data.getJSONArray("plurks");
-                int obj_plurks_size = obj_plurks.length();
-                for (int x = 0; x < obj_plurks_size; x++) {
-                    Plurks post = new Plurks(obj_plurks.getJSONObject(x)); // get the post
-
-                    String post_or_repost_id = post.getReplurker_id().equals("null") ? post.getOwner_id() : post.getReplurker_id();
-                    if(plurks.containsKey(post_or_repost_id)) {
-                        List<Plurks> tmp_list = plurks.get(post_or_repost_id);
-                        boolean alreadyHas = false;
-                        for(Plurks p: tmp_list) { // check if we already has this post.
-                            if(p.getPlurk_id().equals(post.getPlurk_id())) {
-                                alreadyHas = true;
-                            }
-                        }
-                        if(!alreadyHas) {
-                            plurks.get(post_or_repost_id).add(post);
-                        }
-                    } else {
-                        List<Plurks> tmp_list = new ArrayList<Plurks>();
-                        tmp_list.add(post);
-                        plurks.put(post_or_repost_id, tmp_list);
-                    }
-                }
-
-                Plurks oldest_plurk = new Plurks(obj_plurks.getJSONObject(obj_plurks_size-1));
-                oldest_posted_readable = oldest_plurk.getReadablePostedDate();
-                oldest_posted = oldest_plurk.getQueryFormatedPostedDate();
-
-                if(D) { Log.d(TAG, "plurks: " + obj_plurks_size); }
-            } catch(JSONException jsone) {
-                Log.e(TAG, jsone.getMessage());
-            }
-
-            if(D) {
-                Iterator<String> iter = plurks.keySet().iterator();
-                while (iter.hasNext()) {
-                    String key = iter.next();
-                    List list = plurks.get(key);
-                    Log.d(TAG, "who?" + key + " has list size: " + list.size());
-                }
-            }
-            if(mAdapter == null) {
-                mAdapter = new ChatRoomExpandableListAdapter_v2(getSherlockActivity().getLayoutInflater(), plurk_users, plurks, mImageFetcher);
-                list.setAdapter(mAdapter);
-                // WrapperExpandableListAdapter wrapperAdapter = new WrapperExpandableListAdapter(mAdapter);
-                // list.setAdapter(wrapperAdapter);
-            } else {
-                //mAdapter.addNewData(plurk_users, plurks);
-                ((ChatRoomExpandableListAdapter_v2) mAdapter).addNewData();
-            }
-            bt_more.setVisibility(View.VISIBLE);
-            bt_more.setEnabled(true);
-            bt_more.setText(getString(R.string.oldest_post) + "\n" + oldest_posted_readable);
-        }
-
-        @Override
-        public void onLoaderReset(Loader<JSONObject> loader) {
-
-        }
-    };
     // ---- local variable END ----
 
     public static ChatRoomsFragment_v2 newInstance() {
@@ -220,10 +135,10 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
                     params.put(OFFSET, oldest_posted);
                     getPlurks(params);
                 } else {
-                    Bundle bundle = new Bundle();
-                    bundle.putBoolean(HAS_PARAMS, true);
-                    bundle.putString(OFFSET, oldest_posted);
-                    manager.restartLoader(LOADER_ID_GET_PLURKS, bundle, getPlurks_Callback).forceLoad();
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put(HAS_PARAMS, "true");
+                    params.put(OFFSET, oldest_posted);
+                    new Async_Timeline_GetPlurks(getSherlockActivity(), params).forceLoad();
                 }
                 bt_more.setEnabled(false);
             }
@@ -245,9 +160,9 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
         });
 
         if(mAdapter != null) {
-            // list.setAdapter(mAdapter);
-            WrapperExpandableListAdapter wrapperAdapter = new WrapperExpandableListAdapter(mAdapter);
-            list.setAdapter(wrapperAdapter);
+            list.setAdapter(mAdapter);
+            // WrapperExpandableListAdapter wrapperAdapter = new WrapperExpandableListAdapter(mAdapter);
+            // list.setAdapter(wrapperAdapter);
         }
 
         return v;
@@ -258,7 +173,7 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
         super.onActivityCreated(savedInstanceState);
         if(D) { Log.d(TAG, "onActivityCreated"); }
         // plurkOAuth = ((FunnyActivity) getActivity()).getPlurkOAuth();
-        plurkOAuth = DataCentral.getInstance().getPlurkOAuth();
+        plurkOAuth = DataCentral.getInstance(getSherlockActivity()).getPlurkOAuth();
         getPlurks(null);
     }
 
@@ -266,6 +181,8 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     public void onResume() {
         super.onResume();
         if(D) { Log.d(TAG, "onResume"); }
+        EventBus.getDefault().register(this);
+
         mImageFetcher.setExitTasksEarly(false);
         if(mAdapter != null) {
 //            list.setAdapter(mAdapter);
@@ -279,6 +196,8 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     public void onPause() {
         super.onPause();
         if(D) { Log.d(TAG, "onPause"); }
+        EventBus.getDefault().unregister(this);
+
         mImageFetcher.setPauseWork(false);
         mImageFetcher.setExitTasksEarly(true);
         mImageFetcher.flushCache();
@@ -292,99 +211,93 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     }
 
     void getPlurks(HashMap<String, String> args) {
-        HashMap<String, String> params = new HashMap<String, String>();
-        params = args;
         if(this.plurks.size() == 0) {
-            Bundle bundle = new Bundle();
+            HashMap<String, String> params = new HashMap<String, String>();
             if(args != null) {
-                bundle.putBoolean(HAS_PARAMS, true);
-                bundle.putString(OFFSET, oldest_posted);
+                params = args;
             } else {
-                bundle.putBoolean(HAS_PARAMS, false);
+                params.put(HAS_PARAMS, "false");
             }
-            getLoaderManager().initLoader(LOADER_ID_GET_PLURKS, bundle, getPlurks_Callback).forceLoad();
+            new Async_Timeline_GetPlurks(getSherlockActivity(), params).forceLoad();
         } else {
 //            setExpandableListAdapter();
         }
     }
 
 
-    // ---- static inner class START ----
-    static class Mod_Timeline_getPlurks_AsyncTaskLoader extends AsyncTaskLoader<JSONObject> {
-        HashMap<String, String> params;
+    public void onEventMainThread(Event_GetPlurks event) {
+        JSONObject data = event.getData();
 
-        public Mod_Timeline_getPlurks_AsyncTaskLoader(Context context, HashMap<String, String> params) {
-            super(context);
-            this.params = params;
+        Date post_date = new Date();
+
+        try {
+            JSONObject obj_plurk_users = data.getJSONObject("plurk_users");
+            Iterator<String> iterator = obj_plurk_users.keys();
+            while (iterator.hasNext()) {
+                String idx = iterator.next();
+                plurk_users.put(idx, new Plurk_Users(obj_plurk_users.getJSONObject(idx)));
+                if(D) { Log.d(TAG, "plurk_users length: " + plurk_users.keySet()); }
+            }
+
+            JSONArray obj_plurks = data.getJSONArray("plurks");
+            int obj_plurks_size = obj_plurks.length();
+            for (int x = 0; x < obj_plurks_size; x++) {
+                Plurks post = new Plurks(obj_plurks.getJSONObject(x)); // get the post
+
+                String post_or_repost_id = post.getReplurker_id().equals("null") ? post.getOwner_id() : post.getReplurker_id();
+                if(plurks.containsKey(post_or_repost_id)) {
+                    List<Plurks> tmp_list = plurks.get(post_or_repost_id);
+                    boolean alreadyHas = false;
+                    for(Plurks p: tmp_list) { // check if we already has this post.
+                        if(p.getPlurk_id().equals(post.getPlurk_id())) {
+                            alreadyHas = true;
+                        }
+                    }
+                    if(!alreadyHas) {
+                        plurks.get(post_or_repost_id).add(post);
+                    }
+                } else {
+                    List<Plurks> tmp_list = new ArrayList<Plurks>();
+                    tmp_list.add(post);
+                    plurks.put(post_or_repost_id, tmp_list);
+                }
+
+                if(post.getDate().before(post_date)) {
+                    oldest_posted_readable = post.getReadablePostedDate();
+                    oldest_posted = post.getQueryFormatedPostedDate();
+                    post_date = post.getDate();
+                }
+            }
+
+            // FIXME
+            // Plurks oldest_plurk = new Plurks(obj_plurks.getJSONObject(obj_plurks_size-1));
+            // oldest_posted_readable = oldest_plurk.getReadablePostedDate();
+            // oldest_posted = oldest_plurk.getQueryFormatedPostedDate();
+
+            if(D) { Log.d(TAG, "plurks: " + obj_plurks_size); }
+        } catch(JSONException jsone) {
+            Log.e(TAG, jsone.getMessage());
         }
 
-        @Override
-        public JSONObject loadInBackground() {
-            JSONObject result = null;
-
-            String offset = null;
-            int limit = 30;
-            String filter = null;
-            boolean favorers_detail = false;
-            boolean limited_detail = false;
-            boolean replurkers_detail = false;
-
-            if(params.containsKey(OFFSET)) {
-                offset = params.get(OFFSET);
-            }
-            if(params.containsKey(LIMIT)) {
-                String tmp = params.get(LIMIT);
-                limit = Integer.valueOf(tmp);
-            }
-            if(params.containsKey(FILTER)) {
-                filter = params.get(FILTER);
-            }
-            if(params.containsKey(FAVORERS_DETAIL)) {
-                String tmp = params.get(FAVORERS_DETAIL);
-                if(tmp.equals("true")) { favorers_detail = true; }
-            }
-            if(params.containsKey(LIMITED_DETAIL)) {
-                String tmp = params.get(LIMITED_DETAIL);
-                if(tmp.equals("true")) { limited_detail = true; }
-            }
-            if(params.containsKey(REPLURKERS_DETAIL)) {
-                String tmp = params.get(REPLURKERS_DETAIL);
-                if(tmp.equals("true")) { replurkers_detail = true; }
-            }
-
-            try {
-                result = plurkOAuth.getModule(Mod_Timeline.class).getPlurks(offset, limit, filter, favorers_detail, limited_detail, replurkers_detail);
-                return result;
-            } catch (RequestException e) {
-                Log.e(TAG, e.getMessage());
-                // e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        public void deliverResult(JSONObject data) {
-            if(isStarted()) {
-                super.deliverResult(data);
+        if(D) {
+            Iterator<String> iter = plurks.keySet().iterator();
+            while (iter.hasNext()) {
+                String key = iter.next();
+                List list = plurks.get(key);
+                Log.d(TAG, "who?" + key + " has list size: " + list.size());
             }
         }
-
-        @Override
-        protected void onStopLoading() {
-            super.onStopLoading();
-            cancelLoad();
+        if(mAdapter == null) {
+            mAdapter = new ChatRoomExpandableListAdapter_v2(getSherlockActivity().getLayoutInflater(), plurk_users, plurks, mImageFetcher);
+            list.setAdapter(mAdapter);
+            // WrapperExpandableListAdapter wrapperAdapter = new WrapperExpandableListAdapter(mAdapter);
+            // list.setAdapter(wrapperAdapter);
+        } else {
+            //mAdapter.addNewData(plurk_users, plurks);
+            ((ChatRoomExpandableListAdapter_v2) mAdapter).addNewData();
         }
-
-        @Override
-        public void onCanceled(JSONObject data) {
-            super.onCanceled(data);
-        }
-
-        @Override
-        protected void onReset() {
-            super.onReset();
-            onStopLoading();
-        }
+        bt_more.setVisibility(View.VISIBLE);
+        bt_more.setEnabled(true);
+        bt_more.setText(getString(R.string.oldest_post) + "\n" + oldest_posted_readable);
     }
-    // ---- static inner class END ----
 }

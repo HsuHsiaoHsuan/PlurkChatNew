@@ -16,6 +16,12 @@ android {
     compileSdkVersion 19
     buildToolsVersion '20'
 
+    packagingOptions {
+        pickFirst 'META-INF/ASL2.0'
+        pickFirst 'META-INF/LICENSE'
+        pickFirst 'META-INF/NOTICE'
+    }
+
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 19
@@ -33,12 +39,15 @@ android {
 dependencies {
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:19.0.+'
-    compile 'com.diegocarloslima:fgelv:0.1.+@aar'
-    compile 'de.greenrobot:eventbus:2.2.1'
-    // compile 'com.squareup:otto:1.3.4'
-    compile 'com.squareup.picasso:picasso:2.2.0'
+    // compile 'com.diegocarloslima:fgelv:0.1.+@aar'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.3.3'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.3.3'
+    // compile 'com.mcxiaoke.volley:library:1.0.6@aar'
     // compile 'com.makeramen:roundedimageview:1.2.4'
-    // compile 'se.emilsjolander:stickylistheaders:2.+'
+    // compile 'com.squareup:otto:1.3.4'
+    // compile 'com.squareup.picasso:picasso:2.2.0'
+    compile 'de.greenrobot:eventbus:2.2.1'
     compile 'org.scribe:scribe:1.3.5'
+    // compile 'se.emilsjolander:stickylistheaders:2.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

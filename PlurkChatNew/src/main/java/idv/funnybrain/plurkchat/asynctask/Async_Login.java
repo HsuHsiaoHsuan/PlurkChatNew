@@ -1,5 +1,6 @@
 package idv.funnybrain.plurkchat.asynctask;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
@@ -10,6 +11,12 @@ import idv.funnybrain.plurkchat.eventbus.Event_Login;
  * Created by freeman on 2014/7/16.
  */
 public class Async_Login extends AsyncTask<String, Void, String> {
+    private Context mContext;
+
+    public Async_Login(Context context) {
+        mContext = context;
+    }
+
     @Override
     protected String doInBackground(String... params) {
 
@@ -19,7 +26,7 @@ public class Async_Login extends AsyncTask<String, Void, String> {
 
         EventBus.getDefault().post(event);
 
-        DataCentral.getInstance().setPlurkOAuth(plurkOAuth);
+        DataCentral.getInstance(mContext).setPlurkOAuth(plurkOAuth);
 
         return "";
     }

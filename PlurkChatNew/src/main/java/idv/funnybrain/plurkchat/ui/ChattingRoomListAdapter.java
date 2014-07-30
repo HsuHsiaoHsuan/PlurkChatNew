@@ -107,13 +107,13 @@ public class ChattingRoomListAdapter extends BaseAdapter {
         holder.tv_id.setText(resp.getId());
         String msg_user_id = resp.getUser_id();
 
-        if(D) { Log.d(TAG, "~~~~~~~>" + DataCentral.getInstance().getMe().getDisplay_name()); }
-        if(msg_user_id.equals(DataCentral.getInstance().getMe().getHumanId())) {
+        if(D) { Log.d(TAG, "~~~~~~~>" + DataCentral.getInstance(parent.getContext()).getMe().getDisplay_name()); }
+        if(msg_user_id.equals(DataCentral.getInstance(parent.getContext()).getMe().getHumanId())) {
             // if the poster is myself
-            mImageFetcher.loadImage(DataCentral.getInstance().getMe().getHumanId(), holder.iv_rightImage);
+            mImageFetcher.loadImage(DataCentral.getInstance(parent.getContext()).getMe().getHumanId(), holder.iv_rightImage);
             holder.iv_rightImage.setVisibility(View.VISIBLE);
             holder.iv_leftImage.setVisibility(View.GONE);
-            holder.tv_poster_name.setText(DataCentral.getInstance().getMe().getDisplay_name());
+            holder.tv_poster_name.setText(DataCentral.getInstance(parent.getContext()).getMe().getDisplay_name());
             holder.tv_poster_name.setGravity(Gravity.RIGHT);
         } else {
             // if the poster is others

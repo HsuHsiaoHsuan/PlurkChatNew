@@ -115,6 +115,17 @@ public class Plurks implements Parcelable {
         }
     }
 
+    public Date getDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
+        try {
+            Date date = sdf.parse(posted);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return new Date();
+        }
+    }
+
     public String getQueryFormatedPostedDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("E,dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
         try {

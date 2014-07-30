@@ -1,5 +1,6 @@
 package idv.funnybrain.plurkchat.asynctask;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import de.greenrobot.event.EventBus;
@@ -18,13 +19,19 @@ public class Async_Users_Me extends AsyncTask<String, Void, JSONObject> {
     private static final String TAG = "Async_Users_Me";
     private static final boolean D = false;
 
+    private Context mContext;
+
+    public Async_Users_Me(Context context) {
+        mContext = context;
+    }
+
     @Override
     protected JSONObject doInBackground(String... params) {
         JSONObject result = null;
 
         try {
             // result = plurkOAuth.getModule(Mod_Users.class).me();
-            result = DataCentral.getInstance().getPlurkOAuth().getModule(Mod_Users.class).me();
+            result = DataCentral.getInstance(mContext).getPlurkOAuth().getModule(Mod_Users.class).me();
             if(D) { Log.d(TAG, "Mod_Users_me_AsyncTask: " + result.toString()); }
         } catch (RequestException e) {
             e.printStackTrace();
@@ -37,7 +44,7 @@ public class Async_Users_Me extends AsyncTask<String, Void, JSONObject> {
         super.onPostExecute(object);
         if(object != null) {
             try {
-                DataCentral.getInstance().setMe(new Me(object));
+                DataCentral.getInstance(mContext).setMe(new Me(object));
                 // me = new Me(object);
             } catch (JSONException e) {
                 e.printStackTrace();
