@@ -54,7 +54,8 @@ public class RequestMaker {
 
     public JSONObject getJSONObjectResult() throws RequestException {
         try {
-            return new JSONObject(requestResult());
+            String tmp = requestResult();
+            return new JSONObject(tmp);
         } catch (Exception e) {
             throw new RequestException(e);
         }

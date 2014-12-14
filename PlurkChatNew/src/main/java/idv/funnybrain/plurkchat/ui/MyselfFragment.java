@@ -5,13 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.actionbarsherlock.app.SherlockFragment;
 import idv.funnybrain.plurkchat.FunnyActivity;
 import idv.funnybrain.plurkchat.R;
 
 /**
  * Created by Freeman on 2014/4/3.
  */
-public class MyselfFragment extends Fragment {
+public class MyselfFragment extends SherlockFragment {
     MyselfFragment newInstance() {
         MyselfFragment myselfFragment = new MyselfFragment();
         return myselfFragment;

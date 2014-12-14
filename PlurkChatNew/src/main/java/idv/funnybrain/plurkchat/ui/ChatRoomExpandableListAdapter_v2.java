@@ -163,7 +163,7 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
         holder.tv_id.setText(plurk.getPlurk_id());
         holder.tv_title.setText(Html.fromHtml(plurk.getContent()));
         holder.tv_posted.setText(plurk.getReadablePostedDate());
-        holder.tv_count.setText(inflater.getContext().getString(R.string.response) + plurk.getResponse_count());
+        holder.tv_count.setText(String.valueOf(plurk.getResponse_count()));
         return rowView;
     }
 

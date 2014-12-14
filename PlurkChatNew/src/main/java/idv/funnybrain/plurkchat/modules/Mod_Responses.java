@@ -1,6 +1,7 @@
 package idv.funnybrain.plurkchat.modules;
 
 import idv.funnybrain.plurkchat.RequestException;
+import idv.funnybrain.plurkchat.data.Qualifier;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -37,8 +38,15 @@ public class Mod_Responses extends AbstractModule {
     }
 
     // Adds a responses to plurk_id. Language is inherited from the plurk.
-    public void responseAdd() {
+    public JSONObject responseAdd(String plurk_id, String content, Qualifier qualifier) throws RequestException {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("plurk_id", plurk_id));
+        params.add(new BasicNameValuePair("content", content));
+        if (qualifier == null) { qualifier = Qualifier.NULL; }
+        params.add(new BasicNameValuePair("qualifier", qualifier.toString()));
 
+        JSONObject result = requestAPI("responseAdd").args(params).getJSONObjectResult();
+        return result;
     }
 
     // Deletes a response. A user can delete own responses or responses that are posted to own plurks.

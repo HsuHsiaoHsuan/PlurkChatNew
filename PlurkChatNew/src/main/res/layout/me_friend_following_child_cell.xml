@@ -8,7 +8,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"/>
-    <ImageView
+    <!--<ImageView-->
+            <!--android:id="@+id/image"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--android:layout_margin="1dp"-->
+            <!--android:layout_alignParentLeft="true"/>-->
+    <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/image"
             android:layout_width="50dp"
             android:layout_height="50dp"

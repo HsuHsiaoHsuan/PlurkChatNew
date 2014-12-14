@@ -1,6 +1,7 @@
 package idv.funnybrain.plurkchat.ui;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +18,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragment;
 // import com.diegocarloslima.fgelv.lib.FloatingGroupExpandableListView;
 // import com.diegocarloslima.fgelv.lib.WrapperExpandableListAdapter;
@@ -81,7 +83,7 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     // ---- local variable END ----
 
     public static ChatRoomsFragment_v2 newInstance() {
-        if(D) { Log.d(TAG, "newInstance"); }
+        if (D) { Log.d(TAG, "newInstance"); }
         ChatRoomsFragment_v2 chatRoomsFragment = new ChatRoomsFragment_v2();
         return chatRoomsFragment;
     }
@@ -89,7 +91,7 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(D) { Log.d(TAG, "onCreate"); }
+        if (D) { Log.d(TAG, "onCreate"); }
 
         ImageCache.ImageCacheParams cacheParams =
                 new ImageCache.ImageCacheParams(getSherlockActivity(), IMAGE_CACHE_DIR);
@@ -104,7 +106,7 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if(D) { Log.d(TAG, "onCreateView"); }
+        if (D) { Log.d(TAG, "onCreateView"); }
         View v = inflater.inflate(R.layout.fragment_chatrooms, container, false);
         list = (ExpandableListView) v.findViewById(R.id.elv_list);
         // list = (FloatingGroupExpandableListView) v.findViewById(R.id.elv_list);
@@ -129,24 +131,31 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
         bt_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoaderManager manager = getLoaderManager();
-                if(manager.getLoader(LOADER_ID_GET_PLURKS) == null) {
-                    HashMap<String, String> params = new HashMap<String, String>();
-                    params.put(OFFSET, oldest_posted);
-                    getPlurks(params);
-                } else {
-                    HashMap<String, String> params = new HashMap<String, String>();
-                    params.put(HAS_PARAMS, "true");
-                    params.put(OFFSET, oldest_posted);
-                    new Async_Timeline_GetPlurks(getSherlockActivity(), params).forceLoad();
-                }
-                bt_more.setEnabled(false);
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put(HAS_PARAMS, "true");
+                params.put(OFFSET, oldest_posted);
+                new Async_Timeline_GetPlurks(getSherlockActivity(), params).forceLoad();
+//                LoaderManager manager = getLoaderManager();
+//                if(manager.getLoader(LOADER_ID_GET_PLURKS) == null) {
+//                    Log.d(TAG, "get loader == null");
+//                    HashMap<String, String> params = new HashMap<String, String>();
+//                    params.put(OFFSET, oldest_posted);
+//                    getPlurks(params);
+//
+//                } else {
+//                    Log.d(TAG, "get loader != null");
+//                    HashMap<String, String> params = new HashMap<String, String>();
+//                    params.put(HAS_PARAMS, "true");
+//                    params.put(OFFSET, oldest_posted);
+//                    new Async_Timeline_GetPlurks(getSherlockActivity(), params).forceLoad();
+//                }
+                //bt_more.setEnabled(false);
             }
         });
         list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                if(D) { Log.d(TAG, "--->onChildClick"); }
+                if (D) { Log.d(TAG, "--->onChildClick"); }
                 String idx = String.valueOf(mAdapter.getGroupId(groupPosition));
 
                 FragmentManager fm = getFragmentManager();
@@ -171,7 +180,7 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(D) { Log.d(TAG, "onActivityCreated"); }
+        if (D) { Log.d(TAG, "onActivityCreated"); }
         // plurkOAuth = ((FunnyActivity) getActivity()).getPlurkOAuth();
         plurkOAuth = DataCentral.getInstance(getSherlockActivity()).getPlurkOAuth();
         getPlurks(null);
@@ -180,12 +189,17 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(D) { Log.d(TAG, "onResume"); }
+        if (D) { Log.d(TAG, "onResume"); }
         EventBus.getDefault().register(this);
+
+        SharedPreferences settings = getSherlockActivity().getPreferences(SherlockActivity.MODE_PRIVATE);
+        oldest_posted_readable = settings.getString("oldest_posted_readable", "");
+        oldest_posted = settings.getString("oldest_posted", "null");
 
         mImageFetcher.setExitTasksEarly(false);
         if(mAdapter != null) {
 //            list.setAdapter(mAdapter);
+            bt_more.setText(getString(R.string.oldest_post) + "\n" + oldest_posted_readable);
         } else {
 //            getPlurks();
             getPlurks(null);
@@ -195,18 +209,24 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(D) { Log.d(TAG, "onPause"); }
+        if (D) { Log.d(TAG, "onPause"); }
         EventBus.getDefault().unregister(this);
 
         mImageFetcher.setPauseWork(false);
         mImageFetcher.setExitTasksEarly(true);
         mImageFetcher.flushCache();
+
+        SharedPreferences settings = getSherlockActivity().getPreferences(SherlockActivity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("oldest_posted_readable", oldest_posted_readable);
+        editor.putString("oldest_posted", oldest_posted);
+        editor.commit();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(D) { Log.d(TAG, "onDestroy"); }
+        if (D) { Log.d(TAG, "onDestroy"); }
         mImageFetcher.closeCache();
     }
 
@@ -236,7 +256,7 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
             while (iterator.hasNext()) {
                 String idx = iterator.next();
                 plurk_users.put(idx, new Plurk_Users(obj_plurk_users.getJSONObject(idx)));
-                if(D) { Log.d(TAG, "plurk_users length: " + plurk_users.keySet()); }
+                if (D) { Log.d(TAG, "plurk_users length: " + plurk_users.keySet()); }
             }
 
             JSONArray obj_plurks = data.getJSONArray("plurks");
@@ -274,17 +294,17 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
             // oldest_posted_readable = oldest_plurk.getReadablePostedDate();
             // oldest_posted = oldest_plurk.getQueryFormatedPostedDate();
 
-            if(D) { Log.d(TAG, "plurks: " + obj_plurks_size); }
+            if (D) { Log.d(TAG, "plurks: " + obj_plurks_size); }
         } catch(JSONException jsone) {
             Log.e(TAG, jsone.getMessage());
         }
 
-        if(D) {
+        if (D) {
             Iterator<String> iter = plurks.keySet().iterator();
             while (iter.hasNext()) {
                 String key = iter.next();
                 List list = plurks.get(key);
-                Log.d(TAG, "who?" + key + " has list size: " + list.size());
+                if (D) Log.d(TAG, "who?" + key + " has list size: " + list.size());
             }
         }
         if(mAdapter == null) {

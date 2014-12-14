@@ -7,6 +7,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.data.IHuman;
 import idv.funnybrain.plurkchat.data.Me;
@@ -27,14 +30,18 @@ public class MeFriendsFollowingExpandableListAdapter extends BaseExpandableListA
     private LayoutInflater inflater;
     private List<String> group;
     private List<List<IHuman>> child;
-    private ImageFetcher mImageFetcher;
+//    private ImageFetcher mImageFetcher;
+    private DataCentral mData;
+    private ImageLoader mImageLoader;
     // --- local variable END ----
 
-    public MeFriendsFollowingExpandableListAdapter(LayoutInflater inflater, List<String> group, List<List<IHuman>> child, ImageFetcher mImageFetcher) {
+    public MeFriendsFollowingExpandableListAdapter(LayoutInflater inflater, List<String> group, List<List<IHuman>> child/*, ImageFetcher mImageFetcher*/) {
         this.inflater = inflater;
         this.group = group;
         this.child = child;
-        this.mImageFetcher = mImageFetcher;
+//        this.mImageFetcher = mImageFetcher;
+        mData = DataCentral.getInstance(inflater.getContext());
+        mImageLoader = mData.getImageLoader();
     }
 
     @Override
@@ -103,7 +110,8 @@ public class MeFriendsFollowingExpandableListAdapter extends BaseExpandableListA
 
     static class ViewHolderChild {
         public TextView tv_id;
-        public ImageView iv_image;
+//        public ImageView iv_image;
+        public NetworkImageView iv_image;
 //        public RoundedImageView riv_image;
         public TextView tv_title;
         public TextView tv_about;
@@ -115,7 +123,8 @@ public class MeFriendsFollowingExpandableListAdapter extends BaseExpandableListA
             rowView = this.inflater.inflate(R.layout.me_friend_following_child_cell, null);
             ViewHolderChild holder = new ViewHolderChild();
             holder.tv_id = (TextView) rowView.findViewById(R.id.uid);
-            holder.iv_image = (ImageView) rowView.findViewById(R.id.image);
+            holder.iv_image = (NetworkImageView) rowView.findViewById(R.id.image);
+//            holder.iv_image = (ImageView) rowView.findViewById(R.id.image);
 //            holder.riv_image = (RoundedImageView) rowView.findViewById(R.id.image_v2);
             holder.tv_title = (TextView) rowView.findViewById(R.id.title);
             holder.tv_about = (TextView) rowView.findViewById(R.id.about);
@@ -125,7 +134,11 @@ public class MeFriendsFollowingExpandableListAdapter extends BaseExpandableListA
         final ViewHolderChild holder = (ViewHolderChild) rowView.getTag();
         IHuman data = child.get(groupPosition).get(childPosition);
         holder.tv_id.setText(data.getHumanId());
-        mImageFetcher.loadImage(data.getHumanImage(), holder.iv_image);
+        holder.iv_image.setImageUrl(data.getHumanImage(), mImageLoader);
+//        mImageLoader.get(data.getHumanImage(), ImageLoader.getImageListener(holder.iv_image,
+//                R.drawable.default_plurk_avatar,
+//                R.drawable.default_plurk_avatar));
+//        mImageFetcher.loadImage(data.getHumanImage(), holder.iv_image);
 //        mImageFetcher.loadImage(data.getHumanImage(), holder.riv_image);
 
         holder.tv_title.setText(data.getHumanName());
@@ -135,6 +148,13 @@ public class MeFriendsFollowingExpandableListAdapter extends BaseExpandableListA
         } else {
             holder.tv_about.setVisibility(View.GONE);
         }
+
+        rowView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("you chick: " + holder.tv_id.getText() + holder.tv_title.getText());
+            }
+        });
         return rowView;
     }
 

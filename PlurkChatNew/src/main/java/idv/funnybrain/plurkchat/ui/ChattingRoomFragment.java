@@ -1,21 +1,13 @@
 package idv.funnybrain.plurkchat.ui;
 
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -25,9 +17,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.*;
+import idv.funnybrain.plurkchat.asynctask.Async_Responses_Get;
+import idv.funnybrain.plurkchat.asynctask.Async_Responses_ResponseAdd;
 import idv.funnybrain.plurkchat.data.*;
-import idv.funnybrain.plurkchat.modules.Mod_Responses;
+import idv.funnybrain.plurkchat.eventbus.Event_Error;
+import idv.funnybrain.plurkchat.eventbus.Event_Responses_Get;
+import idv.funnybrain.plurkchat.eventbus.Event_Responses_ResponseAdd;
 import idv.funnybrain.plurkchat.utils.ImageCache;
 import idv.funnybrain.plurkchat.utils.ImageFetcher;
 import org.json.JSONArray;
@@ -57,7 +54,7 @@ public class ChattingRoomFragment extends SherlockFragment {
     private String chatting_plurk_id;
     // private Me me;
     private ListView list;
-    private ChattingRoomListAdapter mAdapter;
+    //private ChattingRoomListAdapter mAdapter;ChattingRoomFragment
     private Plurks original_post;
     private Plurk_Users original_poster;
 
@@ -119,8 +116,6 @@ public class ChattingRoomFragment extends SherlockFragment {
 
         friends = new HashMap<String, Friend>();
         responses = new ArrayList<Responses>();
-
-
     }
 
     @Override
@@ -133,6 +128,17 @@ public class ChattingRoomFragment extends SherlockFragment {
         mImageFetcher.loadImage(original_poster.getHumanImage(), iv_original_poseter);
         tv_original_content.setText(Html.fromHtml(original_post.getContent()));
         tv_original_content.setMovementMethod(LinkMovementMethod.getInstance());
+
+        EditText et_newMsg = (EditText) v.findViewById(R.id.chatting_input);
+        final String newMsg = et_newMsg.getText().toString();
+
+        Button bt_send = (Button) v.findViewById(R.id.chatting_send);
+        bt_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendResponse(newMsg, Qualifier.SHARES);
+            }
+        });
 
         list = (ListView) v.findViewById(R.id.chatting_list);
         list.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -158,32 +164,24 @@ public class ChattingRoomFragment extends SherlockFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(D) { Log.d(TAG, "onActivityCreated"); }
-        // plurkOAuth = ((FunnyActivity) getActivity()).getPlurkOAuth();
         plurkOAuth = DataCentral.getInstance(getSherlockActivity()).getPlurkOAuth();
-        // me = ((FunnyActivity) getActivity()).getMe();
-
         getResponses();
-//        if(this.responses.size() == 0) {
-//            HashMap<String, String> params = new HashMap<String, String>();
-//            params.put(PLURK_ID, chatting_plurk_id);
-//            new Mod_Response_get_AsyncTask().execute(params);
-//        } else {
-//            setListAdapter();
-//        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        EventBus.getDefault().register(this);
         mImageFetcher.setExitTasksEarly(false);
-        if(mAdapter == null) {
-        }
+//        if(mAdapter == null) {
+//        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
         if(D) { Log.d(TAG, "onPause"); }
+        EventBus.getDefault().unregister(this);
         mImageFetcher.setPauseWork(false);
         mImageFetcher.setExitTasksEarly(true);
         mImageFetcher.flushCache();
@@ -198,182 +196,83 @@ public class ChattingRoomFragment extends SherlockFragment {
     }
 
     void getResponses() {
-        getLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<JSONObject>() {
-            @Override
-            public Loader<JSONObject> onCreateLoader(int id, Bundle args) {
-                return new Mod_Response_get_AsyncTaskLoader(getSherlockActivity(), chatting_plurk_id);
-            }
-
-            @Override
-            public void onLoadFinished(Loader<JSONObject> loader, JSONObject data) {
-                JsonFactory factory = new JsonFactory();
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-                mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-
-                try {
-                    JSONObject obj_friends = data.getJSONObject("friends");
-                    Iterator<String> iterator = obj_friends.keys();
-                    while (iterator.hasNext()) {
-                        String idx = iterator.next();
-                        // FIXME
-                        //friends.put(idx, new Friend( obj_friends.getJSONObject(idx)));
-                        JsonParser parser = factory.createParser(obj_friends.getJSONObject(idx).toString());
-                        Friend tmp = mapper.readValue(parser, Friend.class);
-                        friends.put(idx, tmp);
-
-                        if (D) { Log.d(TAG, "friends length: " + friends.size()); }
-                    }
-
-                    JSONArray array_responses = data.getJSONArray("responses");
-                    int size = array_responses.length();
-                    for (int x = 0; x < size; x++) {
-                        Responses response = new Responses(array_responses.getJSONObject(x));
-                        responses.add(response);
-                        if(D) { Log.d(TAG, "responses: " + response.getContent()); }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (JsonMappingException e) {
-                    e.printStackTrace();
-                } catch (JsonParseException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (mAdapter == null) {
-                    mAdapter = new ChattingRoomListAdapter(getSherlockActivity().getLayoutInflater(), friends, responses, mImageFetcher);
-                    list.setAdapter(mAdapter);
-                } else {
-                    // mAdapter.addNewData();
-                }
-            }
-
-            @Override
-            public void onLoaderReset(Loader<JSONObject> loader) {
-
-            }
-        }).forceLoad();
+        new Async_Responses_Get(getSherlockActivity(), chatting_plurk_id).forceLoad();
     }
 
-    static class Mod_Response_get_AsyncTaskLoader extends AsyncTaskLoader<JSONObject> {
-        String original_post_id;
+    void sendResponse(String response, Qualifier qualifier) {
+        new Async_Responses_ResponseAdd(getSherlockActivity(), chatting_plurk_id, response, null).forceLoad();
+    }
 
-        public Mod_Response_get_AsyncTaskLoader(Context context, String input) {
-            super(context);
-            original_post_id = input;
-        }
+//    private void setListAdapter() {
+//        mAdapter = new ChattingRoomListAdapter(getSherlockActivity().getLayoutInflater(), friends, responses, mImageFetcher);
+//        list.setAdapter(mAdapter);
+//    }
 
-        @Override
-        public JSONObject loadInBackground() {
-            JSONObject result = null;
-            try {
-                result = plurkOAuth.getModule(Mod_Responses.class).get(original_post_id, 0);
-            } catch (RequestException e) {
-                e.printStackTrace();
+    public void onEventMainThread(Event_Responses_Get event) {
+        ChattingRoomListAdapter mAdapter = null;
+
+        JSONObject data = event.getData();
+
+        JsonFactory factory = new JsonFactory();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+        try {
+            JSONObject obj_friends = data.getJSONObject("friends");
+            Iterator<String> iterator = obj_friends.keys();
+            while (iterator.hasNext()) {
+                String idx = iterator.next();
+                // FIXME
+                //friends.put(idx, new Friend( obj_friends.getJSONObject(idx)));
+                JsonParser parser = factory.createParser(obj_friends.getJSONObject(idx).toString());
+                Friend tmp = mapper.readValue(parser, Friend.class);
+                friends.put(idx, tmp);
+
+                if (D) { Log.d(TAG, "friends length: " + friends.size()); }
             }
-            return result;
-        }
 
-        @Override
-        public void deliverResult(JSONObject data) {
-            if(isStarted()) {
-                super.deliverResult(data);
+            JSONArray array_responses = data.getJSONArray("responses");
+            int size = array_responses.length();
+            for (int x = 0; x < size; x++) {
+                Responses response = new Responses(array_responses.getJSONObject(x));
+                responses.add(response);
+                if(D) { Log.d(TAG, "responses: " + response.getContent()); }
             }
+
+            // TODO handle error
+            JSONObject obj_error = data.getJSONObject("error_text");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        @Override
-        protected void onStopLoading() {
-            super.onStopLoading();
-            cancelLoad();
-        }
-
-        @Override
-        public void onCanceled(JSONObject data) {
-            super.onCanceled(data);
-        }
-
-        @Override
-        protected void onReset() {
-            super.onReset();
-            onStopLoading();
+        if (mAdapter == null) {
+            mAdapter = new ChattingRoomListAdapter(getSherlockActivity().getLayoutInflater(), friends, responses, mImageFetcher);
+            list.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
         }
     }
 
-    private class Mod_Response_get_AsyncTask extends AsyncTask<HashMap<String, String>, Void, JSONObject> {
+    public void onEventMainThread(Event_Responses_ResponseAdd event) {
+        JSONObject data = event.getData();
 
-        @Override
-        protected JSONObject doInBackground(HashMap<String, String>... params) {
-            JSONObject result = null;
-
-            String plurk_id = "";
-            int from_response = 0;
-
-            HashMap<String, String> param = params[0];
-            if(param.containsKey(PLURK_ID)) {
-                plurk_id = param.get(PLURK_ID);
-            } else {
-                return null;
-            }
-            if(param.containsKey(FROM_RESPONSE)) {
-                from_response = Integer.valueOf(param.get(FROM_RESPONSE));
-            }
-
-            try {
-                result = plurkOAuth.getModule(Mod_Responses.class).get(plurk_id, from_response);
-            } catch (RequestException e) {
-                e.printStackTrace();
-            }
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject object) {
-            super.onPostExecute(object);
-            JsonFactory factory = new JsonFactory();
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-
-            try {
-                JSONObject obj_friends = object.getJSONObject("friends");
-                Iterator<String> iterator = obj_friends.keys();
-                while(iterator.hasNext()) {
-                    String idx = iterator.next();
-                    // FIXME
-                    // ChattingRoomFragment.this.friends.put(idx, new Friend(obj_friends.getJSONObject(idx)));
-                    JsonParser parser = factory.createParser(obj_friends.getJSONObject(idx).toString());
-                    Friend tmp = mapper.readValue(parser, Friend.class);
-                    friends.put(idx, tmp);
-
-
-                    if(D) { Log.d(TAG, "length: " + ChattingRoomFragment.this.friends.size()); }
-                }
-
-                JSONArray array_responses = object.getJSONArray("responses");
-                int size = array_responses.length();
-                for(int x=0; x<size; x++) {
-                    Responses response = new Responses(array_responses.getJSONObject(x));
-                    ChattingRoomFragment.this.responses.add(response);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (JsonMappingException e) {
-                e.printStackTrace();
-            } catch (JsonParseException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            setListAdapter();
-            //System.out.println(object);
+        try {
+            JSONObject obj_error = data.getJSONObject("error_text");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            getResponses();
         }
     }
 
-    private void setListAdapter() {
-        mAdapter = new ChattingRoomListAdapter(getSherlockActivity().getLayoutInflater(), friends, responses, mImageFetcher);
-        list.setAdapter(mAdapter);
+    public void onEventMainThread(Event_Error event) {
+        Log.d("freeman", "ChattingRoom, " + event.getData());
     }
 }
