@@ -35,6 +35,7 @@ public class DataCentral {
     // private RequestQueue mRequestQueue;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
+    private LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(20);
 
     public static synchronized DataCentral getInstance(Context context) {
         if (mData == null) {
@@ -51,7 +52,7 @@ public class DataCentral {
 
         mImageLoader = new ImageLoader(mRequestQueue,
                 new ImageLoader.ImageCache() {
-                    private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(20);
+//                    private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(20);
 
                     @Override
                     public Bitmap getBitmap(String url) {
@@ -62,7 +63,9 @@ public class DataCentral {
                     public void putBitmap(String url, Bitmap bitmap) {
                         cache.put(url, bitmap);
                     }
-                });
+                }
+        );
+
 //        HttpStack stack;
 //        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 //            stack = new HurlStack();
@@ -113,6 +116,10 @@ public class DataCentral {
 
     public ImageLoader getImageLoader() {
         return mImageLoader;
+    }
+
+    public void clearLruCache() {
+        cache.evictAll();
     }
 //    public RequestQueue getRequestQueue() {
 //        if (mRequestQueue == null) {

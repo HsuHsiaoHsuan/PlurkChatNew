@@ -1,6 +1,9 @@
 package idv.funnybrain.plurkchat.ui;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,6 +93,24 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
 //            }
 //        });
 
+        list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View view, int groupPosition, int childPosition, long id) {
+                IHuman child = (IHuman)mAdapter.getChild(groupPosition, childPosition);
+
+//                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                Fragment prev = getFragmentManager().findFragmentByTag("user_detail");
+                if (prev != null) { ft.remove(prev); }
+                ft.addToBackStack(null);
+
+                UserDetailDialogFragment detail = UserDetailDialogFragment.newInstance(child.getHumanId());
+                detail.show(ft, "user_detail");
+
+                return true;
+            }
+        });
+
         if(mAdapter != null) {
             list.setAdapter(mAdapter);
         }
@@ -163,6 +184,10 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
             mAdapter.addNewData(getString(R.string.friend), data);
         }
 
+        for (int x = 0; x < mAdapter.getGroupCount(); x++) {
+            list.expandGroup(x);
+        }
+
         new Async_FriendsFans_getFollowingByOffset(getSherlockActivity()).forceLoad();
     }
 
@@ -185,6 +210,10 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
             list.setAdapter(mAdapter);
         } else {
             mAdapter.addNewData(getString(R.string.following), data);
+        }
+
+        for (int x = 0; x < mAdapter.getGroupCount(); x++) {
+            list.expandGroup(x);
         }
     }
 }

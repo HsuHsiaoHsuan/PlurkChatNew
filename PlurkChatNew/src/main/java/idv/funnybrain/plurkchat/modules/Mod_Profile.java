@@ -1,5 +1,13 @@
 package idv.funnybrain.plurkchat.modules;
 
+import idv.funnybrain.plurkchat.RequestException;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Freeman on 2014/4/2.
  */
@@ -13,8 +21,13 @@ public class Mod_Profile extends AbstractModule {
 
     // Fetches public information such as a user's public plurks and basic information.
     // Fetches also if the current user is following the user, are friends with or is a fan.
-    public void getPublicProfile() {
+    public JSONObject getPublicProfile(String uid) throws RequestException {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("user_id", uid));
 
+        JSONObject result = requestAPI("getPublicProfile").args(params).getJSONObjectResult();
+
+        return result;
     }
 
     @Override

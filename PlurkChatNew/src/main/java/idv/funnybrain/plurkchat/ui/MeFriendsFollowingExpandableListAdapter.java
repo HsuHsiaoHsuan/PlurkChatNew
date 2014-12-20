@@ -1,5 +1,6 @@
 package idv.funnybrain.plurkchat.ui;
 
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +86,7 @@ public class MeFriendsFollowingExpandableListAdapter extends BaseExpandableListA
         public TextView tv_count;
     }
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, final ViewGroup parent) {
         View rowView = convertView;
         if(rowView == null) {
             rowView = this.inflater.inflate(R.layout.me_friend_following_group_cell, null);
@@ -103,7 +104,7 @@ public class MeFriendsFollowingExpandableListAdapter extends BaseExpandableListA
             holder.tv_count.setVisibility(View.VISIBLE);
         }
 
-        ((ExpandableListView) parent).expandGroup(groupPosition);
+        //((ExpandableListView) parent).expandGroup(groupPosition);
 
         return rowView;
     }
@@ -149,12 +150,7 @@ public class MeFriendsFollowingExpandableListAdapter extends BaseExpandableListA
             holder.tv_about.setVisibility(View.GONE);
         }
 
-        rowView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.out.println("you chick: " + holder.tv_id.getText() + holder.tv_title.getText());
-            }
-        });
+        // rowView.setOnClickListener(childOnClickListener);
         return rowView;
     }
 
@@ -162,6 +158,14 @@ public class MeFriendsFollowingExpandableListAdapter extends BaseExpandableListA
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+//    private View.OnClickListener childOnClickListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+//            ViewHolderChild holder = (ViewHolderChild) view.getTag();
+//            System.out.println("you chick: " + holder.tv_id.getText() + holder.tv_title.getText());
+//        }
+//    };
 
     public void addNewData(String groupName, List<IHuman> child_data) {
 //        if(group.contains(groupName)) {

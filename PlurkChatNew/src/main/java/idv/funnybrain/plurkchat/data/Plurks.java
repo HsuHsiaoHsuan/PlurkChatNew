@@ -14,6 +14,9 @@ import java.util.*;
  * Created by Freeman on 2014/4/8.
  */
 public class Plurks implements Parcelable {
+    public Plurks() {
+    }
+
     private int responses_seen = 0;
     private Qualifier qualifier = Qualifier.NULL;
     private List<String> replurkers = new ArrayList<String>();

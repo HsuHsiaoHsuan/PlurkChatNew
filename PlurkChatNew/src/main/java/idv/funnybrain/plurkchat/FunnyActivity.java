@@ -105,6 +105,7 @@ public class FunnyActivity extends SherlockFragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        DataCentral.getInstance(this).clearLruCache();
     }
 
     private void toast(Object msg) {

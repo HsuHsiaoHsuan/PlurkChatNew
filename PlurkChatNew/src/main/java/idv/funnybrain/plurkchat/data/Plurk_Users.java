@@ -8,6 +8,27 @@ import org.json.JSONObject;
 
 /**
  * Created by Freeman on 2014/4/8.
+ * return from /APP/Timeline/getPlurks
+
+ "plurk_users": {
+ "1367985": {
+ "verified_account": false,
+ "default_lang": "tr_ch",
+ "display_name": "墳墓（Brian Hsu）",
+ "dateformat": 0,
+ "nick_name": "brianhsu",
+ "has_profile_image": 1,
+ "location": "Taipei, Taiwan",
+ "bday_privacy": 2,
+ "date_of_birth": "Thu, 06 Oct 1983 00:01:00 GMT",
+ "karma": 134.59,
+ "full_name": "BrianHsu",
+ "gender": 1,
+ "name_color": null,
+ "timezone": "Asia/Taipei",
+ "id": 1367985,
+ "avatar": 4
+ }
  */
 public class Plurk_Users implements IHuman,Parcelable {
     private static final boolean D = false;
