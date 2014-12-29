@@ -15,10 +15,9 @@ import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.RequestException;
 import idv.funnybrain.plurkchat.data.Friend;
 import idv.funnybrain.plurkchat.data.IHuman;
-import idv.funnybrain.plurkchat.eventbus.Event_GetFriendsByOffset;
+import idv.funnybrain.plurkchat.eventbus.Event_FriendsFans_GetFriendsByOffset;
 import idv.funnybrain.plurkchat.modules.Mod_FriendsFans;
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -102,7 +101,7 @@ public class Async_FriendFans_getFriendsByOffset extends AsyncTaskLoader<Void> {
         }
 
         // return friends;
-        EventBus.getDefault().post(new Event_GetFriendsByOffset(friends));
+        EventBus.getDefault().post(new Event_FriendsFans_GetFriendsByOffset(friends));
 
         return null;
     }

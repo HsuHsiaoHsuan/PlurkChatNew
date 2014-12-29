@@ -17,6 +17,8 @@ public class PublicProfile implements IProfile {
     private String privacy = "";
     private boolean has_read_permission = false;
     private User_Info user_info = null;
+    private boolean are_friends = false;
+    private boolean is_following = false;
     private List<Plurks> plurks = new ArrayList<Plurks>();
 
     public boolean isIs_fan() {
@@ -67,6 +69,22 @@ public class PublicProfile implements IProfile {
         this.user_info = user_info;
     }
 
+    public boolean isAre_friends() {
+        return are_friends;
+    }
+
+    public void setAre_friends(boolean are_friends) {
+        this.are_friends = are_friends;
+    }
+
+    public boolean isIs_following() {
+        return is_following;
+    }
+
+    public void setIs_following(boolean is_following) {
+        this.is_following = is_following;
+    }
+
     public List<Plurks> getPlurks() {
         return plurks;
     }
@@ -87,13 +105,9 @@ public class PublicProfile implements IProfile {
 
     @Override
     public User_Info getUserInfo() {
-        return null;
+        return user_info;
     }
 
-    @Override
-    public List<Plurks> getFormattedPlurks() {
-        return null;
-    }
 }
 
 /*

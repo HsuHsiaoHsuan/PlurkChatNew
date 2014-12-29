@@ -1,18 +1,13 @@
 package idv.funnybrain.plurkchat.ui;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.HttpAuthHandler;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
@@ -26,12 +21,10 @@ import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.PlurkOAuth;
 import idv.funnybrain.plurkchat.R;
-import idv.funnybrain.plurkchat.RequestException;
 import idv.funnybrain.plurkchat.asynctask.Async_Timeline_GetPlurks;
 import idv.funnybrain.plurkchat.data.Plurk_Users;
 import idv.funnybrain.plurkchat.data.Plurks;
-import idv.funnybrain.plurkchat.eventbus.Event_GetPlurks;
-import idv.funnybrain.plurkchat.modules.Mod_Timeline;
+import idv.funnybrain.plurkchat.eventbus.Event_Timeline_GetPlurks;
 import idv.funnybrain.plurkchat.utils.ImageCache;
 import idv.funnybrain.plurkchat.utils.ImageFetcher;
 import org.json.JSONArray;
@@ -67,14 +60,8 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     // ---- local variable START ----
     private static PlurkOAuth plurkOAuth;
     private ExpandableListView list;
-    // private FloatingGroupExpandableListView list;
     private Button bt_more;
-    //private ChatRoomExpandableListAdapter_v2 mAdapter;
     private BaseExpandableListAdapter mAdapter;
-
-
-    private ImageFetcher mImageFetcher;
-
     private HashMap<String, Plurk_Users> plurk_users;
 
     private HashMap<String, List<Plurks>> plurks;
@@ -92,14 +79,6 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (D) { Log.d(TAG, "onCreate"); }
-
-        ImageCache.ImageCacheParams cacheParams =
-                new ImageCache.ImageCacheParams(getSherlockActivity(), IMAGE_CACHE_DIR);
-
-        mImageFetcher = new ImageFetcher(getSherlockActivity(), 100);
-        mImageFetcher.setLoadingImage(R.drawable.default_plurk_avatar);
-        mImageFetcher.addImageCache(getFragmentManager(), cacheParams);
-
         plurk_users = new HashMap<String, Plurk_Users>();
         plurks = new HashMap<String, List<Plurks>>();
     }
@@ -109,24 +88,6 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
         if (D) { Log.d(TAG, "onCreateView"); }
         View v = inflater.inflate(R.layout.fragment_chatrooms, container, false);
         list = (ExpandableListView) v.findViewById(R.id.elv_list);
-        // list = (FloatingGroupExpandableListView) v.findViewById(R.id.elv_list);
-        //fixme
-        list.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if(scrollState == SCROLL_STATE_FLING) {
-                    if(!idv.funnybrain.plurkchat.utils.Utils.hasHoneycomb()) {
-                        mImageFetcher.setPauseWork(true);
-                    }
-                } else {
-                    mImageFetcher.setPauseWork(false);
-                }
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-            }
-        });
         bt_more = (Button) v.findViewById(R.id.bt_more);
         bt_more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,21 +96,6 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
                 params.put(HAS_PARAMS, "true");
                 params.put(OFFSET, oldest_posted);
                 new Async_Timeline_GetPlurks(getSherlockActivity(), params).forceLoad();
-//                LoaderManager manager = getLoaderManager();
-//                if(manager.getLoader(LOADER_ID_GET_PLURKS) == null) {
-//                    Log.d(TAG, "get loader == null");
-//                    HashMap<String, String> params = new HashMap<String, String>();
-//                    params.put(OFFSET, oldest_posted);
-//                    getPlurks(params);
-//
-//                } else {
-//                    Log.d(TAG, "get loader != null");
-//                    HashMap<String, String> params = new HashMap<String, String>();
-//                    params.put(HAS_PARAMS, "true");
-//                    params.put(OFFSET, oldest_posted);
-//                    new Async_Timeline_GetPlurks(getSherlockActivity(), params).forceLoad();
-//                }
-                //bt_more.setEnabled(false);
             }
         });
         list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -160,7 +106,6 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
 
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-//                ChattingRoomFragment chatting = ChattingRoomFragment.newInstance(String.valueOf(id));
                 ChattingRoomFragment chatting = ChattingRoomFragment.newInstance(plurks.get(idx).get(childPosition), plurk_users.get(idx));
                 ft.replace(R.id.fragment_content, chatting).addToBackStack("tag").commitAllowingStateLoss();
                 getSherlockActivity().getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -170,10 +115,7 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
 
         if(mAdapter != null) {
             list.setAdapter(mAdapter);
-            // WrapperExpandableListAdapter wrapperAdapter = new WrapperExpandableListAdapter(mAdapter);
-            // list.setAdapter(wrapperAdapter);
         }
-
         return v;
     }
 
@@ -181,7 +123,6 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (D) { Log.d(TAG, "onActivityCreated"); }
-        // plurkOAuth = ((FunnyActivity) getActivity()).getPlurkOAuth();
         plurkOAuth = DataCentral.getInstance(getSherlockActivity()).getPlurkOAuth();
         getPlurks(null);
     }
@@ -196,12 +137,9 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
         oldest_posted_readable = settings.getString("oldest_posted_readable", "");
         oldest_posted = settings.getString("oldest_posted", "null");
 
-        mImageFetcher.setExitTasksEarly(false);
         if(mAdapter != null) {
-//            list.setAdapter(mAdapter);
             bt_more.setText(getString(R.string.oldest_post) + "\n" + oldest_posted_readable);
         } else {
-//            getPlurks();
             getPlurks(null);
         }
     }
@@ -211,10 +149,6 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
         super.onPause();
         if (D) { Log.d(TAG, "onPause"); }
         EventBus.getDefault().unregister(this);
-
-        mImageFetcher.setPauseWork(false);
-        mImageFetcher.setExitTasksEarly(true);
-        mImageFetcher.flushCache();
 
         SharedPreferences settings = getSherlockActivity().getPreferences(SherlockActivity.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
@@ -227,7 +161,6 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     public void onDestroy() {
         super.onDestroy();
         if (D) { Log.d(TAG, "onDestroy"); }
-        mImageFetcher.closeCache();
     }
 
     void getPlurks(HashMap<String, String> args) {
@@ -240,12 +173,11 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
             }
             new Async_Timeline_GetPlurks(getSherlockActivity(), params).forceLoad();
         } else {
-//            setExpandableListAdapter();
         }
     }
 
 
-    public void onEventMainThread(Event_GetPlurks event) {
+    public void onEventMainThread(Event_Timeline_GetPlurks event) {
         JSONObject data = event.getData();
 
         Date post_date = new Date();
@@ -308,12 +240,9 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
             }
         }
         if(mAdapter == null) {
-            mAdapter = new ChatRoomExpandableListAdapter_v2(getSherlockActivity().getLayoutInflater(), plurk_users, plurks, mImageFetcher);
+            mAdapter = new ChatRoomExpandableListAdapter_v2(getSherlockActivity().getLayoutInflater(), plurk_users, plurks);
             list.setAdapter(mAdapter);
-            // WrapperExpandableListAdapter wrapperAdapter = new WrapperExpandableListAdapter(mAdapter);
-            // list.setAdapter(wrapperAdapter);
         } else {
-            //mAdapter.addNewData(plurk_users, plurks);
             ((ChatRoomExpandableListAdapter_v2) mAdapter).addNewData();
         }
         bt_more.setVisibility(View.VISIBLE);

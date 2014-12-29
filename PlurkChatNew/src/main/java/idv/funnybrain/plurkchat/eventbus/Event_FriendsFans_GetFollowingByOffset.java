@@ -7,10 +7,10 @@ import java.util.List;
 /**
  * Created by freeman on 2014/7/28.
  */
-public class Event_GetFriendsByOffset {
+public class Event_FriendsFans_GetFollowingByOffset {
     private List<IHuman> data;
 
-    public Event_GetFriendsByOffset(List<IHuman> data) {
+    public Event_FriendsFans_GetFollowingByOffset(List<IHuman> data) {
         this.data = data;
     }
 

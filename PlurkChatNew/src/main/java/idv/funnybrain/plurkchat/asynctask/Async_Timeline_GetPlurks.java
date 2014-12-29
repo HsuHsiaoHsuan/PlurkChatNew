@@ -6,7 +6,7 @@ import android.util.Log;
 import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.RequestException;
-import idv.funnybrain.plurkchat.eventbus.Event_GetPlurks;
+import idv.funnybrain.plurkchat.eventbus.Event_Timeline_GetPlurks;
 import idv.funnybrain.plurkchat.modules.Mod_Timeline;
 import idv.funnybrain.plurkchat.ui.ChatRoomsFragment_v2;
 import org.json.JSONObject;
@@ -65,7 +65,7 @@ public class Async_Timeline_GetPlurks extends AsyncTaskLoader<Void> {
             result = DataCentral.getInstance(getContext()).getPlurkOAuth().getModule(Mod_Timeline.class)
                     .getPlurks(offset, limit, filter, favorers_detail, limited_detail, replurkers_detail);
 
-            EventBus.getDefault().post(new Event_GetPlurks(result));
+            EventBus.getDefault().post(new Event_Timeline_GetPlurks(result));
         } catch (RequestException e) {
             Log.e(TAG, e.getMessage());
             // e.printStackTrace();

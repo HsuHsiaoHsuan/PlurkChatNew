@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Plurk Fish</string>
+    <string name="karma">Karma</string>
+    <string name="_true">true</string>
+    <string name="_false">false</string>
 
     <!-- Image Cache START -->
     <string name="clear_cache_menu">Clear Caches</string>
@@ -25,4 +28,28 @@
     <string name="oldest_post">Oldest Post</string>
     <string name="response">Responses:</string>
     <!-- ChatRoomFragment END -->
+
+    <!-- profile START -->
+    <string name="location">location:</string>
+    <string name="relationship">relationship:</string>>
+    <string name="birthday">birthday:</string>
+    <string name="gender">gender:</string>
+    <string name="plurks">Plurks:</string>
+    <string name="plurks_response">Plurk responses:</string>
+    <string name="are_friends">are friends:</string>
+    <string name="is_following">is following:</string>
+    <!-- profile END-->
+
+    <!-- Relationship Model START -->
+    <string name="not_saying">Not Saying</string>
+    <string name="single">Single</string>
+    <string name="married">Married</string>
+    <string name="divorced">Divorced</string>
+    <string name="engaged">Engaged</string>
+    <string name="in_relationship">In Relatioship</string>
+    <string name="complicated">Complicated</string>
+    <string name="widowed">Widowed</string>
+    <string name="unstable_relatioinship">In Unstable Relationship</string>
+    <string name="open_relationship">Open Relationship</string>
+    <!-- Relationship Model END -->
 </resources>

@@ -8,9 +8,11 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.RequestException;
 import idv.funnybrain.plurkchat.data.PublicProfile;
+import idv.funnybrain.plurkchat.eventbus.Event_Profile_getPublicProfile;
 import idv.funnybrain.plurkchat.modules.Mod_Profile;
 import org.json.JSONObject;
 
@@ -43,10 +45,12 @@ public class Async_Profile_getPublicProfile extends AsyncTaskLoader<Void> {
 
         try {
             result = DataCentral.getInstance(getContext()).getPlurkOAuth().getModule(Mod_Profile.class).getPublicProfile(uid);
-            System.out.print(TAG + "----------->>>" + result);
+            //System.out.print(TAG + "----------->>>" + result);
 
             JsonParser parser = factory.createParser(result.toString());
             PublicProfile tmp = mapper.readValue(parser, PublicProfile.class);
+
+            EventBus.getDefault().post(new Event_Profile_getPublicProfile(tmp));
 
         } catch (RequestException e) {
             e.printStackTrace();

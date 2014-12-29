@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.data.Plurk_Users;
 import idv.funnybrain.plurkchat.data.Plurks;
@@ -28,22 +31,15 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
     private LayoutInflater inflater;
     private List<Plurk_Users> group;
     private HashMap<String, List<Plurks>> plurks;
-    private ImageFetcher mImageFetcher;
-
-//    final Html.ImageGetter imageGetter = new Html.ImageGetter() {
-//
-//        @Override
-//        public Drawable getDrawable(String source) {
-//
-//            return drawable;
-//        }
-//    };
+    private DataCentral mData;
+    private ImageLoader mImageLoader;
     // --- local variable END ----
 
-    public ChatRoomExpandableListAdapter_v2(LayoutInflater inflater, HashMap<String, Plurk_Users> users, HashMap<String, List<Plurks>> plurks, ImageFetcher imageFetcher) {
+    public ChatRoomExpandableListAdapter_v2(LayoutInflater inflater, HashMap<String, Plurk_Users> users, HashMap<String, List<Plurks>> plurks) {
         this.inflater = inflater;
-        this.mImageFetcher = imageFetcher;
         this.plurks = plurks;
+        mData = DataCentral.getInstance(inflater.getContext());
+        mImageLoader = mData.getImageLoader();
 
         group = new ArrayList<Plurk_Users>();
         Iterator<String> plurks_iter = plurks.keySet().iterator();
@@ -96,7 +92,7 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
 
     static class ViewHolderGroup {
         public TextView tv_id;
-        public ImageView iv_image;
+        public NetworkImageView iv_image;
         public TextView tv_title;
         public TextView tv_count;
     }
@@ -107,7 +103,7 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
             rowView = this.inflater.inflate(R.layout.chatrooms_group_cell, null);
             ViewHolderGroup holder = new ViewHolderGroup();
             holder.tv_id = (TextView) rowView.findViewById(R.id.uid);
-            holder.iv_image = (ImageView) rowView.findViewById(R.id.image);
+            holder.iv_image = (NetworkImageView) rowView.findViewById(R.id.image);
             holder.tv_title = (TextView) rowView.findViewById(R.id.title);
             holder.tv_count = (TextView) rowView.findViewById(R.id.msg_count);
             rowView.setTag(holder);
@@ -119,9 +115,9 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
         holder.tv_title.setText(user.getHumanName());
         holder.tv_count.setText("(" + plurks.get(user.getHumanId()).size() + ")");
 
-        String imgURL = user.getHumanImage();
-
-        mImageFetcher.loadImage(imgURL, holder.iv_image);
+        // String imgURL = user.getHumanImage();
+        holder.iv_image.setImageUrl(user.getHumanImage(), mImageLoader);
+        // mImageFetcher.loadImage(imgURL, holder.iv_image);
 
         if(isExpanded) {
             rowView.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.blue_light));
@@ -138,7 +134,7 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
 
     static class ViewHolderChild {
         public TextView tv_id;
-        public ImageView iv_image;
+        public NetworkImageView iv_image;
         public TextView tv_title;
         public TextView tv_posted;
         public TextView tv_count;
@@ -150,7 +146,7 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
             rowView = this.inflater.inflate(R.layout.chatrooms_child_cell, null);
             ViewHolderChild holder = new ViewHolderChild();
             holder.tv_id = (TextView) rowView.findViewById(R.id.uid);
-            holder.iv_image = (ImageView) rowView.findViewById(R.id.image);
+            holder.iv_image = (NetworkImageView) rowView.findViewById(R.id.image);
             holder.tv_title = (TextView) rowView.findViewById(R.id.title);
 //            holder.tv_title.setMovementMethod(LinkMovementMethod.getInstance());
             holder.tv_posted = (TextView) rowView.findViewById(R.id.posted);
@@ -172,23 +168,7 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
         return true;
     }
 
-//    public void addNewData(HashMap<String, Plurk_Users> users, HashMap<String, List<Plurks>> plurks) {
     public void addNewData() {
-//        List<String> tmp_idx = new ArrayList<String>();
-//        for(Plurk_Users pu: group) {
-//            tmp_idx.add(pu.getHumanId());
-//        }
-//
-//        Iterator<String> iterator = plurks.keySet().iterator();
-//        while(iterator.hasNext()) {
-//            String idx = iterator.next();
-//            if(tmp_idx.contains(idx)) {
-//                plurks.get(idx).addAll(plurks.get(idx));
-//            } else {
-//                group.add(users.get(idx));
-//                plurks.put(idx, plurks.get(idx));
-//            }
-//        }
         notifyDataSetChanged();
     }
 }

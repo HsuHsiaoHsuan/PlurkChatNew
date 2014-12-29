@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">噗浪魚</string>
+    <string name="karma">Karma</string>
+    <string name="_true">是</string>
+    <string name="_false">否</string>
 
     <!-- Image Cache START -->
-    <string name="clear_cache_menu">清除快取</string>
+    <string name="clear_cache_menu">清除快取</string>/*info.getRelationship().toString()*/
     <string name="clear_cache_complete_toast">快取已清除</string>
     <string name="imageview_description">縮圖</string>
     <string name="no_network_connection_toast">沒有網路連線</string>
@@ -25,4 +28,28 @@
     <string name="oldest_post">最舊貼文</string>
     <string name="response">回覆：</string>
     <!-- ChatRoomFragment END -->
+
+    <!-- profile START -->
+    <string name="location">地點：</string>
+    <string name="relationship">感情／婚姻狀態：</string>
+    <string name="birthday">生日：</string>
+    <string name="gender">性別：</string>
+    <string name="plurks">發噗數：</string>
+    <string name="plurks_response">回應數：</string>
+    <string name="are_friends">是朋友：</string>
+    <string name="is_following">關注中：</string>
+    <!-- profile END-->
+
+    <!-- Relationship Model START -->
+    <string name="not_saying">不公開</string>
+    <string name="single">單身</string>
+    <string name="married">已婚</string>
+    <string name="divorced">再次恢復單身</string>
+    <string name="engaged">已訂婚</string>
+    <string name="in_relationship">有交往對象</string>
+    <string name="complicated">一言難盡</string>
+    <string name="widowed">喪偶</string>
+    <string name="unstable_relatioinship">不穩定交往中</string>
+    <string name="open_relationship">開放式關係</string>
+    <!-- Relationship Model END -->
 </resources>

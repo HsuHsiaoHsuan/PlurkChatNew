@@ -14,8 +14,4 @@ public interface IProfile {
     public int getFansCount();
 
     public User_Info getUserInfo();
-
-//    public String getPrivacy();
-
-    public List<Plurks> getFormattedPlurks();
 }

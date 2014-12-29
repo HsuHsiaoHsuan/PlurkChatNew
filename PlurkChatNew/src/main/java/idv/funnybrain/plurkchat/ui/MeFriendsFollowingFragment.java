@@ -2,7 +2,6 @@ package idv.funnybrain.plurkchat.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,8 +15,8 @@ import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.asynctask.Async_FriendFans_getFriendsByOffset;
 import idv.funnybrain.plurkchat.asynctask.Async_FriendsFans_getFollowingByOffset;
 import idv.funnybrain.plurkchat.data.IHuman;
-import idv.funnybrain.plurkchat.eventbus.Event_GetFollowingByOffset;
-import idv.funnybrain.plurkchat.eventbus.Event_GetFriendsByOffset;
+import idv.funnybrain.plurkchat.eventbus.Event_FriendsFans_GetFollowingByOffset;
+import idv.funnybrain.plurkchat.eventbus.Event_FriendsFans_GetFriendsByOffset;
 import idv.funnybrain.plurkchat.utils.ImageCache;
 
 import java.util.ArrayList;
@@ -59,8 +58,8 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
         super.onCreate(savedInstanceState);
         if(D) { Log.d(TAG, "onCreate"); }
 
-        ImageCache.ImageCacheParams cacheParams =
-                new ImageCache.ImageCacheParams(getSherlockActivity(), DataCentral.IMAGE_CACHE_DIR);
+//        ImageCache.ImageCacheParams cacheParams =
+//                new ImageCache.ImageCacheParams(getSherlockActivity(), DataCentral.IMAGE_CACHE_DIR);
 
 //        mImageFetcher = new ImageFetcher(getSherlockActivity(), Integer.MAX_VALUE);
 //        mImageFetcher.setLoadingImage(R.drawable.default_plurk_avatar);
@@ -164,7 +163,7 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
 //        mImageFetcher.closeCache();
     }
 
-    public void onEventMainThread(Event_GetFriendsByOffset event) {
+    public void onEventMainThread(Event_FriendsFans_GetFriendsByOffset event) {
         List<IHuman> data = event.getData();
         String tag = getString(R.string.friend);
         if (group_list.contains(tag)) {
@@ -191,7 +190,7 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
         new Async_FriendsFans_getFollowingByOffset(getSherlockActivity()).forceLoad();
     }
 
-    public void onEventMainThread(Event_GetFollowingByOffset event) {
+    public void onEventMainThread(Event_FriendsFans_GetFollowingByOffset event) {
         List<IHuman> data = event.getData();
 
         String tag = getString(R.string.following);

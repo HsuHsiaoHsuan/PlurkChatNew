@@ -15,7 +15,7 @@ import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.RequestException;
 import idv.funnybrain.plurkchat.data.Friend;
 import idv.funnybrain.plurkchat.data.IHuman;
-import idv.funnybrain.plurkchat.eventbus.Event_GetFollowingByOffset;
+import idv.funnybrain.plurkchat.eventbus.Event_FriendsFans_GetFollowingByOffset;
 import idv.funnybrain.plurkchat.modules.Mod_FriendsFans;
 import org.json.JSONArray;
 
@@ -89,7 +89,7 @@ public class Async_FriendsFans_getFollowingByOffset extends AsyncTaskLoader<Void
             }
         }
 
-        EventBus.getDefault().post(new Event_GetFollowingByOffset(following));
+        EventBus.getDefault().post(new Event_FriendsFans_GetFollowingByOffset(following));
 
         return null;
         //return following;

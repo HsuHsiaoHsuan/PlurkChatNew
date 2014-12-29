@@ -1,5 +1,7 @@
 package idv.funnybrain.plurkchat.data;
 
+import idv.funnybrain.plurkchat.R;
+
 /**
  * Created by Freeman on 2014/4/3.
  * not_saying
@@ -43,6 +45,33 @@ public enum Relationship {
 
     @Override
     public String toString() {
-        return relationship;
+        return this.relationship;
+    }
+
+    public int getReadableStringResources() {
+        switch (this) {
+            case NOT_SAYING:
+                return R.string.not_saying;
+            case SINGLE:
+                return R.string.single;
+            case MARRIED:
+                return R.string.married;
+            case DIVORCED:
+                return R.string.divorced;
+            case ENGAGED:
+                return R.string.engaged;
+            case IN_RELATIONSHIP:
+                return R.string.in_relationship;
+            case COMPLICATED:
+                return R.string.complicated;
+            case WIDOWED:
+                return R.string.widowed;
+            case UNSTABLE_RELATIONSHIP:
+                return R.string.unstable_relatioinship;
+            case OPEN_RELATIONSHIP:
+                return R.string.open_relationship;
+            default:
+                return R.string.not_saying;
+        }
     }
 }
