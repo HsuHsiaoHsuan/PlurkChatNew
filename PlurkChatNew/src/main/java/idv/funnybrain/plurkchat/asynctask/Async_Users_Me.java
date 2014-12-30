@@ -7,6 +7,7 @@ import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.RequestException;
 import idv.funnybrain.plurkchat.data.Me;
+import idv.funnybrain.plurkchat.eventbus.Event_Error;
 import idv.funnybrain.plurkchat.eventbus.Event_Users_Me;
 import idv.funnybrain.plurkchat.modules.Mod_Users;
 import org.json.JSONException;
@@ -35,6 +36,7 @@ public class Async_Users_Me extends AsyncTask<String, Void, JSONObject> {
             if(D) { Log.d(TAG, "Mod_Users_me_AsyncTask: " + result.toString()); }
         } catch (RequestException e) {
             e.printStackTrace();
+            EventBus.getDefault().post(new Event_Error(e.toString()));
         }
         return result;
     }

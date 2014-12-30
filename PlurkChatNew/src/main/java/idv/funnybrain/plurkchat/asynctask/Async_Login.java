@@ -22,7 +22,8 @@ public class Async_Login extends AsyncTask<String, Void, String> {
 
         PlurkOAuth plurkOAuth = new PlurkOAuth("http://localhost/auth");
 
-        Event_Login event = new Event_Login(new PlurkOAuth("http://localhost/auth"));
+//        Event_Login event = new Event_Login(new PlurkOAuth("http://localhost/auth"));
+        Event_Login event = new Event_Login(plurkOAuth);
 
         EventBus.getDefault().post(event);
 

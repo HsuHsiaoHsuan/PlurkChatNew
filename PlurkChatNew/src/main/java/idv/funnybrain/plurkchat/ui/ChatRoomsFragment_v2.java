@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -25,8 +24,6 @@ import idv.funnybrain.plurkchat.asynctask.Async_Timeline_GetPlurks;
 import idv.funnybrain.plurkchat.data.Plurk_Users;
 import idv.funnybrain.plurkchat.data.Plurks;
 import idv.funnybrain.plurkchat.eventbus.Event_Timeline_GetPlurks;
-import idv.funnybrain.plurkchat.utils.ImageCache;
-import idv.funnybrain.plurkchat.utils.ImageFetcher;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,7 +60,6 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
     private Button bt_more;
     private BaseExpandableListAdapter mAdapter;
     private HashMap<String, Plurk_Users> plurk_users;
-
     private HashMap<String, List<Plurks>> plurks;
     private String oldest_posted_readable = "";
     private String oldest_posted = "null";
@@ -240,10 +236,10 @@ public class ChatRoomsFragment_v2 extends SherlockFragment {
             }
         }
         if(mAdapter == null) {
-            mAdapter = new ChatRoomExpandableListAdapter_v2(getSherlockActivity().getLayoutInflater(), plurk_users, plurks);
+            mAdapter = new ChatRoomsExpandableListAdapter_v2(getSherlockActivity().getLayoutInflater(), plurk_users, plurks);
             list.setAdapter(mAdapter);
         } else {
-            ((ChatRoomExpandableListAdapter_v2) mAdapter).addNewData();
+            ((ChatRoomsExpandableListAdapter_v2) mAdapter).addNewData();
         }
         bt_more.setVisibility(View.VISIBLE);
         bt_more.setEnabled(true);

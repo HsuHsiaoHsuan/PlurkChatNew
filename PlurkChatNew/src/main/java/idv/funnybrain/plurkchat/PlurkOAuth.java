@@ -73,6 +73,7 @@ public class PlurkOAuth {
 
     public boolean setAccessToken(Context context, String validation_code) {
         accessToken = service.getAccessToken(requestToken, new Verifier(validation_code));
+//        System.out.println("request token : " + requestToken.toString() + " ,validation: " + validation_code);
         SharedPreferences pref = context.getSharedPreferences("accessToken", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("key", accessToken.getToken());

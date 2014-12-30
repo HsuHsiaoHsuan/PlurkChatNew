@@ -21,10 +21,10 @@ import java.util.*;
 /**
  * Created by Freeman on 2014/4/16.
  */
-public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter {
+public class ChatRoomsExpandableListAdapter_v2 extends BaseExpandableListAdapter {
     // ---- constants START ----
     private static final boolean D = true;
-    private static final String TAG = "ChatRoomExpandableListAdapter_v2";
+    private static final String TAG = "ChatRoomsExpandableListAdapter_v2";
     // ---- constants END ----
 
     // --- local variable START ----
@@ -35,7 +35,7 @@ public class ChatRoomExpandableListAdapter_v2 extends BaseExpandableListAdapter 
     private ImageLoader mImageLoader;
     // --- local variable END ----
 
-    public ChatRoomExpandableListAdapter_v2(LayoutInflater inflater, HashMap<String, Plurk_Users> users, HashMap<String, List<Plurks>> plurks) {
+    public ChatRoomsExpandableListAdapter_v2(LayoutInflater inflater, HashMap<String, Plurk_Users> users, HashMap<String, List<Plurks>> plurks) {
         this.inflater = inflater;
         this.plurks = plurks;
         mData = DataCentral.getInstance(inflater.getContext());

@@ -51,11 +51,6 @@ public class Async_FriendsFans_getFollowingByOffset extends AsyncTaskLoader<Void
             do {
                 if(D) { Log.d(TAG, "Mod_FriendsFans_getFollowingByOffset_AsyncTaskLoader, while: " + round); }
                 result = DataCentral.getInstance(getContext()).getPlurkOAuth().getModule(Mod_FriendsFans.class).getFollowingByOffset(0 + 100 * round, 100);
-
-//                    result_size = result.length();
-//                    for (int x = 0; x < result_size; x++) {
-//                        following.add(new Friend(result.getJSONObject(x)));
-//                    }
                 JsonParser parser = factory.createParser(result.toString());
                 Friend[] tmp = mapper.readValue(parser, Friend[].class);
                 following.addAll(Arrays.asList(tmp));
@@ -64,8 +59,6 @@ public class Async_FriendsFans_getFollowingByOffset extends AsyncTaskLoader<Void
             if (D) {
                 Log.d(TAG, result.toString());
             }
-//            } catch (JSONException je) {
-//                Log.e(TAG, je.getMessage());
         } catch (RequestException e) {
             Log.e(TAG, e.getMessage());
         } catch (JsonMappingException jme) {

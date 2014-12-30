@@ -20,12 +20,11 @@ import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.asynctask.Async_GetAccessToken;
 import idv.funnybrain.plurkchat.asynctask.Async_Login;
 import idv.funnybrain.plurkchat.asynctask.Async_Users_Me;
+import idv.funnybrain.plurkchat.asynctask.Async_checkToken;
 import idv.funnybrain.plurkchat.data.Language;
 import idv.funnybrain.plurkchat.data.Me;
 import idv.funnybrain.plurkchat.data.Qualifier;
-import idv.funnybrain.plurkchat.eventbus.Event_GetAccessToken;
-import idv.funnybrain.plurkchat.eventbus.Event_Login;
-import idv.funnybrain.plurkchat.eventbus.Event_Users_Me;
+import idv.funnybrain.plurkchat.eventbus.*;
 import idv.funnybrain.plurkchat.modules.Mod_Timeline;
 import idv.funnybrain.plurkchat.ui.ChatRoomsFragment_v2;
 import idv.funnybrain.plurkchat.ui.MeFriendsFollowingFragment;
@@ -52,31 +51,24 @@ public class FunnyActivity extends SherlockFragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (D) { Log.d(TAG, "onCreate"); }
         setContentView(R.layout.activity_funny);
 
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        Button bt_getAuth = (Button) findViewById(R.id.bt_getAuth);
-        bt_getAuth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Async_Login(FunnyActivity.this).execute("");
-            }
-        });
-
-        final WebView webView = (WebView) findViewById(R.id.wv_auth_url);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new PlurkAuthWebViewClient());
+        EventBus.getDefault().register(this);
 
         SharedPreferences pref = getSharedPreferences("accessToken", Context.MODE_PRIVATE);
         String key = pref.getString("key", "nothing");
         String secret = pref.getString("secret", "nothing");
+        if (D) { Log.d(TAG, "key, secret: " + key + ", " + secret); }
         if( (!key.equals("nothing")) && (!secret.equals("nothing")) ) {
+
             accessToken = new Token(key, secret);
             DataCentral.getInstance(this).setPlurkOAuth(new PlurkOAuth(accessToken));
 
-            new Async_Users_Me(FunnyActivity.this).execute("");
+            new Async_checkToken(FunnyActivity.this).execute("");
 
             if(savedInstanceState != null) {
                 getSupportActionBar().setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
@@ -84,9 +76,42 @@ public class FunnyActivity extends SherlockFragmentActivity {
                 // rotation, setRetainInstance?
             }
         } else {
+            configLoginView();
+        }
+    }
+
+    private void configLoginView() {
+        Button bt_getAuth = (Button) findViewById(R.id.bt_getAuth);
+        bt_getAuth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Async_Login(FunnyActivity.this).execute("");
+            }
+        });
+        new Async_Login(FunnyActivity.this).execute("");
+
+        final WebView webView = (WebView) findViewById(R.id.wv_auth_url);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new PlurkAuthWebViewClient());
+
+        findViewById(R.id.login_control).setVisibility(View.VISIBLE);
+    }
+
+    public void onEventMainThread(Event_checkToken event) {
+        JSONObject result = event.getData();
+        new Async_Users_Me(this).execute("");
+//        System.out.println("funnyactiviyt checkToken: " + result);
+    }
+
+    public void onEventMainThread(Event_Error event) {
+        if (event.getData().contains("invalid access token")) {
+            SharedPreferences pref = getSharedPreferences("accessToken", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.clear();
+            editor.commit();
+            configLoginView();
             findViewById(R.id.login_control).setVisibility(View.VISIBLE);
         }
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -118,6 +143,7 @@ public class FunnyActivity extends SherlockFragmentActivity {
 
     // ---- EventBus onEvent START ----
     public void onEventMainThread(Event_Login event) {
+        if (D) { Log.d(TAG, "Event_Login"); };
         WebView webView = (WebView) findViewById(R.id.wv_auth_url);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new PlurkAuthWebViewClient());
@@ -126,11 +152,13 @@ public class FunnyActivity extends SherlockFragmentActivity {
     }
 
     public void onEventMainThread(Event_GetAccessToken event) {
+        if (D) { Log.d(TAG, "Event_GetAccessToken"); };
         new Async_Users_Me(this).execute("");
     }
 
     public void onEventMainThread(Event_Users_Me event) {
-        if(D) { Log.d(TAG, "HANDLER_GET_SELF_OK: " + me.getDisplay_name()); }
+        if (D) { Log.d(TAG, "Event_Users_Me"); };
+//        if(D) { Log.d(TAG, "HANDLER_GET_SELF_OK: " + me.getDisplay_name()); }
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         // actionBar.setDisplayShowTitleEnabled(true);

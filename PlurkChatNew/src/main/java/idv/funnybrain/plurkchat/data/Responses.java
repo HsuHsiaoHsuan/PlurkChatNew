@@ -13,6 +13,9 @@ import java.util.Locale;
  * Created by Freeman on 2014/4/11.
  */
 public class Responses {
+    public Responses() {
+    }
+
     private Qualifier qualifier = Qualifier.NULL;
     private String plurk_id = ""; // which plurk is this response belong to
     private String id = ""; // the id of this message

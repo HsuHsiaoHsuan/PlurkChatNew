@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.FunnyActivity;
 import idv.funnybrain.plurkchat.R;
@@ -35,15 +37,16 @@ public class ChattingRoomListAdapter extends BaseAdapter {
     private final LayoutInflater inflater;
     private HashMap<String, Friend> friends;
     private List<Responses> responses;
-    private ImageFetcher mImageFetcher;
+    private DataCentral mData;
+    private ImageLoader mImageLoader;
     // ---- local variable END ----
 
-//    public ChattingRoomListAdapter(LayoutInflater inflater, HashMap<String, Friend> fri, List<Responses> res, ImageFetcher imageFetcher, String my_id) {
-    public ChattingRoomListAdapter(LayoutInflater inflater, HashMap<String, Friend> fri, List<Responses> res, ImageFetcher imageFetcher) {
+    public ChattingRoomListAdapter(LayoutInflater inflater, HashMap<String, Friend> fri, List<Responses> res) {
         this.inflater = inflater;
         this.friends = fri;
         this.responses = res;
-        this.mImageFetcher = imageFetcher;
+        mData = DataCentral.getInstance(inflater.getContext());
+        mImageLoader = mData.getImageLoader();
 
         if(D) {
             Iterator<Friend> tmp_friend = friends.values().iterator();
@@ -76,9 +79,9 @@ public class ChattingRoomListAdapter extends BaseAdapter {
 
     static class ViewHolder {
         public TextView tv_id;
-        public ImageView iv_leftImage;
+        public NetworkImageView iv_leftImage;
         public TextView tv_poster_name;
-        public ImageView iv_rightImage;
+        public NetworkImageView iv_rightImage;
         public TextView tv_msg;
         public TextView tv_msg_date;
     }
@@ -92,9 +95,9 @@ public class ChattingRoomListAdapter extends BaseAdapter {
             }
             ViewHolder holder = new ViewHolder();
             holder.tv_id = (TextView) rowView.findViewById(R.id.tv_id);
-            holder.iv_leftImage = (ImageView) rowView.findViewById(R.id.iv_leftImage);
+            holder.iv_leftImage = (NetworkImageView) rowView.findViewById(R.id.iv_leftImage);
             holder.tv_poster_name = (TextView) rowView.findViewById(R.id.tv_poster_name);
-            holder.iv_rightImage = (ImageView) rowView.findViewById(R.id.iv_rightImage);
+            holder.iv_rightImage = (NetworkImageView) rowView.findViewById(R.id.iv_rightImage);
             holder.tv_msg = (TextView) rowView.findViewById(R.id.tv_msg);
             holder.tv_msg.setMovementMethod(LinkMovementMethod.getInstance());
             holder.tv_msg_date = (TextView) rowView.findViewById(R.id.tv_msg_date);
@@ -110,7 +113,7 @@ public class ChattingRoomListAdapter extends BaseAdapter {
         if(D) { Log.d(TAG, "~~~~~~~>" + DataCentral.getInstance(parent.getContext()).getMe().getDisplay_name()); }
         if(msg_user_id.equals(DataCentral.getInstance(parent.getContext()).getMe().getHumanId())) {
             // if the poster is myself
-            mImageFetcher.loadImage(DataCentral.getInstance(parent.getContext()).getMe().getHumanId(), holder.iv_rightImage);
+            holder.iv_rightImage.setImageUrl(DataCentral.getInstance(parent.getContext()).getMe().getHumanImage(), mImageLoader);
             holder.iv_rightImage.setVisibility(View.VISIBLE);
             holder.iv_leftImage.setVisibility(View.GONE);
             holder.tv_poster_name.setText(DataCentral.getInstance(parent.getContext()).getMe().getDisplay_name());
@@ -118,7 +121,7 @@ public class ChattingRoomListAdapter extends BaseAdapter {
         } else {
             // if the poster is others
             Friend f = friends.get(msg_user_id);
-            mImageFetcher.loadImage(f.getHumanImage(), holder.iv_leftImage);
+            holder.iv_leftImage.setImageUrl(f.getHumanImage(), mImageLoader);
             holder.iv_leftImage.setVisibility(View.VISIBLE);
             holder.iv_rightImage.setVisibility(View.GONE);
             holder.tv_poster_name.setText(f.getDisplay_name());

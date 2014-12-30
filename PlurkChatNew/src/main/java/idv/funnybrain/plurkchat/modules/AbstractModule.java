@@ -16,6 +16,10 @@ public abstract class AbstractModule {
     protected abstract String getModulePath();
 
     protected RequestMaker requestAPI(String api) {
-        return new RequestMaker(plurkOAuth, PLURK_PREFIX + getModulePath() + "/" + api);
+        if ( !api.equals("") ) {
+            return new RequestMaker(plurkOAuth, PLURK_PREFIX + getModulePath() + "/" + api);
+        } else {
+            return new RequestMaker(plurkOAuth, PLURK_PREFIX + getModulePath());
+        }
     }
 }
