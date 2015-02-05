@@ -1,7 +1,7 @@
 Plurk Fish
 ==========
-Show your Plurk content like a chat room.
-(Deleloping in Freeman branch)
+Show your Plurk content like a chat room.
+(on going on Freeman branch)
 
 ##ScreenShot
 Plurk's Friends list
