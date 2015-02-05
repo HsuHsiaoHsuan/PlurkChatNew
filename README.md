@@ -5,9 +5,9 @@ Show your Plurk content like a chat room.
 
 ##ScreenShot
 Plurk's Friends list
-(screenshot_1.png)
+![Alt text](screenshot_1.png)&nbsp;
 
 Plurks are sorted by poster.
-(screenshot_2.png)
+![Alt text](screenshot_2.png)&nbsp;
 
 ##LICENSE
