@@ -1,18 +1,14 @@
 package idv.funnybrain.plurkchat.ui;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.actionbarsherlock.app.SherlockFragment;
-import idv.funnybrain.plurkchat.FunnyActivity;
+import idv.funnybrain.plurkchat.MainActivity;
 import idv.funnybrain.plurkchat.R;
 
-/**
- * Created by Freeman on 2014/4/3.
- */
-public class MyselfFragment extends SherlockFragment {
+public class MyselfFragment extends Fragment {
     MyselfFragment newInstance() {
         MyselfFragment myselfFragment = new MyselfFragment();
         return myselfFragment;
@@ -33,7 +29,7 @@ public class MyselfFragment extends SherlockFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((FunnyActivity) getActivity()).doTest();
+        ((MainActivity) getActivity()).doTest();
 
     }
 }

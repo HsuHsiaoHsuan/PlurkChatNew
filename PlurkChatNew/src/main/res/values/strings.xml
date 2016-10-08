@@ -12,10 +12,10 @@
     <string name="no_network_connection_toast">No network connection found</string>
     <!-- Image Cache END -->
 
-    <!-- FunnyActivity START -->
+    <!-- MainActivity START -->
     <string name="tab_friends">Friends</string>
     <string name="tab_chatrooms">Chatting</string>
-    <!-- FunnyActivity END -->
+    <!-- MainActivity END -->
 
     <!-- MeFriendsFollowingFragment START -->
     <string name="me">Me</string>

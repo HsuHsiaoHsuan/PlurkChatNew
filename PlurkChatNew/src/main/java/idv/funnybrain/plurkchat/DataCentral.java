@@ -1,20 +1,19 @@
 package idv.funnybrain.plurkchat;
 
 import android.content.Context;
-//import android.text.TextUtils;
-//import com.android.volley.Request;
-//import com.android.volley.RequestQueue;
-//import com.android.volley.VolleyLog;
-//import com.android.volley.toolbox.Volley;
 import android.graphics.Bitmap;
-import android.net.http.AndroidHttpClient;
-import android.os.Build;
 import android.support.v4.util.LruCache;
+
 import com.android.volley.Cache;
 import com.android.volley.Network;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.*;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HttpStack;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.ImageLoader;
+
 import idv.funnybrain.plurkchat.data.Me;
 
 /**
@@ -32,7 +31,6 @@ public class DataCentral {
     private PlurkOAuth mPlurkOAuth;
     private Me mMe;
 
-    // private RequestQueue mRequestQueue;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(20);
@@ -65,17 +63,6 @@ public class DataCentral {
                     }
                 }
         );
-
-//        HttpStack stack;
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-//            stack = new HurlStack();
-//        } else {
-//            stack = new HttpClientStack(AndroidHttpClient.newInstance(System.getProperty("http.agent")));
-//        }
-//        Network network = new BasicNetwork(stack);
-//        Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
-//        mRequestQueue = new RequestQueue(cache, network);
-//        mRequestQueue.start();
     }
 
     public void setPlurkOAuth(PlurkOAuth plurkOAuth) {
@@ -97,11 +84,7 @@ public class DataCentral {
     public RequestQueue getRequestQueue() {
         if(mRequestQueue == null) {
             HttpStack stack;
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-                stack = new HurlStack();
-            } else {
-                stack = new HttpClientStack(AndroidHttpClient.newInstance(System.getProperty("http.agent")));
-            }
+            stack = new HurlStack();
             Network network = new BasicNetwork(stack);
             Cache cache = new DiskBasedCache(mContext.getCacheDir(), 1024 * 1024);
             mRequestQueue = new RequestQueue(cache, network);

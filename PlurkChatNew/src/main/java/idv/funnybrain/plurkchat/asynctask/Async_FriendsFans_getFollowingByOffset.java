@@ -1,7 +1,7 @@
 package idv.funnybrain.plurkchat.asynctask;
 
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
+import android.content.AsyncTaskLoader;
 import android.util.Log;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class Async_FriendsFans_getFollowingByOffset extends AsyncTaskLoader<Void> {
     private static final boolean D = false;
-    private static final String TAG = "Async_FriendsFans_getFollowingByOffset";
+    private static final String TAG = Async_FriendsFans_getFollowingByOffset.class.getSimpleName();
 
     public Async_FriendsFans_getFollowingByOffset(Context context) {
         super(context);

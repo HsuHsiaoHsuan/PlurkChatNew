@@ -1,15 +1,18 @@
 package idv.funnybrain.plurkchat.ui;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.AsyncTaskLoader;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import com.actionbarsherlock.app.SherlockFragment;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.R;
@@ -18,18 +21,14 @@ import idv.funnybrain.plurkchat.asynctask.Async_FriendsFans_getFollowingByOffset
 import idv.funnybrain.plurkchat.data.IHuman;
 import idv.funnybrain.plurkchat.eventbus.Event_FriendsFans_GetFollowingByOffset;
 import idv.funnybrain.plurkchat.eventbus.Event_FriendsFans_GetFriendsByOffset;
-import idv.funnybrain.plurkchat.utils.ImageCache;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Freeman on 2014/4/12.
  */
-public class MeFriendsFollowingFragment extends SherlockFragment {
+public class MeFriendsFollowingFragment extends Fragment {
     // ---- constant variable START ----
     private static final boolean D = false;
-    private static final String TAG = "MeFriendsFollowingFragment";
+    private static final String TAG = MeFriendsFollowingFragment.class.getSimpleName();
     protected boolean mPause = false;
     private final Object mPauseLock = new Object();
 
@@ -103,10 +102,10 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
             ArrayList<IHuman> me_list = new ArrayList<IHuman>();
             me_list.add(DataCentral.getInstance(getActivity()).getMe());
             child_list.add(0, me_list);
-            mAdapter = new MeFriendsFollowingExpandableListAdapter(getSherlockActivity().getLayoutInflater(), group_list, child_list);
+            mAdapter = new MeFriendsFollowingExpandableListAdapter(getActivity().getLayoutInflater(), group_list, child_list);
             list.setAdapter(mAdapter);
         }
-        AsyncTaskLoader tmp = new Async_FriendFans_getFriendsByOffset(getSherlockActivity());
+        AsyncTaskLoader tmp = new Async_FriendFans_getFriendsByOffset(getActivity());
         tmp.forceLoad();
         runningTask.add(tmp);
     }
@@ -147,7 +146,7 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
         }
 
         if (mAdapter == null) {
-            mAdapter = new MeFriendsFollowingExpandableListAdapter(getSherlockActivity().getLayoutInflater(), group_list, child_list);
+            mAdapter = new MeFriendsFollowingExpandableListAdapter(getActivity().getLayoutInflater(), group_list, child_list);
             list.setAdapter(mAdapter);
         } else {
             //mAdapter.addNewData(getString(R.string.friend), data);
@@ -158,7 +157,7 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
             list.expandGroup(x);
         }
 
-        AsyncTaskLoader tmp = new Async_FriendsFans_getFollowingByOffset(getSherlockActivity());
+        AsyncTaskLoader tmp = new Async_FriendsFans_getFollowingByOffset(getActivity());
         tmp.forceLoad();
         runningTask.add(tmp);
     }
@@ -177,7 +176,7 @@ public class MeFriendsFollowingFragment extends SherlockFragment {
         }
 
         if(mAdapter == null) {
-            mAdapter = new MeFriendsFollowingExpandableListAdapter(getSherlockActivity().getLayoutInflater(), group_list, child_list);
+            mAdapter = new MeFriendsFollowingExpandableListAdapter(getActivity().getLayoutInflater(), group_list, child_list);
             list.setAdapter(mAdapter);
         } else {
             //mAdapter.addNewData(getString(R.string.following), data);

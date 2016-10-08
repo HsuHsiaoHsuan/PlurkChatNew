@@ -8,17 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import idv.funnybrain.plurkchat.DataCentral;
-import idv.funnybrain.plurkchat.FunnyActivity;
 import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.data.Friend;
-import idv.funnybrain.plurkchat.data.Me;
 import idv.funnybrain.plurkchat.data.Responses;
-import idv.funnybrain.plurkchat.utils.ImageFetcher;
 
 import java.util.HashMap;
 import java.util.Iterator;

@@ -5,8 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.view.View;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
 import java.io.InputStream;

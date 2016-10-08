@@ -19,62 +19,62 @@
 
 <resources>
 
-    <style name="Theme.Plurkchat" parent="@style/Theme.Sherlock.Light">
-        <item name="actionBarItemBackground">@drawable/selectable_background_plurkchat</item>
-        <item name="popupMenuStyle">@style/PopupMenu.Plurkchat</item>
-        <item name="dropDownListViewStyle">@style/DropDownListView.Plurkchat</item>
-        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Plurkchat</item>
-        <item name="actionDropDownStyle">@style/DropDownNav.Plurkchat</item>
-        <item name="actionBarStyle">@style/ActionBar.Solid.Plurkchat</item>
-        <item name="actionModeBackground">@drawable/cab_background_top_plurkchat</item>
-        <item name="actionModeSplitBackground">@drawable/cab_background_bottom_plurkchat</item>
-        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Plurkchat</item>
-
+    <style name="Theme.Plurkchat" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarItemBackground">@drawable/selectable_background_plurkchat</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.Plurkchat</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Plurkchat</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Plurkchat</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.Plurkchat</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Plurkchat</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_plurkchat</item>
+        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_plurkchat</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Plurkchat</item>
+        
         
     </style>
 
-    <style name="ActionBar.Solid.Plurkchat" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
-        <item name="background">@drawable/ab_solid_plurkchat</item>
-        <item name="backgroundStacked">@drawable/ab_stacked_solid_plurkchat</item>
-        <item name="backgroundSplit">@drawable/ab_bottom_solid_plurkchat</item>
-        <item name="progressBarStyle">@style/ProgressBar.Plurkchat</item>
+    <style name="ActionBar.Solid.Plurkchat" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
+        <item name="android:background">@drawable/ab_solid_plurkchat</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_plurkchat</item>
+        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_plurkchat</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Plurkchat</item>
     </style>
 
-    <style name="ActionBar.Transparent.Plurkchat" parent="@style/Widget.Sherlock.Light.ActionBar">
-        <item name="background">@drawable/ab_transparent_plurkchat</item>
-        <item name="progressBarStyle">@style/ProgressBar.Plurkchat</item>
+    <style name="ActionBar.Transparent.Plurkchat" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@drawable/ab_transparent_plurkchat</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Plurkchat</item>
     </style>
-	
-    <style name="PopupMenu.Plurkchat" parent="@style/Widget.Sherlock.Light.ListPopupWindow">	
+
+    <style name="PopupMenu.Plurkchat" parent="@android:style/Widget.Holo.Light.ListPopupWindow">
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_plurkchat</item>	
     </style>
-	
-    <style name="DropDownListView.Plurkchat" parent="@style/Widget.Sherlock.Light.ListView.DropDown">
+
+    <style name="DropDownListView.Plurkchat" parent="@android:style/Widget.Holo.Light.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_plurkchat</item>
     </style>
 
-    <style name="ActionBarTabStyle.Plurkchat" parent="@style/Widget.Sherlock.Light.ActionBar.TabView">
+    <style name="ActionBarTabStyle.Plurkchat" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_plurkchat</item>
     </style>
-	
-    <style name="DropDownNav.Plurkchat" parent="@style/Widget.Sherlock.Light.Spinner.DropDown.ActionBar">
+
+    <style name="DropDownNav.Plurkchat" parent="@android:style/Widget.Holo.Light.Spinner">
         <item name="android:background">@drawable/spinner_background_ab_plurkchat</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_plurkchat</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_plurkchat</item>
     </style>
     
-    <style name="ProgressBar.Plurkchat" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
+    <style name="ProgressBar.Plurkchat" parent="@android:style/Widget.Holo.Light.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_plurkchat</item>
     </style>
     
-    <style name="ActionButton.CloseMode.Plurkchat" parent="@style/Widget.Sherlock.Light.ActionButton.CloseMode">
+    <style name="ActionButton.CloseMode.Plurkchat" parent="@android:style/Widget.Holo.Light.ActionButton.CloseMode">
         <item name="android:background">@drawable/btn_cab_done_plurkchat</item>
     </style>
-    
+
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Plurkchat.Widget" parent="@style/Theme.Sherlock">
-        <item name="popupMenuStyle">@style/PopupMenu.Plurkchat</item>
-        <item name="dropDownListViewStyle">@style/DropDownListView.Plurkchat</item>
+    <style name="Theme.Plurkchat.Widget" parent="@android:style/Theme.Holo">
+        <item name="android:popupMenuStyle">@style/PopupMenu.Plurkchat</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Plurkchat</item>
     </style>
 
 </resources>

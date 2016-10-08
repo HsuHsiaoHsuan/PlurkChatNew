@@ -1,6 +1,7 @@
 package idv.funnybrain.plurkchat.ui;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.AsyncTaskLoader;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -9,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.android.volley.Network;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -41,10 +40,10 @@ import java.util.*;
 /**
  * Created by Freeman on 2014/4/11.
  */
-public class ChattingRoomFragment extends SherlockFragment {
+public class ChattingRoomFragment extends Fragment {
     // ---- constant variable START ----
     private static final boolean D = true;
-    private static final String TAG = "ChattingRoomFragment";
+    private static final String TAG = ChattingRoomFragment.class.getSimpleName();
 
 //    protected boolean mPause = false;
 //    private final Object mPauseLock = new Object();
@@ -88,7 +87,7 @@ public class ChattingRoomFragment extends SherlockFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mData = DataCentral.getInstance(getSherlockActivity());
+        mData = DataCentral.getInstance(getActivity());
         mImageLoader = mData.getImageLoader();
 
         friends = new HashMap<String, Friend>();
@@ -144,7 +143,7 @@ public class ChattingRoomFragment extends SherlockFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(D) { Log.d(TAG, "onActivityCreated"); }
-        plurkOAuth = DataCentral.getInstance(getSherlockActivity()).getPlurkOAuth();
+        plurkOAuth = DataCentral.getInstance(getActivity()).getPlurkOAuth();
         getResponses();
     }
 
@@ -172,13 +171,13 @@ public class ChattingRoomFragment extends SherlockFragment {
     }
 
     void getResponses() {
-        AsyncTaskLoader tmp = new Async_Responses_Get(getSherlockActivity(), chatting_plurk_id);
+        AsyncTaskLoader tmp = new Async_Responses_Get(getActivity(), chatting_plurk_id);
         tmp.forceLoad();
         runningTask.add(tmp);
     }
 
     void sendResponse(String response, Qualifier qualifier) {
-        AsyncTaskLoader tmp = new Async_Responses_ResponseAdd(getSherlockActivity(), chatting_plurk_id, response, null);
+        AsyncTaskLoader tmp = new Async_Responses_ResponseAdd(getActivity(), chatting_plurk_id, response, null);
         tmp.forceLoad();
         runningTask.add(tmp);
     }
@@ -189,7 +188,7 @@ public class ChattingRoomFragment extends SherlockFragment {
         friends.putAll(event.getFriendsData());
         responses.addAll(event.getResponsesData());
         if (mAdapter == null) {
-            mAdapter = new ChattingRoomListAdapter(getSherlockActivity().getLayoutInflater(), friends, responses);
+            mAdapter = new ChattingRoomListAdapter(getActivity().getLayoutInflater(), friends, responses);
             list.setAdapter(mAdapter);
         } else {
             //mAdapter.notifyDataSetChanged();

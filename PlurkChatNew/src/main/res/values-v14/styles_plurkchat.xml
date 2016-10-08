@@ -19,7 +19,7 @@
 
 <resources>
 
-    <style name="Theme.Plurkchat" parent="@style/Theme.Sherlock.Light">
+    <style name="Theme.Plurkchat" parent="@style/Theme.AppCompat.Light">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_plurkchat</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Plurkchat</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Plurkchat</item>
@@ -33,20 +33,20 @@
         
     </style>
 
-    <style name="ActionBar.Solid.Plurkchat" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
+    <style name="ActionBar.Solid.Plurkchat" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
         <item name="android:background">@drawable/ab_solid_plurkchat</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_plurkchat</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_plurkchat</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Plurkchat</item>
     </style>
 
-    <style name="ActionBar.Transparent.Plurkchat" parent="@style/Widget.Sherlock.Light.ActionBar">
+    <style name="ActionBar.Transparent.Plurkchat" parent="@style/Widget.AppCompat.Light.ActionBar">
         <item name="android:background">@drawable/ab_transparent_plurkchat</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Plurkchat</item>
     </style>
     
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Plurkchat.Widget" parent="@style/Theme.Sherlock">
+    <style name="Theme.Plurkchat.Widget" parent="@style/Theme.AppCompat">
         <item name="android:popupMenuStyle">@style/PopupMenu.Plurkchat</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Plurkchat</item>
     </style>

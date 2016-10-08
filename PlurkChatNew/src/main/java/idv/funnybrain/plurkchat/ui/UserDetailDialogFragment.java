@@ -1,5 +1,6 @@
 package idv.funnybrain.plurkchat.ui;
 
+import android.app.DialogFragment;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import de.greenrobot.event.EventBus;
@@ -23,7 +23,7 @@ import org.w3c.dom.Text;
 /**
  * Created by freeman on 2014/12/15.
  */
-public class UserDetailDialogFragment extends SherlockDialogFragment {
+public class UserDetailDialogFragment extends DialogFragment {
     private static final boolean D = true;
     private static final String TAG = "UserDetailDialogFragment";
 
@@ -54,7 +54,7 @@ public class UserDetailDialogFragment extends SherlockDialogFragment {
             userID = bundle.getString("user_id");
         }
 
-        mData = DataCentral.getInstance(getSherlockActivity());
+        mData = DataCentral.getInstance(getActivity());
         mImageLoader = mData.getImageLoader();
         if (D) { Log.d(TAG, "yes I get user_id: " + userID); }
     }
@@ -84,7 +84,7 @@ public class UserDetailDialogFragment extends SherlockDialogFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        new Async_Profile_getPublicProfile(getSherlockActivity(), userID).forceLoad();
+        new Async_Profile_getPublicProfile(getActivity(), userID).forceLoad();
     }
 
     public void onEventMainThread(Event_Profile_getPublicProfile event) {

@@ -2,7 +2,6 @@ package idv.funnybrain.plurkchat;
 
 import android.util.Log;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
@@ -31,6 +30,7 @@ public class RequestMaker {
     public RequestMaker args(List<NameValuePair> pairs) {
         try {
             args = pairs;
+
             if(D && (pairs!=null) ) { Log.d(TAG, "args, httpPost parameters: " + EntityUtils.toString(new UrlEncodedFormEntity(pairs, HTTP.UTF_8))); }
             if(D && (pairs==null) ) { Log.d(TAG, "args, httpPost parameters: null"); }
         } catch (UnsupportedEncodingException e) {
