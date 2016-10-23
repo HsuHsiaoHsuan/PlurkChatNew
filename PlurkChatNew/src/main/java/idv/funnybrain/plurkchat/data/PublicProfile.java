@@ -1,9 +1,5 @@
 package idv.funnybrain.plurkchat.data;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 

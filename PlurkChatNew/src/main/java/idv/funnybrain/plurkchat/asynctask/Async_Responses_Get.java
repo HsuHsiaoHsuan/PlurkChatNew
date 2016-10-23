@@ -2,12 +2,23 @@ package idv.funnybrain.plurkchat.asynctask;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+
 import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.RequestException;
@@ -15,12 +26,6 @@ import idv.funnybrain.plurkchat.data.Friend;
 import idv.funnybrain.plurkchat.data.Responses;
 import idv.funnybrain.plurkchat.eventbus.Event_Responses_Get;
 import idv.funnybrain.plurkchat.modules.Mod_Responses;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.*;
 
 /**
  * Created by freeman on 2014/11/15.

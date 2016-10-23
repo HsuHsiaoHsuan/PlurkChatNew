@@ -1,10 +1,5 @@
 package idv.funnybrain.plurkchat.data;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.List;
-
 /**
  * Created by freeman on 2014/12/18.
  */

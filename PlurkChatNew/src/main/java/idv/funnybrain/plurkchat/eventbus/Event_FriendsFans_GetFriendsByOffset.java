@@ -1,8 +1,8 @@
 package idv.funnybrain.plurkchat.eventbus;
 
-import idv.funnybrain.plurkchat.data.IHuman;
-
 import java.util.List;
+
+import idv.funnybrain.plurkchat.data.IHuman;
 
 /**
  * Created by freeman on 2014/7/28.

@@ -1,7 +1,6 @@
 package idv.funnybrain.plurkchat.ui;
 
 import android.app.DialogFragment;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+
 import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.R;
@@ -18,7 +19,6 @@ import idv.funnybrain.plurkchat.asynctask.Async_Profile_getPublicProfile;
 import idv.funnybrain.plurkchat.data.PublicProfile;
 import idv.funnybrain.plurkchat.data.User_Info;
 import idv.funnybrain.plurkchat.eventbus.Event_Profile_getPublicProfile;
-import org.w3c.dom.Text;
 
 /**
  * Created by freeman on 2014/12/15.

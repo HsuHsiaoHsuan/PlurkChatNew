@@ -1,22 +1,20 @@
 package idv.funnybrain.plurkchat.ui;
 
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+
+import java.util.List;
+
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.data.IHuman;
 import idv.funnybrain.plurkchat.data.Me;
-import idv.funnybrain.plurkchat.utils.ImageFetcher;
-
-import java.util.List;
 
 /**
  * Created by Freeman on 2014/4/12.

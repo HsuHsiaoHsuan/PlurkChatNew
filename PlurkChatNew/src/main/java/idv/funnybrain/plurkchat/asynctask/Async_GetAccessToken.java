@@ -2,13 +2,12 @@ package idv.funnybrain.plurkchat.asynctask;
 
 import android.content.Context;
 import android.os.AsyncTask;
+
 import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.eventbus.Event_GetAccessToken;
+import idv.funnybrain.plurkchat.logger.Log;
 
-/**
- * Created by freeman on 2014/7/16.
- */
 public class Async_GetAccessToken extends AsyncTask<String, Void, Boolean> {
     private Context mContext;
 
@@ -18,6 +17,11 @@ public class Async_GetAccessToken extends AsyncTask<String, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(String... params) {
+        if (DataCentral.getInstance().getPlurkOAuth() == null) {
+            Log.e("FREEMAN", "NULL1");
+        }
+        Log.e("FREEMAN", "params: " + params[0]);
+
         return DataCentral.getInstance(mContext).getPlurkOAuth().setAccessToken(mContext, params[0]);
     }
 

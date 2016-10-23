@@ -43,6 +43,16 @@ public class DataCentral {
         return mData;
     }
 
+    private static DataCentral instance = new DataCentral();
+    private DataCentral() {
+    }
+    public static synchronized DataCentral getInstance() {
+        if (instance == null) {
+            instance = new DataCentral();
+        }
+        return instance;
+    }
+
     public DataCentral(Context context) {
         mContext = context;
 
@@ -83,9 +93,7 @@ public class DataCentral {
 
     public RequestQueue getRequestQueue() {
         if(mRequestQueue == null) {
-            HttpStack stack;
-            stack = new HurlStack();
-            Network network = new BasicNetwork(stack);
+            Network network = new BasicNetwork(new HurlStack());
             Cache cache = new DiskBasedCache(mContext.getCacheDir(), 1024 * 1024);
             mRequestQueue = new RequestQueue(cache, network);
             mRequestQueue.start();

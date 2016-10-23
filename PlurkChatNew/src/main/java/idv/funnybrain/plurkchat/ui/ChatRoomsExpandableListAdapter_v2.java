@@ -6,17 +6,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.data.Plurk_Users;
 import idv.funnybrain.plurkchat.data.Plurks;
-import idv.funnybrain.plurkchat.utils.ImageFetcher;
-
-import java.util.*;
 
 /**
  * Created by Freeman on 2014/4/16.
@@ -124,7 +129,7 @@ public class ChatRoomsExpandableListAdapter_v2 extends BaseExpandableListAdapter
             holder.tv_title.setTextColor(Color.WHITE);
             holder.tv_count.setTextColor(Color.WHITE);
         } else {
-            rowView.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.abs__background_holo_light));
+            rowView.setBackgroundColor(inflater.getContext().getResources().getColor(android.R.color.background_light));
             holder.tv_title.setTextColor(Color.BLACK);
             holder.tv_count.setTextColor(Color.BLACK);
         }

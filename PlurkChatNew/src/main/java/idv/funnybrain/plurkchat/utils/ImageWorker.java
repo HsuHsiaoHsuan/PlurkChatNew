@@ -27,10 +27,11 @@ import android.graphics.drawable.TransitionDrawable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.widget.ImageView;
-import idv.funnybrain.plurkchat.BuildConfig;
-import idv.funnybrain.plurkchat.logger.Log;
 
 import java.lang.ref.WeakReference;
+
+import idv.funnybrain.plurkchat.BuildConfig;
+import idv.funnybrain.plurkchat.logger.Log;
 
 /**
  * This class wraps up completing some arbitrary long running work when loading a bitmap to an

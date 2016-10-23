@@ -3,43 +3,43 @@ package idv.funnybrain.plurkchat.ui;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.AsyncTaskLoader;
+import android.support.v7.app.ActionBar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-import com.android.volley.Network;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import de.greenrobot.event.EventBus;
-import idv.funnybrain.plurkchat.*;
-import idv.funnybrain.plurkchat.asynctask.Async_Responses_Get;
-import idv.funnybrain.plurkchat.asynctask.Async_Responses_ResponseAdd;
-import idv.funnybrain.plurkchat.data.*;
-import idv.funnybrain.plurkchat.eventbus.Event_Error;
-import idv.funnybrain.plurkchat.eventbus.Event_Responses_Get;
-import idv.funnybrain.plurkchat.eventbus.Event_Responses_ResponseAdd;
-import idv.funnybrain.plurkchat.utils.ImageCache;
-import idv.funnybrain.plurkchat.utils.ImageFetcher;
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-/**
- * Created by Freeman on 2014/4/11.
- */
+import de.greenrobot.event.EventBus;
+import idv.funnybrain.plurkchat.DataCentral;
+import idv.funnybrain.plurkchat.PlurkOAuth;
+import idv.funnybrain.plurkchat.R;
+import idv.funnybrain.plurkchat.asynctask.Async_Responses_Get;
+import idv.funnybrain.plurkchat.asynctask.Async_Responses_ResponseAdd;
+import idv.funnybrain.plurkchat.data.Friend;
+import idv.funnybrain.plurkchat.data.Plurk_Users;
+import idv.funnybrain.plurkchat.data.Plurks;
+import idv.funnybrain.plurkchat.data.Qualifier;
+import idv.funnybrain.plurkchat.data.Responses;
+import idv.funnybrain.plurkchat.eventbus.Event_Error;
+import idv.funnybrain.plurkchat.eventbus.Event_Responses_Get;
+import idv.funnybrain.plurkchat.eventbus.Event_Responses_ResponseAdd;
+
 public class ChattingRoomFragment extends Fragment {
     // ---- constant variable START ----
     private static final boolean D = true;
@@ -167,7 +167,7 @@ public class ChattingRoomFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         if(D) { Log.d(TAG, "onDestroy"); }
-        getSherlockActivity().getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
     }
 
     void getResponses() {

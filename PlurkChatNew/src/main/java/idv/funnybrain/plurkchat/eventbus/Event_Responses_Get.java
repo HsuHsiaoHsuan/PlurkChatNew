@@ -1,11 +1,10 @@
 package idv.funnybrain.plurkchat.eventbus;
 
-import idv.funnybrain.plurkchat.data.Friend;
-import idv.funnybrain.plurkchat.data.Responses;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.List;
+
+import idv.funnybrain.plurkchat.data.Friend;
+import idv.funnybrain.plurkchat.data.Responses;
 
 /**
  * Created by freeman on 2014/11/15.

@@ -9,16 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import idv.funnybrain.plurkchat.DataCentral;
-import idv.funnybrain.plurkchat.R;
-import idv.funnybrain.plurkchat.data.Friend;
-import idv.funnybrain.plurkchat.data.Responses;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+import idv.funnybrain.plurkchat.DataCentral;
+import idv.funnybrain.plurkchat.R;
+import idv.funnybrain.plurkchat.data.Friend;
+import idv.funnybrain.plurkchat.data.Responses;
 
 /**
  * Created by Freeman on 2014/4/11.

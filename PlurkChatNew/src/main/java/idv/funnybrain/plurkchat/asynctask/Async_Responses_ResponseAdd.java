@@ -2,6 +2,9 @@ package idv.funnybrain.plurkchat.asynctask;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
+
+import org.json.JSONObject;
+
 import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.RequestException;
@@ -9,7 +12,6 @@ import idv.funnybrain.plurkchat.data.Qualifier;
 import idv.funnybrain.plurkchat.eventbus.Event_Error;
 import idv.funnybrain.plurkchat.eventbus.Event_Responses_ResponseAdd;
 import idv.funnybrain.plurkchat.modules.Mod_Responses;
-import org.json.JSONObject;
 
 /**
  * Created by freeman on 2014/11/16.

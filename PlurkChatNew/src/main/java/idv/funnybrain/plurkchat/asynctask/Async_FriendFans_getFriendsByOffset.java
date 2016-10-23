@@ -1,8 +1,9 @@
 package idv.funnybrain.plurkchat.asynctask;
 
-import android.content.Context;
 import android.content.AsyncTaskLoader;
+import android.content.Context;
 import android.util.Log;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -10,6 +11,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
+import org.json.JSONArray;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.RequestException;
@@ -17,12 +26,6 @@ import idv.funnybrain.plurkchat.data.Friend;
 import idv.funnybrain.plurkchat.data.IHuman;
 import idv.funnybrain.plurkchat.eventbus.Event_FriendsFans_GetFriendsByOffset;
 import idv.funnybrain.plurkchat.modules.Mod_FriendsFans;
-import org.json.JSONArray;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by freeman on 2014/7/22.

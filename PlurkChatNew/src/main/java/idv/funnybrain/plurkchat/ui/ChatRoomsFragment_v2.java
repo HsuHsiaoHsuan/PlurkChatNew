@@ -1,11 +1,9 @@
 package idv.funnybrain.plurkchat.ui;
 
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +12,16 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 
-// import com.diegocarloslima.fgelv.lib.FloatingGroupExpandableListView;
-// import com.diegocarloslima.fgelv.lib.WrapperExpandableListAdapter;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
 import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.PlurkOAuth;
@@ -24,11 +30,9 @@ import idv.funnybrain.plurkchat.asynctask.Async_Timeline_GetPlurks;
 import idv.funnybrain.plurkchat.data.Plurk_Users;
 import idv.funnybrain.plurkchat.data.Plurks;
 import idv.funnybrain.plurkchat.eventbus.Event_Timeline_GetPlurks;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.*;
+// import com.diegocarloslima.fgelv.lib.FloatingGroupExpandableListView;
+// import com.diegocarloslima.fgelv.lib.WrapperExpandableListAdapter;
 
 /**
  * Created by Freeman on 2014/4/16.
@@ -80,38 +84,38 @@ public class ChatRoomsFragment_v2 extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         if (D) { Log.d(TAG, "onCreateView"); }
         View v = inflater.inflate(R.layout.fragment_chatrooms, container, false);
-        list = (ExpandableListView) v.findViewById(R.id.elv_list);
-        bt_more = (Button) v.findViewById(R.id.bt_more);
-        bt_more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HashMap<String, String> params = new HashMap<String, String>();
-                params.put(HAS_PARAMS, "true");
-                params.put(OFFSET, oldest_posted);
-                new Async_Timeline_GetPlurks(getActivity(), params).forceLoad();
-            }
-        });
-        list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                if (D) { Log.d(TAG, "--->onChildClick"); }
-                String idx = String.valueOf(mAdapter.getGroupId(groupPosition));
-
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ChattingRoomFragment chatting = ChattingRoomFragment.newInstance(plurks.get(idx).get(childPosition), plurk_users.get(idx));
-                ft.replace(R.id.fragment_content, chatting).addToBackStack("tag").commitAllowingStateLoss();
-                getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-                return true;
-            }
-        });
-
-        if(mAdapter != null) {
-            list.setAdapter(mAdapter);
-        }
+//        list = (ExpandableListView) v.findViewById(R.id.elv_list);
+//        bt_more = (Button) v.findViewById(R.id.bt_more);
+//        bt_more.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                HashMap<String, String> params = new HashMap<String, String>();
+//                params.put(HAS_PARAMS, "true");
+//                params.put(OFFSET, oldest_posted);
+//                new Async_Timeline_GetPlurks(getActivity(), params).forceLoad();
+//            }
+//        });
+//        list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+//            @Override
+//            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+//                if (D) { Log.d(TAG, "--->onChildClick"); }
+//                String idx = String.valueOf(mAdapter.getGroupId(groupPosition));
+//
+//                android.support.v4.app.FragmentManager fm = getFragmentManager();
+//                android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
+//                ChattingRoomFragment chatting = ChattingRoomFragment.newInstance(plurks.get(idx).get(childPosition), plurk_users.get(idx));
+//                ft.replace(R.id.fragment_content, chatting).addToBackStack("tag").commitAllowingStateLoss();
+//                getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+//                return true;
+//            }
+//        });
+//
+//        if(mAdapter != null) {
+//            list.setAdapter(mAdapter);
+//        }
         return v;
     }
 
@@ -129,7 +133,7 @@ public class ChatRoomsFragment_v2 extends Fragment {
         if (D) { Log.d(TAG, "onResume"); }
         EventBus.getDefault().register(this);
 
-        SharedPreferences settings = getActivity().getPreferences(SherlockActivity.MODE_PRIVATE);
+        SharedPreferences settings = getActivity().getPreferences(AppCompatActivity.MODE_PRIVATE);
         oldest_posted_readable = settings.getString("oldest_posted_readable", "");
         oldest_posted = settings.getString("oldest_posted", "null");
 
@@ -146,7 +150,7 @@ public class ChatRoomsFragment_v2 extends Fragment {
         if (D) { Log.d(TAG, "onPause"); }
         EventBus.getDefault().unregister(this);
 
-        SharedPreferences settings = getActivity().getPreferences(SherlockActivity.MODE_PRIVATE);
+        SharedPreferences settings = getActivity().getPreferences(AppCompatActivity.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("oldest_posted_readable", oldest_posted_readable);
         editor.putString("oldest_posted", oldest_posted);

@@ -1,12 +1,13 @@
 package idv.funnybrain.plurkchat.modules;
 
-import idv.funnybrain.plurkchat.RequestException;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import idv.funnybrain.plurkchat.RequestException;
 
 /**
  * Created by Freeman on 2014/4/2.

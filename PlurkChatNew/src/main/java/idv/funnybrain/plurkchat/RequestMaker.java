@@ -1,19 +1,13 @@
 package idv.funnybrain.plurkchat;
 
 import android.util.Log;
+
 import org.apache.http.NameValuePair;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-/**
- * Created by Freeman on 2014/4/3.
- */
 public class RequestMaker {
     private static final boolean D = true;
     private static final String TAG = "RequestMaker";
@@ -28,16 +22,7 @@ public class RequestMaker {
     }
 
     public RequestMaker args(List<NameValuePair> pairs) {
-        try {
-            args = pairs;
-
-            if(D && (pairs!=null) ) { Log.d(TAG, "args, httpPost parameters: " + EntityUtils.toString(new UrlEncodedFormEntity(pairs, HTTP.UTF_8))); }
-            if(D && (pairs==null) ) { Log.d(TAG, "args, httpPost parameters: null"); }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        args = pairs;
         return this;
     }
 

@@ -1,8 +1,8 @@
 package idv.funnybrain.plurkchat.modules;
 
-import android.content.Context;
-import idv.funnybrain.plurkchat.RequestException;
 import org.json.JSONObject;
+
+import idv.funnybrain.plurkchat.RequestException;
 
 /**
  * Created by freeman on 2014/12/31.

@@ -30,10 +30,13 @@ import android.os.StatFs;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.LruCache;
-import idv.funnybrain.plurkchat.BuildConfig;
-import idv.funnybrain.plurkchat.logger.Log;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.ref.SoftReference;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -41,6 +44,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import idv.funnybrain.plurkchat.BuildConfig;
+import idv.funnybrain.plurkchat.logger.Log;
 
 //import com.example.android.common.logger.Log;
 //import com.example.android.displayingbitmaps.BuildConfig;

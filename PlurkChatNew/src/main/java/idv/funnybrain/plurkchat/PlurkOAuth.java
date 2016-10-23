@@ -3,16 +3,22 @@ package idv.funnybrain.plurkchat;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import idv.funnybrain.plurkchat.modules.AbstractModule;
+
 import org.apache.http.NameValuePair;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.PlurkApi;
-import org.scribe.model.*;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
+import org.scribe.model.Verb;
+import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import idv.funnybrain.plurkchat.modules.AbstractModule;
 
 /**
  * Created by Freeman on 2014/4/2.

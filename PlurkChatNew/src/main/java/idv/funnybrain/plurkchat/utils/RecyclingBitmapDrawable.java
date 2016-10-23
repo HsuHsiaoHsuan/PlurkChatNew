@@ -19,6 +19,7 @@ package idv.funnybrain.plurkchat.utils;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+
 import idv.funnybrain.plurkchat.BuildConfig;
 import idv.funnybrain.plurkchat.logger.Log;
 
