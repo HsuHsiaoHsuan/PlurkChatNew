@@ -133,7 +133,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="08f930e67d242dd7c01f68ff0bdf9d4e7b233636">
+        sha1="fac5bb8815e92ee8369808ec0a860e17aad1f315">
         <dex dex="/media/freeman/DATACARD/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_1e7b2d141b18a65a2c9bfbc5086191be396ccb8a/classes.dex" />
     </item>
     <item
@@ -178,7 +178,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="a6f06308a319db12ce5968704834af273862e265">
+        sha1="2e73771e5f289cf98e91bce67a6ac4d367cc1407">
         <dex dex="/media/freeman/DATACARD/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_853074edc30b3e2c004e359a9288ee032af6dfc7/classes.dex" />
     </item>
     <item

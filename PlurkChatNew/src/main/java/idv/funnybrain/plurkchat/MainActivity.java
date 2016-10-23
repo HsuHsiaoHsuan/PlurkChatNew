@@ -1,6 +1,7 @@
 package idv.funnybrain.plurkchat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -50,45 +51,7 @@ public class MainActivity extends AppCompatActivity {
     final static int HANDLER_GET_ACCESS_TOKEN_OK = HANDLER_SHOW_AUTH_URL + 1;
     final static int HANDLER_GET_SELF_OK = HANDLER_GET_ACCESS_TOKEN_OK +1;
 
-    private final int MSG_GET_OAUTH = 0;
-    private final int MSG_INIT_TOKEN = MSG_GET_OAUTH + 1;
-
-    private Token accessToken;
-    private Thread goLoginThread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            PlurkOAuth plurkOAuth = new PlurkOAuth("http://localhost/auth");
-            DataCentral.getInstance().setPlurkOAuth(plurkOAuth);
-            Message msg = new Message();
-            msg.what = MSG_GET_OAUTH;
-            msg.obj = plurkOAuth;
-            handler.sendMessage(msg);
-        }
-    });
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case MSG_GET_OAUTH:
-                    PlurkOAuth oauth = (PlurkOAuth) msg.obj;
-                    webView.getSettings().setJavaScriptEnabled(true);
-                    webView.setWebViewClient(new PlurkAuthWebViewClient());
-                    webView.loadUrl(oauth.getAuthURL());
-                    viewLogin.setVisibility(View.VISIBLE);
-                    DataCentral.getInstance().setPlurkOAuth(oauth);
-                    break;
-                case MSG_INIT_TOKEN:
-                    new Async_Users_Me().execute("");
-                    break;
-            }
-        }
-    };
-
-
-    @BindView(R.id.login_control) View viewLogin;
-    @BindView(R.id.bt_getAuth) Button bt_getAuth;
-    @BindView(R.id.wv_auth_url) WebView webView;
+    private static final int INTENT_LOGIN = 111;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,8 +64,7 @@ public class MainActivity extends AppCompatActivity {
         String secret = pref.getString("secret", "nothing");
         if (D) { Log.d(TAG, "key, secret: " + key + ", " + secret); }
         if( (!key.equals("nothing")) && (!secret.equals("nothing")) ) {
-            accessToken = new Token(key, secret);
-            DataCentral.getInstance().setPlurkOAuth(new PlurkOAuth(accessToken));
+            DataCentral.getInstance().setPlurkOAuth(new PlurkOAuth(new Token(key, secret)));
 
             new Async_checkToken().execute("");
 
@@ -117,13 +79,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configLoginView() {
-        bt_getAuth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goLoginThread.start();
-            }
-        });
-        goLoginThread.start();
+        Intent intent = new Intent();
+        intent.setClass(this, LoginActivity.class);
+        startActivityForResult(intent, INTENT_LOGIN);
+        finish();
     }
 
     @Override
@@ -141,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putInt("tab", getActionBar().getSelectedNavigationIndex());
     }
 
     @Override
@@ -155,6 +113,16 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         DataCentral.getInstance().clearLruCache();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == INTENT_LOGIN) {
+            if (resultCode == RESULT_OK) {
+                new Async_Users_Me().execute("");
+            }
+        }
     }
 
     private void toast(Object msg) {
@@ -185,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
             editor.clear();
             editor.commit();
             configLoginView();
-            viewLogin.setVisibility(View.VISIBLE);
         }
     }
 
@@ -215,33 +182,6 @@ public class MainActivity extends AppCompatActivity {
 //                        ))
 //                        .setIcon(R.drawable.ic_launcher_v1)
 //        );
-    }
-
-    // ---- inner class START ----
-    private class PlurkAuthWebViewClient extends WebViewClient {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        if (D) { Log.d(TAG, "====> WebViewClient.shouldOverrideURL.url=" + url); }
-
-        if (url.startsWith("http://localhost/auth")) {
-            Uri uri = Uri.parse(url);
-            final String code = uri.getQueryParameter("oauth_verifier");
-
-            // to get access token
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    if (DataCentral.getInstance().getPlurkOAuth().setAccessToken(MainActivity.this, code)) {
-                        Message msg = new Message();
-                        msg.what = MSG_INIT_TOKEN;
-                        handler.sendMessage(msg);
-                    }
-                }
-            }).start();
-            return true;
-        }
-        return false;
-      }
     }
 
     private class PlurkTmpAsyncTask extends AsyncTask<String, Void, JSONObject> {
@@ -301,5 +241,5 @@ public class MainActivity extends AppCompatActivity {
 //
 //        }
 //    }
-    // ---- inner class END----
+
 }
