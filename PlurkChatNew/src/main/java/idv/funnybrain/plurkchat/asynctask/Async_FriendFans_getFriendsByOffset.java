@@ -57,8 +57,8 @@ public class Async_FriendFans_getFriendsByOffset extends AsyncTaskLoader<Void> {
         try {
             do {
                 if(D) { Log.d(TAG, "Mod_FriendsFans_getFriendsByOffset_AsyncTask, while: " + round); }
-                result = DataCentral.getInstance(getContext()).getPlurkOAuth().getModule(Mod_FriendsFans.class).
-                        getFriendsByOffset(DataCentral.getInstance(mContext).getMe().getHumanId(), 0 + 100 * round, 100);
+                result = DataCentral.getInstance().getPlurkOAuth().getModule(Mod_FriendsFans.class).
+                        getFriendsByOffset(DataCentral.getInstance().getMe().getHumanId(), 0 + 100 * round, 100);
                 // CWT   7014485
                 // kero  4373060
                 // 6880391

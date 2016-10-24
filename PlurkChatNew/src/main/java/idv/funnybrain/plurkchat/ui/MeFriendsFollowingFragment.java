@@ -1,14 +1,17 @@
 package idv.funnybrain.plurkchat.ui;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.AsyncTaskLoader;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,35 +21,27 @@ import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.R;
 import idv.funnybrain.plurkchat.asynctask.Async_FriendFans_getFriendsByOffset;
 import idv.funnybrain.plurkchat.asynctask.Async_FriendsFans_getFollowingByOffset;
+import idv.funnybrain.plurkchat.asynctask.Async_Users_Me;
 import idv.funnybrain.plurkchat.data.IHuman;
 import idv.funnybrain.plurkchat.eventbus.Event_FriendsFans_GetFollowingByOffset;
 import idv.funnybrain.plurkchat.eventbus.Event_FriendsFans_GetFriendsByOffset;
 
-/**
- * Created by Freeman on 2014/4/12.
- */
 public class MeFriendsFollowingFragment extends Fragment {
-    // ---- constant variable START ----
+    private static final String TAG = "MeFriendsFollowing";
     private static final boolean D = false;
-    private static final String TAG = MeFriendsFollowingFragment.class.getSimpleName();
     protected boolean mPause = false;
     private final Object mPauseLock = new Object();
 
     static final int LOADER_ID_GET_FRIEND = 0;
     static final int LOADER_ID_GET_FOLLOWING = LOADER_ID_GET_FRIEND + 1;
-    // ---- constant variable END ----
 
-    // ---- local variable START ----
     private ExpandableListView list;
     private List<String> group_list;
     private List<List<IHuman>> child_list;
-    private MeFriendsFollowingExpandableListAdapter mAdapter;
-
+    private MeFriendsFollowingExpandableListAdapter adapter;
     private List<AsyncTaskLoader> runningTask;
-    // ---- local variable END ----
 
     public static MeFriendsFollowingFragment newInstance() {
-        if(D) { Log.d(TAG, "newInstance"); }
         MeFriendsFollowingFragment f = new MeFriendsFollowingFragment();
         return f;
     }
@@ -54,24 +49,21 @@ public class MeFriendsFollowingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(D) { Log.d(TAG, "onCreate"); }
 
         group_list = new ArrayList<String>();
         child_list = new ArrayList<List<IHuman>>();
-
         runningTask = new ArrayList<AsyncTaskLoader>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if(D) { Log.d(TAG, "onCreateView"); }
-        View v = inflater.inflate(R.layout.fragment_me_friend_following, container, false);
-        list = (ExpandableListView) v.findViewById(R.id.elv_list);
+        View view = inflater.inflate(R.layout.fragment_me_friend_following, container, false);
+        list = (ExpandableListView) view.findViewById(R.id.elv_list);
 
         list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View view, int groupPosition, int childPosition, long id) {
-                IHuman child = (IHuman)mAdapter.getChild(groupPosition, childPosition);
+                IHuman child = (IHuman) adapter.getChild(groupPosition, childPosition);
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 Fragment prev = getFragmentManager().findFragmentByTag("user_detail");
@@ -85,16 +77,15 @@ public class MeFriendsFollowingFragment extends Fragment {
             }
         });
 
-        if(mAdapter != null) {
-            list.setAdapter(mAdapter);
+        if(adapter != null) {
+            list.setAdapter(adapter);
         }
-        return v;
+        return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(D) { Log.d(TAG, "onCreateView"); }
 
         if(group_list.size()>0 && child_list.size()>0) {
         } else {
@@ -102,9 +93,10 @@ public class MeFriendsFollowingFragment extends Fragment {
             ArrayList<IHuman> me_list = new ArrayList<IHuman>();
             me_list.add(DataCentral.getInstance(getActivity()).getMe());
             child_list.add(0, me_list);
-            mAdapter = new MeFriendsFollowingExpandableListAdapter(getActivity().getLayoutInflater(), group_list, child_list);
-            list.setAdapter(mAdapter);
+            adapter = new MeFriendsFollowingExpandableListAdapter(getActivity().getLayoutInflater(), group_list, child_list);
+            list.setAdapter(adapter);
         }
+        new Async_Users_Me().execute("");
         AsyncTaskLoader tmp = new Async_FriendFans_getFriendsByOffset(getActivity());
         tmp.forceLoad();
         runningTask.add(tmp);
@@ -114,8 +106,8 @@ public class MeFriendsFollowingFragment extends Fragment {
     public void onResume() {
         if(D) { Log.d(TAG, "onResume"); }
         super.onResume();
-        if(mAdapter != null) {
-            mAdapter.notifyDataSetChanged();
+        if(adapter != null) {
+            adapter.notifyDataSetChanged();
         }
         EventBus.getDefault().register(this);
     }
@@ -127,13 +119,8 @@ public class MeFriendsFollowingFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
-    public void onDestroy() {
-        if(D) { Log.d(TAG, "onDestroy"); }
-        super.onDestroy();
-    }
-
-    public void onEventMainThread(Event_FriendsFans_GetFriendsByOffset event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event_FriendsFans_GetFriendsByOffset event) {
         List<IHuman> data = event.getData();
         String tag = getString(R.string.friend);
         if (group_list.contains(tag)) {
@@ -145,15 +132,15 @@ public class MeFriendsFollowingFragment extends Fragment {
             child_list.add(data);
         }
 
-        if (mAdapter == null) {
-            mAdapter = new MeFriendsFollowingExpandableListAdapter(getActivity().getLayoutInflater(), group_list, child_list);
-            list.setAdapter(mAdapter);
+        if (adapter == null) {
+            adapter = new MeFriendsFollowingExpandableListAdapter(getActivity().getLayoutInflater(), group_list, child_list);
+            list.setAdapter(adapter);
         } else {
-            //mAdapter.addNewData(getString(R.string.friend), data);
-            mAdapter.notifyDataSetChanged();
+            //adapter.addNewData(getString(R.string.friend), data);
+            adapter.notifyDataSetChanged();
         }
 
-        for (int x = 0; x < mAdapter.getGroupCount(); x++) {
+        for (int x = 0; x < adapter.getGroupCount(); x++) {
             list.expandGroup(x);
         }
 
@@ -162,7 +149,8 @@ public class MeFriendsFollowingFragment extends Fragment {
         runningTask.add(tmp);
     }
 
-    public void onEventMainThread(Event_FriendsFans_GetFollowingByOffset event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event_FriendsFans_GetFollowingByOffset event) {
         List<IHuman> data = event.getData();
 
         String tag = getString(R.string.following);
@@ -175,15 +163,15 @@ public class MeFriendsFollowingFragment extends Fragment {
             child_list.add(data);
         }
 
-        if(mAdapter == null) {
-            mAdapter = new MeFriendsFollowingExpandableListAdapter(getActivity().getLayoutInflater(), group_list, child_list);
-            list.setAdapter(mAdapter);
+        if(adapter == null) {
+            adapter = new MeFriendsFollowingExpandableListAdapter(getActivity().getLayoutInflater(), group_list, child_list);
+            list.setAdapter(adapter);
         } else {
-            //mAdapter.addNewData(getString(R.string.following), data);
-            mAdapter.notifyDataSetChanged();
+            //adapter.addNewData(getString(R.string.following), data);
+            adapter.notifyDataSetChanged();
         }
 
-        for (int x = 0; x < mAdapter.getGroupCount(); x++) {
+        for (int x = 0; x < adapter.getGroupCount(); x++) {
             list.expandGroup(x);
         }
     }

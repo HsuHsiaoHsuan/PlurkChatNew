@@ -1,5 +1,6 @@
 package idv.funnybrain.plurkchat;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -38,6 +39,10 @@ public class LoginActivity extends AppCompatActivity {
                     break;
                 case MSG_INIT_TOKEN:
                     setResult(RESULT_OK);
+                    Intent intent = new Intent();
+                    intent.setClass(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                     break;
             }
         }

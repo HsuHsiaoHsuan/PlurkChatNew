@@ -1,7 +1,7 @@
 package idv.funnybrain.plurkchat.ui;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
