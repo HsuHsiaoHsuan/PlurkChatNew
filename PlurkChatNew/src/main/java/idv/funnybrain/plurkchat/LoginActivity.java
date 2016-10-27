@@ -69,7 +69,9 @@ public class LoginActivity extends AppCompatActivity {
         bt_getAuth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goLoginThread.start();
+                if (!goLoginThread.isAlive()) {
+                    goLoginThread.start();
+                }
             }
         });
         goLoginThread.start();
