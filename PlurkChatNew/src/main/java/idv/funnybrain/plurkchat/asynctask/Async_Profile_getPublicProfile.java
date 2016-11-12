@@ -17,8 +17,8 @@ import java.io.IOException;
 import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.RequestException;
-import idv.funnybrain.plurkchat.data.PublicProfile;
 import idv.funnybrain.plurkchat.eventbus.Event_Profile_getPublicProfile;
+import idv.funnybrain.plurkchat.model.PublicProfile;
 import idv.funnybrain.plurkchat.modules.Mod_Profile;
 
 /**

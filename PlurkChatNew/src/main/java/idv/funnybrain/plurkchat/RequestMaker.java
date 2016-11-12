@@ -1,6 +1,6 @@
 package idv.funnybrain.plurkchat;
 
-import android.util.Log;
+import com.orhanobut.logger.Logger;
 
 import org.apache.http.NameValuePair;
 import org.json.JSONArray;
@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class RequestMaker {
-    private static final boolean D = true;
+    private static final boolean D = BuildConfig.DEBUG;
     private static final String TAG = "RequestMaker";
 
     private PlurkOAuth plurkOAuth;
@@ -33,7 +33,7 @@ public class RequestMaker {
         } else {
             result = plurkOAuth.sendRequest(url, args);
         }
-        if(D) { Log.d(TAG, "requestResult(): " + result); }
+        if(D) { Logger.json(result); }
         return result;
     }
 

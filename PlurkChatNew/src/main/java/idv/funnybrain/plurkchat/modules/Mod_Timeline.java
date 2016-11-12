@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import idv.funnybrain.plurkchat.RequestException;
-import idv.funnybrain.plurkchat.data.Language;
-import idv.funnybrain.plurkchat.data.Qualifier;
+import idv.funnybrain.plurkchat.model.Language;
+import idv.funnybrain.plurkchat.model.Qualifier;
 
 /**
  * Created by Freeman on 2014/4/2.

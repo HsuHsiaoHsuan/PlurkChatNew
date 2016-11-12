@@ -3,10 +3,11 @@ package idv.funnybrain.plurkchat.asynctask;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.orhanobut.logger.Logger;
+
 import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.eventbus.Event_GetAccessToken;
-import idv.funnybrain.plurkchat.logger.Log;
 
 public class Async_GetAccessToken extends AsyncTask<String, Void, Boolean> {
     private Context mContext;
@@ -18,9 +19,9 @@ public class Async_GetAccessToken extends AsyncTask<String, Void, Boolean> {
     @Override
     protected Boolean doInBackground(String... params) {
         if (DataCentral.getInstance().getPlurkOAuth() == null) {
-            Log.e("FREEMAN", "NULL1");
+            Logger.e("NULL1");
         }
-        Log.e("FREEMAN", "params: " + params[0]);
+        Logger.e("params: " + params[0]);
 
         return DataCentral.getInstance(mContext).getPlurkOAuth().setAccessToken(mContext, params[0]);
     }

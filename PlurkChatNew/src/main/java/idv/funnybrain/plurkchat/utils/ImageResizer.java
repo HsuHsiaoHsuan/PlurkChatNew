@@ -23,10 +23,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.FileDescriptor;
 
 import idv.funnybrain.plurkchat.BuildConfig;
-import idv.funnybrain.plurkchat.logger.Log;
 
 //import com.example.android.common.logger.Log;
 //import com.example.android.displayingbitmaps.BuildConfig;
@@ -93,7 +94,7 @@ public class ImageResizer extends ImageWorker {
      */
     private Bitmap processBitmap(int resId) {
         if (BuildConfig.DEBUG) {
-            Log.d(TAG, "processBitmap - " + resId);
+            Logger.d("processBitmap - " + resId);
         }
         return decodeSampledBitmapFromResource(mResources, resId, mImageWidth,
                 mImageHeight, getImageCache());

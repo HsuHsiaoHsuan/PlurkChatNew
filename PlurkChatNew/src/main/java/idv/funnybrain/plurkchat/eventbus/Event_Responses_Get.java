@@ -3,8 +3,8 @@ package idv.funnybrain.plurkchat.eventbus;
 import java.util.HashMap;
 import java.util.List;
 
-import idv.funnybrain.plurkchat.data.Friend;
-import idv.funnybrain.plurkchat.data.Responses;
+import idv.funnybrain.plurkchat.model.Friend;
+import idv.funnybrain.plurkchat.model.Responses;
 
 /**
  * Created by freeman on 2014/11/15.

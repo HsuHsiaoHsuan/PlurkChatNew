@@ -28,10 +28,11 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.widget.ImageView;
 
+import com.orhanobut.logger.Logger;
+
 import java.lang.ref.WeakReference;
 
 import idv.funnybrain.plurkchat.BuildConfig;
-import idv.funnybrain.plurkchat.logger.Log;
 
 /**
  * This class wraps up completing some arbitrary long running work when loading a bitmap to an
@@ -185,7 +186,7 @@ public abstract class ImageWorker {
             bitmapWorkerTask.cancel(true);
             if (BuildConfig.DEBUG) {
                 final Object bitmapData = bitmapWorkerTask.mData;
-                Log.d(TAG, "cancelWork - cancelled work for " + bitmapData);
+                Logger.d("cancelWork - cancelled work for " + bitmapData);
             }
         }
     }
@@ -205,7 +206,7 @@ public abstract class ImageWorker {
             if (bitmapData == null || !bitmapData.equals(data)) {
                 bitmapWorkerTask.cancel(true);
                 if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "cancelPotentialWork - cancelled work for " + data);
+                    Logger.d("cancelPotentialWork - cancelled work for " + data);
                 }
             } else {
                 // The same work is already in progress.
@@ -251,7 +252,7 @@ public abstract class ImageWorker {
         protected BitmapDrawable doInBackground(Void... params) {
             //BEGIN_INCLUDE(load_bitmap_in_background)
             if (BuildConfig.DEBUG) {
-                Log.d(TAG, "doInBackground - starting work");
+                Logger.d("doInBackground - starting work");
             }
 
             final String dataString = String.valueOf(mData);
@@ -305,7 +306,7 @@ public abstract class ImageWorker {
             }
 
             if (BuildConfig.DEBUG) {
-                Log.d(TAG, "doInBackground - finished work");
+                Logger.d("doInBackground - finished work");
             }
 
             return drawable;
@@ -326,7 +327,7 @@ public abstract class ImageWorker {
             final ImageView imageView = getAttachedImageView();
             if (value != null && imageView != null) {
                 if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "onPostExecute - setting bitmap");
+                    Logger.d("onPostExecute - setting bitmap");
                 }
                 setImageDrawable(imageView, value);
             }

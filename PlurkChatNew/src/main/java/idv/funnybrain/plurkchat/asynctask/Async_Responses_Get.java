@@ -22,9 +22,9 @@ import java.util.Iterator;
 import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.RequestException;
-import idv.funnybrain.plurkchat.data.Friend;
-import idv.funnybrain.plurkchat.data.Responses;
 import idv.funnybrain.plurkchat.eventbus.Event_Responses_Get;
+import idv.funnybrain.plurkchat.model.Friend;
+import idv.funnybrain.plurkchat.model.Responses;
 import idv.funnybrain.plurkchat.modules.Mod_Responses;
 
 /**

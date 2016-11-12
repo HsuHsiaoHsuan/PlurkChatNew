@@ -2,7 +2,6 @@ package idv.funnybrain.plurkchat.asynctask;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.util.Log;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -11,6 +10,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.orhanobut.logger.Logger;
 
 import org.json.JSONArray;
 
@@ -22,9 +22,9 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.RequestException;
-import idv.funnybrain.plurkchat.data.Friend;
-import idv.funnybrain.plurkchat.data.IHuman;
 import idv.funnybrain.plurkchat.eventbus.Event_FriendsFans_GetFriendsByOffset;
+import idv.funnybrain.plurkchat.model.Friend;
+import idv.funnybrain.plurkchat.model.IHuman;
 import idv.funnybrain.plurkchat.modules.Mod_FriendsFans;
 
 /**
@@ -56,7 +56,7 @@ public class Async_FriendFans_getFriendsByOffset extends AsyncTaskLoader<Void> {
 
         try {
             do {
-                if(D) { Log.d(TAG, "Mod_FriendsFans_getFriendsByOffset_AsyncTask, while: " + round); }
+                if(D) { Logger.d("Mod_FriendsFans_getFriendsByOffset_AsyncTask, while: " + round); }
                 result = DataCentral.getInstance().getPlurkOAuth().getModule(Mod_FriendsFans.class).
                         getFriendsByOffset(DataCentral.getInstance().getMe().getHumanId(), 0 + 100 * round, 100);
                 // CWT   7014485
@@ -70,16 +70,16 @@ public class Async_FriendFans_getFriendsByOffset extends AsyncTaskLoader<Void> {
                 round++;
             } while (result_size > 0);
             if (D) {
-                Log.d(TAG, result.toString());
+                Logger.d(result.toString());
             }
         } catch (RequestException e) {
-            Log.e(TAG, e.getMessage());
+            Logger.e(e.getMessage());
         } catch (JsonMappingException jme) {
-            Log.e(TAG, jme.getMessage());
+            Logger.e(jme.getMessage());
         } catch (JsonParseException jpe) {
-            Log.e(TAG, jpe.getMessage());
+            Logger.e(jpe.getMessage());
         } catch (IOException ioe) {
-            Log.e(TAG, ioe.getMessage());
+            Logger.e(ioe.getMessage());
         }
 
         if(D) {

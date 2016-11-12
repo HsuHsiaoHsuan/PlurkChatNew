@@ -20,8 +20,9 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 
+import com.orhanobut.logger.Logger;
+
 import idv.funnybrain.plurkchat.BuildConfig;
-import idv.funnybrain.plurkchat.logger.Log;
 
 //import com.example.android.common.logger.Log;
 //import com.example.android.displayingbitmaps.BuildConfig;
@@ -95,7 +96,7 @@ public class RecyclingBitmapDrawable extends BitmapDrawable {
         if (mCacheRefCount <= 0 && mDisplayRefCount <= 0 && mHasBeenDisplayed
                 && hasValidBitmap()) {
             if (BuildConfig.DEBUG) {
-                Log.d(TAG, "No longer being used or cached so recycling. "
+                Logger.d("No longer being used or cached so recycling. "
                         + toString());
             }
 

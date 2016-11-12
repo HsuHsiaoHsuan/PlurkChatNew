@@ -122,6 +122,7 @@ public class PlurkOAuth {
         service.signRequest(accessToken, request);
         Response response = request.send();
         if(response.getCode() != 200) {
+            // TODO 解決 invalid access token
             throw new RequestException("request error: " + response.getCode() + " " + response.getBody());
         }
         return response.getBody();

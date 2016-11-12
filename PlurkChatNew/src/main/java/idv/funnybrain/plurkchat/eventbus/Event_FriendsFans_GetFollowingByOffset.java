@@ -2,7 +2,7 @@ package idv.funnybrain.plurkchat.eventbus;
 
 import java.util.List;
 
-import idv.funnybrain.plurkchat.data.IHuman;
+import idv.funnybrain.plurkchat.model.IHuman;
 
 /**
  * Created by freeman on 2014/7/28.

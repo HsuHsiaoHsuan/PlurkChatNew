@@ -23,6 +23,8 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.widget.Toast;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -35,7 +37,6 @@ import java.net.URL;
 
 import idv.funnybrain.plurkchat.BuildConfig;
 import idv.funnybrain.plurkchat.R;
-import idv.funnybrain.plurkchat.logger.Log;
 
 //import com.example.android.common.logger.Log;
 //import com.example.android.displayingbitmaps.BuildConfig;
@@ -99,7 +100,7 @@ public class ImageFetcher extends ImageResizer {
                 try {
                     mHttpDiskCache = DiskLruCache.open(mHttpCacheDir, 1, 1, HTTP_CACHE_SIZE);
                     if (BuildConfig.DEBUG) {
-                        Log.d(TAG, "HTTP cache initialized");
+                        Logger.d("HTTP cache initialized");
                     }
                 } catch (IOException e) {
                     mHttpDiskCache = null;
@@ -118,10 +119,10 @@ public class ImageFetcher extends ImageResizer {
                 try {
                     mHttpDiskCache.delete();
                     if (BuildConfig.DEBUG) {
-                        Log.d(TAG, "HTTP cache cleared");
+                        Logger.d("HTTP cache cleared");
                     }
                 } catch (IOException e) {
-                    Log.e(TAG, "clearCacheInternal - " + e);
+                    Logger.e("clearCacheInternal - " + e);
                 }
                 mHttpDiskCache = null;
                 mHttpDiskCacheStarting = true;
@@ -138,10 +139,10 @@ public class ImageFetcher extends ImageResizer {
                 try {
                     mHttpDiskCache.flush();
                     if (BuildConfig.DEBUG) {
-                        Log.d(TAG, "HTTP cache flushed");
+                        Logger.d("HTTP cache flushed");
                     }
                 } catch (IOException e) {
-                    Log.e(TAG, "flush - " + e);
+                    Logger.e("flush - " + e);
                 }
             }
         }
@@ -157,11 +158,11 @@ public class ImageFetcher extends ImageResizer {
                         mHttpDiskCache.close();
                         mHttpDiskCache = null;
                         if (BuildConfig.DEBUG) {
-                            Log.d(TAG, "HTTP cache closed");
+                            Logger.d("HTTP cache closed");
                         }
                     }
                 } catch (IOException e) {
-                    Log.e(TAG, "closeCacheInternal - " + e);
+                    Logger.e("closeCacheInternal - " + e);
                 }
             }
         }
@@ -178,7 +179,7 @@ public class ImageFetcher extends ImageResizer {
         final NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isConnectedOrConnecting()) {
             Toast.makeText(context, R.string.no_network_connection_toast, Toast.LENGTH_LONG).show();
-            Log.e(TAG, "checkConnection - no connection found");
+            Logger.e("checkConnection - no connection found");
         }
     }
 
@@ -191,7 +192,7 @@ public class ImageFetcher extends ImageResizer {
      */
     private Bitmap processBitmap(String data) {
         if (BuildConfig.DEBUG) {
-            Log.d(TAG, "processBitmap - " + data);
+            Logger.d("processBitmap - " + data);
         }
 
         final String key = ImageCache.hashKeyForDisk(data);
@@ -211,7 +212,7 @@ public class ImageFetcher extends ImageResizer {
                     snapshot = mHttpDiskCache.get(key);
                     if (snapshot == null) {
                         if (BuildConfig.DEBUG) {
-                            Log.d(TAG, "processBitmap, not found in http cache, downloading...");
+                            Logger.d("processBitmap, not found in http cache, downloading...");
                         }
                         DiskLruCache.Editor editor = mHttpDiskCache.edit(key);
                         if (editor != null) {
@@ -230,9 +231,9 @@ public class ImageFetcher extends ImageResizer {
                         fileDescriptor = fileInputStream.getFD();
                     }
                 } catch (IOException e) {
-                    Log.e(TAG, "processBitmap - " + e);
+                    Logger.e("processBitmap - " + e);
                 } catch (IllegalStateException e) {
-                    Log.e(TAG, "processBitmap - " + e);
+                    Logger.e("processBitmap - " + e);
                 } finally {
                     if (fileDescriptor == null && fileInputStream != null) {
                         try {
@@ -285,7 +286,7 @@ public class ImageFetcher extends ImageResizer {
             }
             return true;
         } catch (final IOException e) {
-            Log.e(TAG, "Error in downloadBitmap - " + e);
+            Logger.e("Error in downloadBitmap - " + e);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();

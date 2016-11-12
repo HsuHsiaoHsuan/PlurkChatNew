@@ -1,6 +1,6 @@
 package idv.funnybrain.plurkchat.eventbus;
 
-import idv.funnybrain.plurkchat.data.PublicProfile;
+import idv.funnybrain.plurkchat.model.PublicProfile;
 
 /**
  * Created by freeman on 2014/12/18.

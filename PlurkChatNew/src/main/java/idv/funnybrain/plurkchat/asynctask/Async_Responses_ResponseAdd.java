@@ -8,9 +8,9 @@ import org.json.JSONObject;
 import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.DataCentral;
 import idv.funnybrain.plurkchat.RequestException;
-import idv.funnybrain.plurkchat.data.Qualifier;
 import idv.funnybrain.plurkchat.eventbus.Event_Error;
 import idv.funnybrain.plurkchat.eventbus.Event_Responses_ResponseAdd;
+import idv.funnybrain.plurkchat.model.Qualifier;
 import idv.funnybrain.plurkchat.modules.Mod_Responses;
 
 /**

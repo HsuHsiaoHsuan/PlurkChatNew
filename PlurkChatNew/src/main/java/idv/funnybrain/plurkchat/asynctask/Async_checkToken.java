@@ -1,7 +1,6 @@
 package idv.funnybrain.plurkchat.asynctask;
 
-import android.content.Context;
-import android.util.Log;
+import com.orhanobut.logger.Logger;
 
 import org.json.JSONObject;
 
@@ -26,7 +25,7 @@ public class Async_checkToken extends AsyncTask<String, Void, JSONObject> {
 
         try {
             result = DataCentral.getInstance().getPlurkOAuth().getModule(Mod_checkToken.class).checkToken();
-            if(D) { Log.d(TAG, "Mod_checkToken: " + result.toString()); }
+            if(D) { Logger.d("Mod_checkToken: " + result.toString()); }
         } catch (RequestException e) {
             e.printStackTrace();
             EventBus.getDefault().post(new Event_Error(e.toString()));
