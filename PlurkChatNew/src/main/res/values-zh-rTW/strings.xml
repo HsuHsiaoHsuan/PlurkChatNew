@@ -9,10 +9,10 @@
     <string name="no_network_connection_toast">沒有網路連線</string>
     <!-- Image Cache END -->
 
-    <!-- FunnyActivity START -->
+    <!-- MainActivity START -->
     <string name="tab_friends">朋友</string>
     <string name="tab_chatrooms">聊天</string>
-    <!-- FunnyActivity END -->
+    <!-- MainActivity END -->
 
     <!-- MeFriendsFollowingFragment START -->
     <string name="me">我</string>

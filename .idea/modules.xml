@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PlurkChatNew.iml" filepath="$PROJECT_DIR$/PlurkChatNew.iml" />
-      <module fileurl="file://$PROJECT_DIR$/PlurkChatNew/PlurkChatNew-PlurkChatNew.iml" filepath="$PROJECT_DIR$/PlurkChatNew/PlurkChatNew-PlurkChatNew.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PlurkChatNew/PlurkChatNew.iml" filepath="$PROJECT_DIR$/PlurkChatNew/PlurkChatNew.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PlurkFish.iml" filepath="$PROJECT_DIR$/PlurkFish.iml" />
     </modules>
   </component>
 </project>
-

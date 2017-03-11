@@ -20,7 +20,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.StrictMode;
-import idv.funnybrain.plurkchat.FunnyActivity;
+import idv.funnybrain.plurkchat.MainActivity;
 
 //import com.example.android.displayingbitmaps.ui.ImageDetailActivity;
 //import com.example.android.displayingbitmaps.ui.ImageGridActivity;
@@ -47,7 +47,7 @@ public class Utils {
             if (Utils.hasHoneycomb()) {
                 threadPolicyBuilder.penaltyFlashScreen();
                 vmPolicyBuilder
-                        .setClassInstanceLimit(FunnyActivity.class, 1);
+                        .setClassInstanceLimit(MainActivity.class, 1);
                         //.setClassInstanceLimit(ImageDetailActivity.class, 1);
             }
             StrictMode.setThreadPolicy(threadPolicyBuilder.build());
