@@ -7,3 +7,8 @@
 .DS_Store
 target/
 !PlurkChatNew/project/plugins.sbt
+*.iml
+/.idea/libraries
+/build
+/captures
+.externalNativeBuild
