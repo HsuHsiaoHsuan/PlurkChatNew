@@ -12,3 +12,8 @@ target/
 /captures
 .externalNativeBuild
 !PlurkChatNew/project/plugins.sbt
+*.iml
+/.idea/libraries
+/build
+/captures
+.externalNativeBuild
