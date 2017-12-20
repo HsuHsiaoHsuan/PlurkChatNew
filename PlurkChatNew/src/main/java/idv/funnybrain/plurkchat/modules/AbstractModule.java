@@ -7,7 +7,7 @@ import idv.funnybrain.plurkchat.RequestMaker;
  * Created by Freeman on 2014/4/2.
  */
 public abstract class AbstractModule {
-    public static final String PLURK_PREFIX = "http://www.plurk.com";
+    public static final String PLURK_PREFIX = "https://www.plurk.com";
 
     private PlurkOAuth plurkOAuth;
 

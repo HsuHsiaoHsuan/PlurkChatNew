@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
+//apply plugin: 'android-apt'
 
 repositories {
     mavenCentral()
@@ -7,7 +7,6 @@ repositories {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
@@ -20,7 +19,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -36,7 +35,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+//    apt 'com.jakewharton:butterknife-compiler:8.4.0'
 
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support:design:25.0.0'
@@ -46,7 +45,8 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-core:2.6.1'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.6.1'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.jakewharton:butterknife:8.4.0'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.mcxiaoke.volley:library:1.0.18'
     compile 'com.orhanobut:logger:1.15'
     // compile 'com.makeramen:roundedimageview:1.2.4'

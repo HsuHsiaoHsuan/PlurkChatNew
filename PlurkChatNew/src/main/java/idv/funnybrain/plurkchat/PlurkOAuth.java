@@ -27,8 +27,8 @@ public class PlurkOAuth {
     private static final boolean D = false;
     private static final String TAG = "PlurkOAuth";
 
-    private final static String API_KEY = "iwMUO0N5amJt";
-    private final static String API_SECRET = "pLNMmgcQybqRaP9aLHhd984kFnPquYd1";
+    private final static String API_KEY = "eOrMDFD8f5V2";
+    private final static String API_SECRET = "aiVo5OOdWJMl0vEEblPVNRmbG3EeIQh5";
 
     private OAuthService service;
     private Token requestToken;
@@ -38,7 +38,7 @@ public class PlurkOAuth {
     private static Map<Class, Object> cachedModule = new HashMap<Class, Object>();
 
     public PlurkOAuth() {
-        service = new ServiceBuilder().provider(PlurkApi.Mobile.class)
+        service = new ServiceBuilder().provider(PlurkApiNew.Mobile.class)
                                       .apiKey(API_KEY)
                                       .apiSecret(API_SECRET)
                                       .build();
@@ -46,7 +46,7 @@ public class PlurkOAuth {
     }
 
     public PlurkOAuth(String callbackURL) {
-        service = new ServiceBuilder().provider(PlurkApi.Mobile.class)
+        service = new ServiceBuilder().provider(PlurkApiNew.Mobile.class)
                                       .apiKey(API_KEY)
                                       .apiSecret(API_SECRET)
                                       .callback(callbackURL)
@@ -61,7 +61,7 @@ public class PlurkOAuth {
             Log.d(TAG, "acc_sec: " + accessToken.getSecret());
         }
         this.accessToken = accessToken;
-        service = new ServiceBuilder().provider(PlurkApi.Mobile.class)
+        service = new ServiceBuilder().provider(PlurkApiNew.Mobile.class)
                 .apiKey(API_KEY)
                 .apiSecret(API_SECRET)
                 .build();
