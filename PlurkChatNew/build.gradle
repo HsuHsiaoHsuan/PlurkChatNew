@@ -1,20 +1,10 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.14.2'
-    }
-}
+apply plugin: 'com.android.application'
 apply plugin: 'android'
 
-repositories {
-    mavenCentral()
-}
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '21.1.2'
+    buildToolsVersion '25.0.0'
 
     packagingOptions {
         pickFirst 'META-INF/ASL2.0'
@@ -30,7 +20,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }

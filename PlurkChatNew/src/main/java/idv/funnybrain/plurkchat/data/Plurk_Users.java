@@ -139,13 +139,13 @@ public class Plurk_Users implements IHuman,Parcelable {
 
     @Override
     public String getHumanImage() {
-        String imgURL = "http://www.plurk.com/static/default_big.gif";
+        String imgURL = "https://www.plurk.com/static/default_big.gif";
         if(has_profile_image>0) {
             if(avatar.equals("null")) {
-                imgURL = "http://avatars.plurk.com/" + id + "-big.jpg";
+                imgURL = "https://avatars.plurk.com/" + id + "-big.jpg";
             } else {
                 if(avatar.equals("0")) { avatar = ""; }
-                imgURL = "http://avatars.plurk.com/" + id + "-big" + avatar + ".jpg";
+                imgURL = "https://avatars.plurk.com/" + id + "-big" + avatar + ".jpg";
             }
         }
         return imgURL;

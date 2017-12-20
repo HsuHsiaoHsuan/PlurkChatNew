@@ -6,7 +6,6 @@ import android.util.Log;
 import idv.funnybrain.plurkchat.modules.AbstractModule;
 import org.apache.http.NameValuePair;
 import org.scribe.builder.ServiceBuilder;
-import org.scribe.builder.api.PlurkApi;
 import org.scribe.model.*;
 import org.scribe.oauth.OAuthService;
 
@@ -32,7 +31,7 @@ public class PlurkOAuth {
     private static Map<Class, Object> cachedModule = new HashMap<Class, Object>();
 
     public PlurkOAuth() {
-        service = new ServiceBuilder().provider(PlurkApi.Mobile.class)
+        service = new ServiceBuilder().provider(PlurkApiNew.Mobile.class)
                                       .apiKey(API_KEY)
                                       .apiSecret(API_SECRET)
                                       .build();
@@ -40,7 +39,7 @@ public class PlurkOAuth {
     }
 
     public PlurkOAuth(String callbackURL) {
-        service = new ServiceBuilder().provider(PlurkApi.Mobile.class)
+        service = new ServiceBuilder().provider(PlurkApiNew.Mobile.class)
                                       .apiKey(API_KEY)
                                       .apiSecret(API_SECRET)
                                       .callback(callbackURL)
@@ -55,7 +54,7 @@ public class PlurkOAuth {
             Log.d(TAG, "acc_sec: " + accessToken.getSecret());
         }
         this.accessToken = accessToken;
-        service = new ServiceBuilder().provider(PlurkApi.Mobile.class)
+        service = new ServiceBuilder().provider(PlurkApiNew.Mobile.class)
                 .apiKey(API_KEY)
                 .apiSecret(API_SECRET)
                 .build();
@@ -144,7 +143,7 @@ public class PlurkOAuth {
 
     public void test() {
 
-        OAuthRequest req = new OAuthRequest(Verb.POST, "http://www.plurk.com/APP/Timeline/plurkAdd?content=myAppTests&qualifier=says&lang=tr_ch");
+        OAuthRequest req = new OAuthRequest(Verb.POST, "https://www.plurk.com/APP/Timeline/plurkAdd?content=myAppTests&qualifier=says&lang=tr_ch");
         service.signRequest(accessToken, req);
         Response resp = req.send();
         String result = resp.getBody();

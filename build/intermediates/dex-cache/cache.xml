@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="/home/freeman/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.4.4/c5cd3347c0a86d0dcfbf3da593d8431d5a789d54/jackson-core-2.4.4.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="c5cd3347c0a86d0dcfbf3da593d8431d5a789d54">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/pre-dexed/debug/jackson-core-2.4.4_ef29169bfa3ed8c9aa4a5569190834f09d522c20.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/freeman/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.4.4/c5cd3347c0a86d0dcfbf3da593d8431d5a789d54/jackson-core-2.4.4.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="c5cd3347c0a86d0dcfbf3da593d8431d5a789d54">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/transforms/dex/debug/folders/1000/10/jackson-core-2.4.4_ef29169bfa3ed8c9aa4a5569190834f09d522c20/classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/freeman/Android/Sdk/extras/android/m2repository/com/android/support/support-v4/19.0.1/support-v4-19.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="587da9a481ffd341d2fa091704489b89845ddacd">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/pre-dexed/debug/support-v4-19.0.1_cb0466468f781057f42ac152bc575d1b258a0428.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/freeman/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.4.0/d6a66c7a5f01cf500377bd669507a08cfeba882a/jackson-annotations-2.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d6a66c7a5f01cf500377bd669507a08cfeba882a">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/pre-dexed/debug/jackson-annotations-2.4.0_c2aaa5ca223d7f22572bc42b9961b8d72b38ee64.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/freeman/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.4.0/d6a66c7a5f01cf500377bd669507a08cfeba882a/jackson-annotations-2.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d6a66c7a5f01cf500377bd669507a08cfeba882a">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/transforms/dex/debug/folders/1000/10/jackson-annotations-2.4.0_c2aaa5ca223d7f22572bc42b9961b8d72b38ee64/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/freeman/.gradle/caches/modules-2/files-2.1/de.greenrobot/eventbus/2.4.0/ddd166d01b3158d1c00576d29f7ed15c030df719/eventbus-2.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="ddd166d01b3158d1c00576d29f7ed15c030df719">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/transforms/dex/debug/folders/1000/10/eventbus-2.4.0_42137b17b26fdf8ae661949c520161c6386a0732/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="2c663b43428de488f6d6772c9142cef58f4ca6b2">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_ff700bbfe29f074454ca9637fdcefad3a579d5be/classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/freeman/.android/build-cache/169aed2c9ea08647bb6085f6e791c89173d9a072/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="385a0d353b6640de918f2c293f06de925e32c0a3">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/pre-dexed/debug/classes_79345eac5c09008bb348e2793b8b933f70244029.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/freeman/Android/Sdk/extras/android/m2repository/com/android/support/support-v4/19.0.1/support-v4-19.0.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="587da9a481ffd341d2fa091704489b89845ddacd">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/transforms/dex/debug/folders/1000/10/support-v4-19.0.1_cb0466468f781057f42ac152bc575d1b258a0428/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/freeman/.android/build-cache/0e7e662e0209fe8c5e37c61b4c1ee83c9f29f630/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="af64527b748983a75de9c0756e9768b56b240a49">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/transforms/dex/debug/folders/1000/10/classes_be76dca3c932966a8168718153cf4b6150bd05f5/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/freeman/.gradle/caches/modules-2/files-2.1/org.scribe/scribe/1.3.5/a3b3deded9d241d9f2c8aa9c9bcd90ad29e2581e/scribe-1.3.5.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="a3b3deded9d241d9f2c8aa9c9bcd90ad29e2581e">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/transforms/dex/debug/folders/1000/10/scribe-1.3.5_23c22a07a533f0731713ab23f756a3fb48e612e2/classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/freeman/.gradle/caches/modules-2/files-2.1/org.scribe/scribe/1.3.5/a3b3deded9d241d9f2c8aa9c9bcd90ad29e2581e/scribe-1.3.5.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="a3b3deded9d241d9f2c8aa9c9bcd90ad29e2581e">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/pre-dexed/debug/scribe-1.3.5_23c22a07a533f0731713ab23f756a3fb48e612e2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/freeman/.android/build-cache/0e7e662e0209fe8c5e37c61b4c1ee83c9f29f630/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="af64527b748983a75de9c0756e9768b56b240a49">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/pre-dexed/debug/classes_be76dca3c932966a8168718153cf4b6150bd05f5.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/freeman/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.4.4/e2ff13c3de2f5a2ab2449a3dace2b0d1c37bd8ee/jackson-databind-2.4.4.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="e2ff13c3de2f5a2ab2449a3dace2b0d1c37bd8ee">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/transforms/dex/debug/folders/1000/10/jackson-databind-2.4.4_d077ce63c3ccb90ee1aa811e3446a58ea6442874/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="12920f9016b8b05acbc2af7cdc13cef6946fe7d3">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_486707b29ad6690112178a392982db88664c20a0/classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/freeman/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.4.4/e2ff13c3de2f5a2ab2449a3dace2b0d1c37bd8ee/jackson-databind-2.4.4.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="e2ff13c3de2f5a2ab2449a3dace2b0d1c37bd8ee">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/pre-dexed/debug/jackson-databind-2.4.4_d077ce63c3ccb90ee1aa811e3446a58ea6442874.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/freeman/.gradle/caches/modules-2/files-2.1/de.greenrobot/eventbus/2.4.0/ddd166d01b3158d1c00576d29f7ed15c030df719/eventbus-2.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="ddd166d01b3158d1c00576d29f7ed15c030df719">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/pre-dexed/debug/eventbus-2.4.0_42137b17b26fdf8ae661949c520161c6386a0732.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/freeman/.android/build-cache/169aed2c9ea08647bb6085f6e791c89173d9a072/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="385a0d353b6640de918f2c293f06de925e32c0a3">
+        <dex dex="/media/freeman/DATACARD2/IdeaProjects/PlurkFish/PlurkChatNew/build/intermediates/transforms/dex/debug/folders/1000/10/classes_79345eac5c09008bb348e2793b8b933f70244029/classes.dex" />
+    </item>
+
+</items>
