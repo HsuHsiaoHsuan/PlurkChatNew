@@ -1,12 +1,10 @@
 package idv.funnybrain.plurkchat.modules;
 
 import idv.funnybrain.plurkchat.RequestException;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Freeman on 2014/4/2.
@@ -25,15 +23,13 @@ public class Mod_Responses extends AbstractModule {
      *         HTTP 400 BAD REQUEST with {"error_text": "No permissions"} as body
      */
     public JSONObject get(String plurk_id, int from_response) throws RequestException {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("plurk_id", plurk_id));
-
-        if(from_response > 0) {
-            params.add(new BasicNameValuePair("from_response", String.valueOf(from_response)));
+        Map<String, String> params = new HashMap<>();
+        params.put("plurk_id", plurk_id);
+        if (from_response > 0) {
+            params.put("from_response", String.valueOf(from_response));
         }
+        return requestAPI("get").args(params).getJSONObjectResult();
 
-        JSONObject result = requestAPI("get").args(params).getJSONObjectResult();
-        return result;
     }
 
     // Adds a responses to plurk_id. Language is inherited from the plurk.

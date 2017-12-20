@@ -1,6 +1,7 @@
 package idv.funnybrain.plurkchat.modules;
 
 import idv.funnybrain.plurkchat.PlurkOAuth;
+import idv.funnybrain.plurkchat.RequestMaker;
 
 /**
  * Created by Freeman on 2014/4/2.

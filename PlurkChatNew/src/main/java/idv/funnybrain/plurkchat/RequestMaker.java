@@ -2,42 +2,37 @@ package idv.funnybrain.plurkchat;
 
 import android.util.Log;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
+import com.orhanobut.logger.Logger;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
+import java.util.Map;
 
-/**
- * Created by Freeman on 2014/4/3.
- */
+import static idv.funnybrain.plurkchat.BuildConfig.DEBUG;
+
 public class RequestMaker {
-    private static final boolean D = true;
     private static final String TAG = "RequestMaker";
 
     private PlurkOAuth plurkOAuth;
     private String url;
-    private List<NameValuePair> args;
+    private Map<String, String> args;
 
     public RequestMaker(PlurkOAuth oauth, String api_url) {
         plurkOAuth = oauth;
         url = api_url;
     }
 
-    public RequestMaker args(List<NameValuePair> pairs) {
-        try {
-            args = pairs;
-            if(D && (pairs!=null) ) { Log.d(TAG, "args, httpPost parameters: " + EntityUtils.toString(new UrlEncodedFormEntity(pairs, HTTP.UTF_8))); }
-            if(D && (pairs==null) ) { Log.d(TAG, "args, httpPost parameters: null"); }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public RequestMaker args(Map<String, String> pairs) {
+        args = pairs;
+        if (DEBUG) {
+            if (pairs != null) {
+                StringBuilder output = new StringBuilder("args, httpPost parameters: ");
+                pairs.forEach((k, v) -> output.append(k + ", " + v + "\n"));
+                Logger.d(output.append(output.toString()));
+            } else {
+                Logger.d("args, httpPost parameters: null");
+            }
         }
         return this;
     }
@@ -49,7 +44,7 @@ public class RequestMaker {
         } else {
             result = plurkOAuth.sendRequest(url, args);
         }
-        if(D) { Log.d(TAG, "requestResult(): " + result); }
+        if(DEBUG) { Log.d(TAG, "requestResult(): " + result); }
         return result;
     }
 

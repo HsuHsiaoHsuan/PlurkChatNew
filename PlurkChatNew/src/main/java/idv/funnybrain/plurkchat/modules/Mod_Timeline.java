@@ -3,16 +3,11 @@ package idv.funnybrain.plurkchat.modules;
 import idv.funnybrain.plurkchat.RequestException;
 import idv.funnybrain.plurkchat.data.Language;
 import idv.funnybrain.plurkchat.data.Qualifier;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Created by Freeman on 2014/4/2.
- */
 public class Mod_Timeline extends AbstractModule {
 
     //
@@ -32,25 +27,25 @@ public class Mod_Timeline extends AbstractModule {
      *         Returns a JSON object of plurks and their users, e.g. {"plurks": [{"plurk_id": 3, "content": "Test", "qualifier_translated": "says", "qualifier": "says", "lang": "en" ...}, ...], "plurk_users": {"3": {"id": 3, "nick_name": "alvin", ...}}
      */
     public JSONObject getPlurks(String offset, int limit, String filter, boolean favorers_detail, boolean limited_detail, boolean replurkers_detail) throws RequestException {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        Map<String, String> params = new HashMap<>();
         if(offset != null) {
-            params.add(new BasicNameValuePair("offset", offset));
+            params.put("offset", offset);
         }
-        params.add(new BasicNameValuePair("limit", "30"));
+        params.put("limit", "30");
         if(filter != null) {
-            params.add(new BasicNameValuePair("filter", filter));
+            params.put("filter", filter);
         }
         if(favorers_detail) {
-            params.add(new BasicNameValuePair("favorers_detail", "true"));
+            params.put("favorers_detail", "true");
         }
         if(limited_detail) {
-            params.add(new BasicNameValuePair("limited_detail", "true"));
+            params.put("limited_detail", "true");
         }
         if(replurkers_detail) {
-            params.add(new BasicNameValuePair("replurkers_detail", "true"));
+            params.put("replurkers_detail", "true");
         }
-
         JSONObject result = requestAPI("getPlurks").args(params).getJSONObjectResult();
+
         return result;
     }
 
@@ -86,21 +81,20 @@ public class Mod_Timeline extends AbstractModule {
      *             HTTP 400 BAD REQUEST with {"error_text": "anti-flood-too-many-new"} as body
      */
     public JSONObject plurkAdd(String content, Qualifier qualifier, String[] limited_to, int no_comments, Language lang) throws RequestException {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("content", content));
-        params.add(new BasicNameValuePair("qualifier", qualifier.toString()));
+        Map<String, String> params = new HashMap<>();
+        params.put("content", content);
+        params.put("qualifier", qualifier.toString());
         if(limited_to != null) {
-            params.add(new BasicNameValuePair("limited_to", limited_to.toString()));
+            params.put("limited_to", limited_to.toString());
         }
         if(no_comments != 0) {
-            params.add(new BasicNameValuePair("no_comments", String.valueOf(no_comments)));
+            params.put("no_comments", String.valueOf(no_comments));
         }
         if(lang != null) {
-            params.add(new BasicNameValuePair("lang", lang.toString()));
+            params.put("lang", lang.toString());
         }
-
-
         JSONObject result = requestAPI("plurkAdd").args(params).getJSONObjectResult();
+
         return result;
     }
 

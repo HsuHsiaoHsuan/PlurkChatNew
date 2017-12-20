@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              >
+              android:layout_height="fill_parent">
     <FrameLayout
           android:id="@+id/fragment_content"
           android:layout_width="match_parent"
@@ -11,19 +10,19 @@
           android:visibility="gone"/>
 
     <LinearLayout
-            android:id="@+id/login_control"
+            android:id="@+id/llLoginControl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
             android:orientation="vertical">
         <Button
-            android:id="@+id/bt_getAuth"
+            android:id="@+id/btGetAuth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Start to Auth"/>
 
         <WebView
-            android:id="@+id/wv_auth_url"
+            android:id="@+id/wvUrl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>

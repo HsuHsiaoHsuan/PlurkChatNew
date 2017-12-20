@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import idv.funnybrain.plurkchat.modules.AbstractModule;
-import org.apache.http.NameValuePair;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.PlurkApi;
 import org.scribe.model.*;
 import org.scribe.oauth.OAuthService;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -88,17 +86,11 @@ public class PlurkOAuth {
         accessToken = access;
     }
 
-    public String sendRequest(String url, List<NameValuePair> args) throws RequestException {
+    public String sendRequest(String url, Map<String, String> args) throws RequestException {
         if(D) { Log.d(TAG, "sendRequest url: " + url); }
         OAuthRequest request = new OAuthRequest(Verb.POST, url);
-//        int size = args.size();
         if(args.size() > 0) {
-//            for(int x=0; x< size; x++) {
-//                request.addQuerystringParameter(args.get(x).getName(), args.get(x).getValue());
-//            }
-            for(NameValuePair pair : args) {
-                request.addQuerystringParameter(pair.getName(), pair.getValue());
-            }
+            args.forEach((k, v) -> request.addQuerystringParameter(k, v));
         }
         service.signRequest(accessToken, request);
         Response response = request.send();
