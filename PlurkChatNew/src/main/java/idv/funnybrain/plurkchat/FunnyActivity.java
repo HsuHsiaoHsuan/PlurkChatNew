@@ -7,15 +7,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.Toast;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import de.greenrobot.event.EventBus;
 import idv.funnybrain.plurkchat.asynctask.Async_GetAccessToken;
 import idv.funnybrain.plurkchat.asynctask.Async_Login;
@@ -31,7 +30,7 @@ import idv.funnybrain.plurkchat.ui.MeFriendsFollowingFragment;
 import org.json.JSONObject;
 import org.scribe.model.Token;
 
-public class FunnyActivity extends SherlockFragmentActivity {
+public class FunnyActivity extends AppCompatActivity {
     // ---- constant START ----
     static final boolean D = false;
     static final String TAG = "FunnyActivity";
